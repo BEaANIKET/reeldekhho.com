@@ -3,23 +3,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import api from '../services/api/axiosConfig';
 import { RootState } from '../store/store';
-import { setChats, setMessages, addMessage, setSelectedChat } from '../store/slices/chatSlice';
+import { setMessages, setChats, addMessage, setSelectedChat, setUnseenCount, addCharts } from '../store/slices/chatSlice';
 
 const useChat = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const socket = useSelector((state: RootState) => state.socket.value);
     const chats = useSelector((state: RootState) => state.chat.chats);
-    // console.log("charts", chats);
-
+    const logedinUser = useSelector((state: RootState) => state.auth.user);
     const selectedChat = useSelector((state: RootState) => state.chat.selectedChat);
+    const unseenCountMessage = useSelector(state => state?.chat?.unSeenCount);
 
+    /**
+     * Fetch all chats for the logged-in user.
+     */
     useEffect(() => {
         const fetchChats = async () => {
             try {
                 const response = await api.get('/message/getee');
-                // console.log(response.data);
-
+                console.log(response.data, 'User chats:');
                 if (response.data && Array.isArray(response.data)) {
                     dispatch(setChats(response.data));
                 } else {
@@ -31,44 +33,70 @@ const useChat = () => {
         };
 
         fetchChats();
-    }, [dispatch]);
+    }, [dispatch, logedinUser]);
+
+    /**
+     * Fetch messages for a specific chat by its user ID.
+     */
+    const fetchChatByUserId = async (chatId: string) => {
+        try {
+            const response = await api.get(`/message/get?id=${chatId}`);
+            console.log(response.data, "fdsfsdfsdf");
+
+            const messages = response.data?.conversation?.messages;
+            const unseenMessage = response?.data?.unseenCount;
+            console.log(unseenMessage);
+
+            if (messages) {
+                dispatch(setUnseenCount({ userId: chatId, unseenCount: unseenMessage }));
+                dispatch(setMessages({ chatId, messages }));
+            } else {
+                console.error('No messages found for chat:', chatId);
+            }
+        } catch (error) {
+            console.error('Error fetching chat by ID:', error);
+        }
+    };
 
     useEffect(() => {
-
-        const fetchChatById = async (chatId: string) => {
-            try {
-                const response = await api.get(`/message/info?id=${chatId}`);
-                const newChat = response.data?.user;
-                if (newChat) {
-                    // console.log("new charts", newChat);
-
-                    dispatch(setChats([...chats, newChat]));
-                    dispatch(setSelectedChat(response.data?.chat));
-                }
-            } catch (error) {
-                console.error('Error fetching chat by ID:', error);
-            }
-        };
-
-        if (id) {
-            const chat = chats.find((chat) => chat._id === id);
-            if (chat) {
-                dispatch(setSelectedChat(chat));
-            } else {
-                fetchChatById(id);
-            }
-        } else {
-            dispatch(setSelectedChat(null));
+        if (chats && chats.length) {
+            chats.forEach(chat => {
+                fetchChatByUserId(chat._id);
+            });
         }
-    }, [id, chats, dispatch]);
+    }, [chats, logedinUser]);
 
+    const fetchAndAddUser = async (chatId: string) => {
+        try {
+            const response = await api.get(`/message/info?id=${chatId}`);
+            const user = response.data?.user;
+            if (user) {
+                dispatch(addCharts(user));
+            }
+        } catch (error) {
+            console.error("Error fetching new user info:", error);
+        }
+    };
+
+    /**
+     * Listen for new messages via the socket.
+     */
     useEffect(() => {
         if (!socket) return;
 
         const handleNewMessage = (data: any) => {
-            console.log(data);
-
-            dispatch(addMessage(data.senderId, data.message));
+            console.log('New message received:', data);
+            if (!chats.some(chat => chat._id === data.senderId) && logedinUser?._id !== data.senderId) {
+                fetchAndAddUser(data.senderId);
+                dispatch(setUnseenCount({ userId: data.senderId, unseenCount: 1 }));
+            } else {
+                console.log(unseenCountMessage);
+                if (logedinUser?._id !== data.senderId) {
+                    const currentUnseenCount = unseenCountMessage[data.senderId] || 0;
+                    dispatch(setUnseenCount({ userId: data.senderId, unseenCount: currentUnseenCount + 1 }));
+                }
+            }
+            dispatch(addMessage({ chatId: data?.senderId, message: data }));
         };
 
         socket.on('newMessage', handleNewMessage);
@@ -76,10 +104,16 @@ const useChat = () => {
         return () => {
             socket.off('newMessage', handleNewMessage);
         };
-    }, [socket, dispatch]);
+    }, [socket, dispatch, chats, unseenCountMessage, logedinUser]);
 
 
-    return { chats, selectedChat };
+
+
+    return {
+        fetchChatByUserId,
+        selectedChat,
+        chats,
+    };
 };
 
 export default useChat;

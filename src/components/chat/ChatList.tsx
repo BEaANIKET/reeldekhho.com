@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { ChatPreview } from './ChatPreview';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export default function ChatList({ onSelectChat, chats }: { onSelectChat: (chatId: string) => void, chats: [] }) {
+export default function ChatList({ onSelectChat }: { onSelectChat: (chatId: string) => void }) {
     const [searchQuery, setSearchQuery] = useState('');
-    // console.log(chats);
+    const users = useSelector((state) => state.chat?.chats);
 
-    const filteredChats = chats?.filter(chat =>
+    const filteredChats = users?.filter(chat =>
         chat?.fullName?.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    const unSeenCountMessage = useSelector(state => state.chat?.unSeenCount);
+    console.log(unSeenCountMessage['678e689797814e55b5fc9cc8']);
+
     const navigate = useNavigate()
 
     return (
@@ -33,9 +37,11 @@ export default function ChatList({ onSelectChat, chats }: { onSelectChat: (chatI
                         key={chat._id}
                         chat={chat}
                         onClick={() => navigate('/messages/' + chat._id)}
+                        unSeenCount={unSeenCountMessage[chat._id]}
                     />
                 ))}
             </div>
         </div>
+
     );
 }

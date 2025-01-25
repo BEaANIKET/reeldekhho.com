@@ -13,29 +13,40 @@ interface Message {
 interface MessageBubbleProps {
     message: Message;
     isOwn: boolean;
+    file: String
 }
 
 export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
     // Format timestamp in Indian style
+    console.log(message);
+
     const formattedTimestamp = format(new Date(message.createdAt), "dd MMM yyyy, hh:mm a", {
         locale: enIN,
     });
 
     return (
         <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'} my-2`}>
-            <div
-                className={`max-w-[70%] rounded-2xl px-4 py-2 ${isOwn
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
-                    }`}
-            >
-                <p className="whitespace-pre-wrap break-words">{message.message}</p>
-                <span
-                    className={`block text-xs mt-1 ${isOwn ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'}`}
+            {message?.file && message.file !== '' ? (
+                <div className="max-w-44  overflow-hidden ">
+                    <img className=" object-cover h-full w-full " src={message?.file} alt="" />
+                </div>
+            ) : (
+                <div
+                    className={`max-w-[70%] rounded-2xl px-4 py-2 ${isOwn
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                        }`}
                 >
-                    {formattedTimestamp}
-                </span>
-            </div>
+                    <p className="whitespace-pre-wrap break-words">{message.message}</p>
+                    <span
+                        className={`block text-xs mt-1 ${isOwn ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'}`}
+                    >
+                        {formattedTimestamp}
+                    </span>
+                </div>
+            )}
+
+
         </div>
     );
 }

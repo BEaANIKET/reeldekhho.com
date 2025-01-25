@@ -5,6 +5,9 @@ import { BiLogoPlayStore } from "react-icons/bi";
 import { FaX } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { BsChat } from "react-icons/bs";
+import NotificationSidebar from "./notifications";
+import useNotifications from "../hooks/useNotifications";
 
 const Header = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -14,26 +17,40 @@ const Header = () => {
   const [settin, setSettin] = useState([])
   const user = useSelector(state => state?.auth?.user)
   const navigate = useNavigate()
+  const [isOpen, setIsOpen] = useState(false);
+  const { unseenCount, } = useNotifications();
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const fetchheader = async () => {
     const res = await axios.get(`${backendUrl}/post/fetchheader`)
-    // console.log(res.data, 'aa rha hai header');
     setValue(res.data.value)
     setSettin(res.data.settin)
   }
   useEffect(() => {
-    fetchheader();
-  }, [])
+    if (!value || !value.length) {
+      fetchheader();
+    }
+  }, [value])
 
   const handleLogout = async () => {
     localStorage.clear();
     window.location.reload();
   }
 
+  const unseenMsg = useSelector(state => state?.chat?.unSeenCount);
+  const [unSeenMsgCount, setUnSeenMsgCount] = useState(0)
+
+  useEffect(() => {
+    console.log(unseenMsg);
+    const totalUnseen = Object.values(unseenMsg).reduce((sum, count) => sum + count, 0);
+    console.log(totalUnseen);
+    setUnSeenMsgCount(totalUnseen)
+  }, [unseenMsg])
+
   return (
-    <header className="relative top-0 left-0 w-full z-50 bg-white shadow-md fixedtio">
+    <header className="relative top-0 left-0 w-full z-50 bg-white dark:bg-black shadow-md fixedtio">
       <div className="flex items-center justify-between px-4 py-2 md:px-8">
         {/* Hamburger Menu */}
         <div>
@@ -41,7 +58,7 @@ const Header = () => {
             onClick={toggleMenu}
             className="text-gray-800 focus:outline-none"
           >
-            <FaBars className="text-2xl" />
+            <FaBars className="text-2xl dark:text-white " />
           </button>
         </div>
 
@@ -50,16 +67,38 @@ const Header = () => {
           <img
             src={`${adminUrl}/public/Images/${settin.rectangleLogo}`}
             alt="Logo"
-            className="h-8 object-contain mx-auto"
+            className="h-8 object-contain mx-auto bg-blend-color-burn bg-black"
           />
         </div>
 
         {/* Notification Icon */}
-        <div>
-          <button className="text-gray-800 focus:outline-none">
-            <FaBell className="text-2xl" />
-          </button>
+        <div className=" flex gap-2 items-center">
+          <div onClick={() => setIsOpen(true)} className=" relative flex items-center h-full ">
+            <button className="text-gray-800 focus:outline-none">
+              <FaBell className="text-2xl dark:text-white " />
+            </button>
+
+            {unseenCount ? (
+              <p className=" absolute top-[-13px] left-[-6px] font-bold text-md flex items-center justify-center p-2 text-white bg-red-500 h-5 w-5 rounded-full "> {unseenCount} </p>
+            ) : (
+              null
+            )}
+          </div>
+
+          <div className=" relative flex items-center h-full  ">
+            <BsChat
+              onClick={() => navigate("/messages")}
+              className="w-6 h-6 text-gray-500 cursor-pointer"
+            />
+            {unSeenMsgCount ? (
+              <p className=" absolute top-[-13px] left-[-6px] font-bold text-md flex items-center justify-center p-2 text-white bg-red-500 h-5 w-5 rounded-full "> {unSeenMsgCount} </p>
+
+            ) : (
+              null
+            )}
+          </div>
         </div>
+
       </div>
 
       {/* Off-Canvas Menu */}
@@ -167,6 +206,8 @@ const Header = () => {
           </div>
         )
       }
+
+      <NotificationSidebar setIsOpen={setIsOpen} isOpen={isOpen} />
 
     </header >
   );

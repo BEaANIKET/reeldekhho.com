@@ -4,7 +4,7 @@ import useGetProfile from "../../hooks/profile/useGetProfile";
 import { BsChat } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { ProfileSkeloton } from "./ProfileSkeloton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShareFeature from "./ShareFeature";
 
 export default function ProfileHeader(props: any) {
@@ -19,6 +19,16 @@ export default function ProfileHeader(props: any) {
   const [video, setVideo] = useState(true);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const user = useSelector((state: any) => state?.auth?.user);
+  const unseenMsg = useSelector(state => state?.chat?.unSeenCount);
+  const [unSeenMsgCount, setUnSeenMsgCount] = useState(0)
+
+  useEffect(() => {
+    console.log(unseenMsg);
+    const totalUnseen = Object.values(unseenMsg).reduce((sum, count) => sum + count, 0);
+    console.log(totalUnseen);
+    setUnSeenMsgCount(totalUnseen)
+
+  }, [unseenMsg])
 
   const handleShare = () => {
     setIsShareOpen(true)
@@ -69,11 +79,17 @@ export default function ProfileHeader(props: any) {
               <h1 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200">
                 {user?.fullName}
               </h1>
-              <div className="flex gap-4">
+              <div className="flex relative gap-4">
                 <BsChat
                   onClick={() => iconClick("/messages")}
                   className="w-6 h-6 text-gray-500 cursor-pointer"
                 />
+                {unSeenMsgCount ? (
+                  <p className=" absolute top-[-13px] left-[-6px] font-bold text-md flex items-center justify-center p-2 text-white bg-red-500 h-5 w-5 rounded-full "> {unSeenMsgCount} </p>
+
+                ) : (
+                  null
+                )}
               </div>
             </div>
 

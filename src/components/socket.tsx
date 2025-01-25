@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { setSocket } from "../store/slices/socketSlices";
 
 const Socketwindow = () => {
@@ -17,19 +17,23 @@ const Socketwindow = () => {
 
         try {
             socket = io(import.meta.env.VITE_APP_SOCKET_URL, {
-                query: { userId: user._id },
                 transports: ["websocket"],
             });
 
             dispatch(setSocket(socket));
 
             socket.on("connect", () => {
-                console.log("Connected to the server");
+                socket.emit("registerUser", { userId: user._id });
             });
 
             socket.on("connect_error", (error) => {
                 console.error("Connection error:", error.message || error);
             });
+
+            socket.on('newMessage2', (data) => {
+                console.log(data);
+
+            })
 
             socket.on("disconnect", (reason) => {
                 console.warn("Socket disconnected:", reason);
@@ -44,7 +48,7 @@ const Socketwindow = () => {
                 console.log("Socket disconnected");
             }
         };
-    }, [dispatch, user?._id]);
+    }, [dispatch, user?._id, user]);
 
     return null;
 };

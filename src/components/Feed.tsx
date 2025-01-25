@@ -70,6 +70,8 @@ export default function Feed() {
     return <LoaderSkeloton />;
   }
 
+
+
   return (
     <>
       <HeaderStatic />

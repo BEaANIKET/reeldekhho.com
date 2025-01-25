@@ -173,7 +173,7 @@ export default function Post({ post }: PostProps) {
 
 
   return (
-    <div className=" bg-white relative  w-full max-w-lg dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
+    <div className=" relative  w-full max-w-lg bg-inherit border dark:border-gray-700 rounded-lg mb-4">
 
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
@@ -325,9 +325,9 @@ export default function Post({ post }: PostProps) {
         </div>
 
 
-        {showComments &&
+        {showComments ? (
           <div ref={popupRef} >
-            {comments && comments.length && comments.map((comment) => (
+            {comments && comments.length ? comments.map((comment) => (
               <div key={comment._id} className="flex items-start space-x-4 mb-2">
                 <img
                   src={comment.user.profilePicture}
@@ -357,10 +357,10 @@ export default function Post({ post }: PostProps) {
                 </div>
 
               </div>
-            ))}
+            )) : null}
             < CommentSection postId={post.id} createComment={createComment} loader={loader} setLoader={setLoader} />
           </div>
-        }
+        ) : null}
 
         <ShareButton
           isOpen={isShareOpen}

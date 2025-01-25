@@ -126,7 +126,9 @@ export default function ReelCard({ reel }: ReelCardProps) {
       onClick={handleReelsClick}
       className="reel relative z-10 h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
     >
-      <div className=' flex items-center justify-center h-full w-full'>
+      <div className=' relative flex items-center justify-center h-full w-full'>
+        <div className=' absolute top-4 left-2 text-white '>   {reel.user?.longitude && reel.user?.lattitude ? <GetLocation link={reel.user?.googleMapLink} createdDate={reel.createdAt} longitude={reel.user.longitude} lattitude={reel.user.lattitude} /> : null}</div>
+
         {reel.file.url.includes('image/') ? (
           <img
             src={reel.file.url}
@@ -153,7 +155,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
         <div className="absolute bottom-0 left-0 right-12 p-4">
           {/* User Info */}
 
-          <div
+          {/* <div
             className="
     text-black 
     bg-white/70 
@@ -166,9 +168,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
     text-sm"
           >
             ₹ {reel?.price?.toFixed(2)}
-          </div>
-
-          <div className=' block mb-4'>   {reel.user?.longitude && reel.user?.lattitude ? <GetLocation link={reel.user?.googleMapLink} createdDate={reel.createdAt} longitude={reel.user.longitude} lattitude={reel.user.lattitude} /> : null}</div>
+          </div> */}
           <Link to={`/seller/${reel.user._id}`} className="flex items-center space-x-2 mb-3">
             <img
               src={reel.user.profilePicture || 'https://cdn.pixabay.com/photo/2023/12/04/06/14/ai-generated-8428762_1280.jpg'}
