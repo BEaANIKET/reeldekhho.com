@@ -17,6 +17,8 @@ import { setUserProfile } from './store/slices/authSlice';
 import applogo from '/assets/applogo.png'
 import Verify from './pages/verify';
 import useChat from './hooks/useChat';
+import { Toaster } from 'react-hot-toast';
+
 import Followers from './components/Follow/Followers';
 import Following from './components/Follow/Followings';
 
@@ -33,8 +35,6 @@ const Editprofile = lazy(() => import('./pages/Editprofile'));
 const SavedPage = lazy(() => import('./pages/SavedPage'));
 const UserPosts= lazy(() => import('./pages/UsersPosts'));
 
-
-
 const LoadComponents = () => {
   return (
     <div className=' w-full h-screen dark:bg-gray-900 bg-white flex justify-center items-center ' >
@@ -42,7 +42,6 @@ const LoadComponents = () => {
     </div >
   )
 }
-
 
 function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
@@ -64,6 +63,8 @@ function AppContent() {
     getUser();
   }, [])
 
+  useChat()
+
   if (loading) {
     return <LoadComponents />
   }
@@ -71,6 +72,7 @@ function AppContent() {
   return (
     <div className={isDarkMode ? 'dark' : ''}>
       <Socketwindow />
+      <Toaster />
       <Router>
         <Suspense fallback={<LoadComponents />}>
           <Routes>

@@ -5,6 +5,7 @@ import chatReducer from './slices/chatSlice';
 import postSlices from './slices/postSlices'
 import savedPostSlice from './slices/savedPost'
 import socketReducer from './slices/socketSlices';
+import notificationsSlices from './slices/notificationsSlices'
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     post: postSlices,
     savedPosts: savedPostSlice,
     socket: socketReducer,
+    notifications: notificationsSlices,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

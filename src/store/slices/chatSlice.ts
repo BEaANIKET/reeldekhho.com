@@ -18,12 +18,14 @@ interface ChatState {
   chats: Chat[];
   messages: Record<string, Message[]>;
   selectedChat: Chat | null;
+  unSeenCount: Record<string, number>; // Update to a Record type
 }
 
 const initialState: ChatState = {
   chats: [],
   messages: {},
   selectedChat: null,
+  unSeenCount: {}, // Initialize as an empty object
 };
 
 const chatSlice = createSlice({
@@ -44,11 +46,21 @@ const chatSlice = createSlice({
       }
       state.messages[chatId].push(message);
     },
+    setUnseenCount: (state, action: PayloadAction<{ userId: string; unseenCount: number }>) => {
+      const { userId, unseenCount } = action.payload;
+      state.unSeenCount[userId] = unseenCount; // Safely update unseen count
+    },
     setSelectedChat: (state, action: PayloadAction<Chat | null>) => {
       state.selectedChat = action.payload;
     },
+    addCharts: (state, action: PayloadAction<Chat>) => {
+      const user = action.payload;
+      if (!state.chats.some(chat => chat._id === user._id)) {
+        state.chats.push({ _id: user._id, fullName: user.fullName, profilePicture: user.profilePicture });
+      }
+    }
   },
 });
 
-export const { setChats, setMessages, addMessage, setSelectedChat } = chatSlice.actions;
+export const { setChats, setMessages, addMessage, setSelectedChat, setUnseenCount, addCharts } = chatSlice.actions;
 export default chatSlice.reducer;
