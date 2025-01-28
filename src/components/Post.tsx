@@ -36,7 +36,7 @@ interface PostProps {
   };
 }
 
-const identifyMediaType = (fileType: string) => {
+export const identifyMediaType = (fileType: string) => {
   const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
   const videoExtensions = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv'];
 
@@ -68,12 +68,10 @@ export default function Post({ post }: PostProps) {
     removeLoader: false,
   })
 
-  const { addSavedPost, getSavedPosts, removeSavedPost } = useSavedPost()
+  const { addSavedPost, removeSavedPost } = useSavedPost()
   const savedPost = useSelector((state) => state.savedPosts.saved_Posts)
   // console.log(savedPost);
   // console.log(post);
-
-
 
   useEffect(() => {
     const value = savedPost.find((save: any) => save.postId._id === post._id)
@@ -298,21 +296,11 @@ export default function Post({ post }: PostProps) {
 
           </div>
           {post.user?.longitude && post.user?.lattitude ? <GetLocation link={post.user?.googleMapLink} createdDate={post.createdAt} longitude={post.user.longitude} lattitude={post.user.lattitude} /> : null}
-          {/* {isLoggedIn ? <button onClick={handleSaved}>
-            <Bookmark className={`w-6 h-6 ${isSaved ? 'fill-current' : ''} dark:text-white`} />
-          </button> : <button onClick={() => window.location.href = '/signup'}>
-            <Bookmark className={`w-6 h-6 ${isSaved ? 'fill-current' : ''} dark:text-white`} />
-          </button>} */}
-
 
 
         </div>
 
         <div className="space-y-2">
-          {/* <p className="font-semibold dark:text-white">{likes} likes</p> */}
-          {/* <p className="dark:text-white">
-            <span className="font-semibold">{post.user.fullName}</span> {post.caption}
-          </p> */}
           <button
             className="text-gray-500 dark:text-gray-400 text-sm"
             onClick={() => setShowComments((prev) => !prev)}

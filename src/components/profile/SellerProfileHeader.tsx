@@ -1,7 +1,7 @@
 import { MapPin, FilePlus, Loader2Icon, Check, Star, ChevronDown } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { IoMdChatboxes } from "react-icons/io";
 import SellerPostGrid from "./SellerPostGrid";
@@ -24,30 +24,25 @@ export default function SellerProfileHeader() {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
   const navigate = useNavigate()
-  const { following, createFollower, removeFollower } = useFollow();
+  const { following,createFollower, removeFollower } = useFollow({ id:undefined });
 
-  // const [rating,setRating]= useState(
-  //   profile?.totalReviews ? (profile?.totalStars / profile?.totalReviews) : 0
-  // );
+  console.log(following)
 
   const fetchprofile = async () => {
+    console.log(6)
     const res = await api.post(`/post/getprofile/${id}`);
-    // console.log("slakdnlasnfl");
-
-    // console.log(res);
-
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);
+    console.log(7)
   };
 
 
   const checkFollowing = () => {
-    const val = following.find((follow: any) => follow.followedId._id === id);
-
+    const val = following?.find((follow: any) => follow.followedId._id === id);
+    console.log(val);
     if (val) {
       setCheckFollowed(val);
     }
-    setPageLoading(false);
   };
 
   const runfunction = async () => {
@@ -73,9 +68,8 @@ export default function SellerProfileHeader() {
   }, [id]);
 
   useEffect(() => {
-    if (following) {
-      checkFollowing();
-    }
+    checkFollowing();
+    setPageLoading(false);
   }, [following]);
 
   const handleClick = async () => {
@@ -94,13 +88,9 @@ export default function SellerProfileHeader() {
     // setLoading(false);
   }
 
-
   if (pageLoading) {
     return <ProfileSkeloton />;
   }
-
-  console.log(profile);
-
 
   const handleWhatsapp = () => {
     window.open(`https://wa.me/${profile?.phone}`);
@@ -158,20 +148,24 @@ export default function SellerProfileHeader() {
                     </span>
                   </div>
                   <div>
-                    <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                      {profile?.followers}
-                    </span>
-                    <span className="text-xs sm:text-sm text-gray-500 font-medium">
-                      followers
-                    </span>
+                    <Link to={`/followers/${id}`}>
+                      <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
+                        {profile?.followers}
+                      </span>
+                      <span className="text-xs sm:text-sm text-gray-500 font-medium">
+                        followers
+                      </span>
+                    </Link>
                   </div>
                   <div>
-                    <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                      {profile?.following}
-                    </span>
-                    <span className="text-xs sm:text-sm text-gray-500 font-medium">
-                      following
-                    </span>
+                    <Link to={`/following/${id}`}>
+                      <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
+                        {profile?.following}
+                      </span>
+                      <span className="text-xs sm:text-sm text-gray-500 font-medium">
+                        following
+                      </span>
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -4,7 +4,6 @@ import Suggestions from './Suggestions';
 import useGetPosts from '../hooks/post/useGetPost';
 import { useSelector } from 'react-redux';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
-import useSavedPost from '../hooks/post/useSavedpost';
 import HeaderStatic from './HeaderStatic';
 import { User } from 'lucide-react';
 const Post = lazy(() => import('./Post'));

@@ -9,8 +9,6 @@ import ShareFeature from "./ShareFeature";
 
 export default function ProfileHeader(props: any) {
   const totalposts = props.value;
-  const following = props.following;
-  const followers = props.followers;
 
   const { loading, error } = useGetProfile();
 
@@ -28,7 +26,7 @@ export default function ProfileHeader(props: any) {
     console.log(totalUnseen);
     setUnSeenMsgCount(totalUnseen)
 
-  }, [unseenMsg])
+  }, [unseenMsg])  
 
   const handleShare = () => {
     setIsShareOpen(true)
@@ -106,7 +104,7 @@ export default function ProfileHeader(props: any) {
                 </div>
                 <div>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                    {followers || 0}
+                    {user.followers || 0}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     followers
@@ -114,7 +112,7 @@ export default function ProfileHeader(props: any) {
                 </div>
                 <div>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                    {following || 0}
+                    {user.following || 0}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     following

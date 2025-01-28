@@ -12,6 +12,7 @@ export default function PostGrid(props) {
   console.log(props);
   const navigate = useNavigate()
   const posts = props.posts;
+  console.log(posts);
 
   const dispatch = useDispatch();
 
@@ -69,7 +70,7 @@ export default function PostGrid(props) {
           }))
         },
         prefill: {
-          name: 'User Name', // You can get this from your user context
+          name: 'User Name',
           email: 'user@example.com',
           contact: '9999999999'
         },
@@ -114,8 +115,8 @@ export default function PostGrid(props) {
         <div className="grid grid-cols-3 gap-1 md:gap-8 mt-4">
           {posts && posts.length ? posts.map((post: any) => (
 
-            <div onClick={() => navigate(`/reels/${post._id}`)} key={post._id} className="relative aspect-square group">
-              {/* Check File Type */}
+            // onClick={() => navigate(`/reels/${post._id}`)}
+            <div onClick={() => navigate(`/posts`)} key={post._id} className="relative aspect-square group cursor-pointer">
               {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
                 <video
                   src={post.file.url}
