@@ -3,9 +3,12 @@ import api from "../../services/api/axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { removePost, setSavedPosts, updateSavedPost } from "../../store/slices/savedPost";
 import { AppDispatch } from "../../store/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useSavedPost = () => {
+
+    const savedPosts = useSelector((state) => state?.savedPosts?.saved_Posts)
+    const [savedLoading,setSavedLoading]= useState(false)
 
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector(state => state?.auth?.user);
@@ -21,10 +24,13 @@ const useSavedPost = () => {
 
     const getSavedPosts = async () => {
         try {
+            setSavedLoading(true);
             const response = await api.get('/post/getsaved');
             dispatch(setSavedPosts(response.data.savedPosts))
         } catch (error) {
             // console.error(error?.response?.data?.error || error);
+        }finally{
+            setSavedLoading(false)
         }
     };
 
@@ -46,7 +52,9 @@ const useSavedPost = () => {
     };
 
     useEffect(() => {
-        if (user) {
+        if (user && savedPosts.length===0) {
+            console.log('saved effect ran');
+            
             getSavedPosts();
         }
     }, [user])
@@ -55,6 +63,7 @@ const useSavedPost = () => {
         addSavedPost,
         getSavedPosts,
         removeSavedPost,
+        savedLoading,
     };
 };
 

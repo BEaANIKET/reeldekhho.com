@@ -1,26 +1,27 @@
 import { useEffect, useState } from "react";
 import api from "../services/api/axiosConfig";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
-const useFollow = () => {
+const useFollow = ({ id }: { id: string | undefined }) => {
   const [followLoading, setFollowLoading] = useState(false);
   const [followError, setFollowError] = useState(false);
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
 
-  const getFollowData = async () => {
+  const getFollowData = async (id:undefined | string) => {
+    console.log('id- ',id);
     try {
       setFollowLoading(true);
-      const result1 = api.get(`/follow/getFollowed`);
-      const result2 = api.get(`follow/getAllFollower`);
+      const result1 = api.get(`/follow/getFollowed?id=${id}`);
+      const result2 = api.get(`follow/getAllFollower?id=${id}`);
       const [response1, response2] = await Promise.all([result1, result2])
-      // console.log("promise.all= ", response1, response2);
 
       const { following } = response1.data
-      const { followers } = response2.data
+      const { followers } = response2.data  
       setFollowing(following);
       setFollowers(followers);
-      setFollowError(false); // Reset error state on success
+
+      setFollowError(false);
     } catch (err: any) {
       console.error("Error fetching follow data:", err);
       setFollowError(true);
@@ -31,15 +32,15 @@ const useFollow = () => {
 
 
   const createFollower = async (id: string | undefined) => {
+    
     try {
       await api.post(
         `/follow/createFollower?id=${id}`
       );
 
-      getFollowData();
-
+      getFollowData(undefined);
     } catch (error: any) {
-      // console.log(error);
+      console.log(error);
       alert(error.response.data.message || "Error in following")
     }
   }
@@ -50,10 +51,10 @@ const useFollow = () => {
         `follow/unfollow?id=${id}`
       );
 
-      getFollowData();
+      getFollowData(undefined);
 
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   }
 
@@ -62,7 +63,7 @@ const useFollow = () => {
     // const controller = new AbortController();
     // const signal = controller.signal;
 
-    getFollowData();
+    getFollowData(id);
 
     // return () => {
     //     controller.abort(); // Clean up API request on unmount
@@ -76,7 +77,8 @@ const useFollow = () => {
     following,
     followers,
     createFollower,
-    removeFollower
+    removeFollower,
+    getFollowData
   };
 };
 
