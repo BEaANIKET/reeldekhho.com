@@ -1,12 +1,31 @@
 import { Heart } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import useSavedPost from "../hooks/post/useSavedpost";
 
 
 const SavedPage = () => {
 
     const savedPosts = useSelector((state) => state?.savedPosts?.saved_Posts)
     const navigate = useNavigate();
+
+    const { savedLoading } = useSavedPost();
+
+    if (savedLoading) {
+        return <div className="max-w-6xl mx-auto px-4 py-8">
+            <h1 className="text-2xl font-bold mb-6">Saved Posts</h1>
+            <div className="grid grid-cols-3 gap-4">
+                {[...Array(6)].map((_, index) => (
+                    <div
+                        key={index}
+                        className="relative aspect-square bg-gray-200 animate-pulse rounded-lg"
+                    >
+                        <div className="absolute inset-0 bg-gray-300 animate-pulse"></div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    }
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
@@ -18,14 +37,15 @@ const SavedPage = () => {
                             <div
                                 onClick={() => navigate(`/reels/${posts?.postId._id}`)}
                                 key={posts._id}
-                                className="relative aspect-square group cursor-pointer">
+                                className="relative group cursor-pointer">
                                 <div className="relative aspect-square group">
                                     {/* Check File Type */}
                                     {["mp4", "webm", "mov"].includes(posts?.postId?.file?.fileType?.toLowerCase()) ? (
                                         <video
                                             src={posts.postId.file?.url}
-                                            className="w-full h-full object-cover"
                                             muted
+                                            loop
+                                            className="w-full h-full object-cover"
                                         ></video>
                                     ) : ["jpg", "jpeg", "png", "gif", "webp"].includes(posts?.postId.file?.fileType?.toLowerCase()) ? (
                                         <img
