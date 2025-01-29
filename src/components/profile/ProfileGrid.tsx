@@ -96,7 +96,7 @@ export default function PostGrid(props) {
 
   return (
     <>
-      {posts ? <div className="max-w-6xl mx-auto px-4 py-8">
+      {posts ? <div className="max-w-6xl mx-auto px-4 py-4">
         {/* Post Type Navigation */}
         <div className="flex justify-center border-t dark:border-gray-700">
           <div className="flex space-x-12">
@@ -104,10 +104,10 @@ export default function PostGrid(props) {
               <Grid className="w-4 h-4" />
               <span className="text-sm font-medium">POSTS</span>
             </button>
-            <button className="flex items-center space-x-2 px-4 py-4 text-gray-500 hover:text-gray-900">
+            {/* <button className="flex items-center space-x-2 px-4 py-4 text-gray-500 hover:text-gray-900">
               <Bookmark className="w-4 h-4" />
               <span className="text-sm font-medium">SAVED</span>
-            </button>
+            </button> */}
           </div>
         </div>
 

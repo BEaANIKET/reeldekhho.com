@@ -98,7 +98,7 @@ export default function SellerProfileHeader() {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 pb-2">
         <div className="max-w-screen-lg mx-auto mt-2 sm:mt-5 md:mt-10 px-4">
           {/* Profile Section */}
           <div className="flex flex-row items-center md:items-start gap-6">
@@ -290,8 +290,8 @@ export default function SellerProfileHeader() {
         }
 
         {/* Video Card Section */}
-        <div className="mt-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
+        <div className="mt-1">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 ">
             <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
               {video ? (
                 <video
