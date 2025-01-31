@@ -41,9 +41,9 @@ export const identifyMediaType = (fileType: string) => {
   const videoExtensions = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv'];
 
   const lowerCaseType = fileType?.toLowerCase();
-  return imageExtensions.some((ext) => lowerCaseType.includes(ext))
+  return imageExtensions?.some((ext) => lowerCaseType?.includes(ext))
     ? 'image'
-    : videoExtensions.some((ext) => lowerCaseType.includes(ext))
+    : videoExtensions?.some((ext) => lowerCaseType?.includes(ext))
       ? 'video'
       : 'unknown';
 };
@@ -69,12 +69,12 @@ export default function Post({ post }: PostProps) {
   })
 
   const { addSavedPost, removeSavedPost } = useSavedPost()
-  const savedPost = useSelector((state) => state.savedPosts.saved_Posts)
+  const savedPost = useSelector((state) => state?.savedPosts?.saved_Posts)
   // console.log(savedPost);
   // console.log(post);
 
   useEffect(() => {
-    const value = savedPost.find((save: any) => save.postId._id === post._id)
+    const value = savedPost.find((save: any) => save?.postId?._id === post?._id)
     if (value) {
       setIsSaved(true);
     } else {
@@ -97,10 +97,10 @@ export default function Post({ post }: PostProps) {
   }, [isPlay]);
 
   const handleLike = async () => {
-    await likePost(post.id);
+    await likePost(post?._id);
   };
 
-  const mediaType = identifyMediaType(post.file.fileType);
+  const mediaType = identifyMediaType(post?.file?.fileType);
 
   const handleMute = () => {
     dispatch(setUserMute(!isMute));
@@ -154,7 +154,7 @@ export default function Post({ post }: PostProps) {
 
   const handleReport = async () => {
     try {
-      const response = await api.post(`/post/report-post?id=${post._id}`);
+      const response = await api.post(`/post/report-post?id=${post?._id}`);
       // console.log(response.data);
     } catch (error) {
       // console.log(error)
@@ -173,14 +173,16 @@ export default function Post({ post }: PostProps) {
   return (
     <div className=" relative  w-full max-w-lg bg-inherit rounded-lg">
 
+   
+
       <div className="flex items-center justify-between p-4">
-        <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
+        <Link to={`/seller/${post?.user?._id}`} className="flex items-center space-x-2">
           <img
-            src={post.user.profilePicture}
-            alt={post.user.fullName}
+            src={post?.user?.profilePicture}
+            alt={post?.user?.fullName}
             className="w-8 h-8 rounded-full object-cover"
           />
-          <span className="font-semibold dark:text-white">{post.user.fullName}</span>
+          <span className="font-semibold dark:text-white">{post?.user?.fullName}</span>
         </Link>
         <button
           onClick={toggleMoreOption}
@@ -226,7 +228,7 @@ export default function Post({ post }: PostProps) {
       <p className="dark:text-white" style={{ paddingLeft: '12px', paddingBottom: '8px', marginTop: '-8px' }}>
         <span className="font-semibold">
           {/* {post.user.fullName} */}
-        </span> {post.caption}
+        </span> {post?.caption}
       </p>
       <div className="relative">
 
@@ -237,8 +239,8 @@ export default function Post({ post }: PostProps) {
             className="relative min-w-full bg-black sm:min-w-96"
 
           >
-            <video onClick={() => navigate(`/reels/${post._id}`)} ref={observerRef} className="w-full max-h-[60vh] objectcovernow" muted={isMute} loop autoPlay={isPlay}>
-              <source src={post.file.url} type={`video/${post.file.fileType}`} />
+            <video onClick={() => navigate(`/reels/${post?._id}`)} ref={observerRef} className="w-full max-h-[60vh] objectcovernow" muted={isMute} loop autoPlay={isPlay}>
+              <source src={post?.file?.url} type={`video/${post?.file?.fileType}`} />
               Your browser does not support the video tag.
             </video>
             <div
@@ -254,9 +256,9 @@ export default function Post({ post }: PostProps) {
           </div>
         ) : (
           <img
-            onClick={() => navigate(`/reels/${post._id}`)}
+            onClick={() => navigate(`/reels/${post?._id}`)}
             onDoubleClick={handleLike}
-            src={post.file.url}
+            src={post?.file?.url}
             alt="Post Media"
             className="w-full object-cover min-h-64 max-h-[500px]"
           />
@@ -306,6 +308,7 @@ export default function Post({ post }: PostProps) {
               :
               null
           }
+         
 
         </div>
 
@@ -327,25 +330,25 @@ export default function Post({ post }: PostProps) {
             {comments && comments.length ? comments.map((comment) => (
               <div key={comment._id} className="flex items-start space-x-4 mb-2">
                 <img
-                  src={comment.user.profilePicture}
-                  alt={comment.user.fullName}
+                  src={comment?.user?.profilePicture}
+                  alt={comment?.user?.fullName}
                   className="w-8 h-8 rounded-full object-cover"
                 />
                 <div className="flex-grow h-full items-start flex flex-col">
-                  <p className="font-semibold dark:text-white">{comment.user.fullName}</p>
-                  <p className="dark:text-white">{comment.text}</p>
+                  <p className="font-semibold dark:text-white">{comment?.user?.fullName}</p>
+                  <p className="dark:text-white">{comment?.text}</p>
                 </div>
 
                 <div className="relative">
                   <BiDotsVertical
                     className="dark:text-white text-black text-lg cursor-pointer"
-                    onClick={() => setShowPopup((prev) => (prev === comment._id ? false : comment._id))}
+                    onClick={() => setShowPopup((prev) => (prev === comment?._id ? false : comment?._id))}
                   />
                   {showPopup === comment._id && (
                     <div className="absolute top-full right-[21px] mt-[-24px] rounded-sm">
                       <p
                         className=" text-white font-semibold rounded-sm cursor-pointer text-sm p-2 bg-red-500  hover:underline"
-                        onClick={() => handleDelete(comment._id)}
+                        onClick={() => handleDelete(comment?._id)}
                       >
                         {loader.removeLoader ? 'loading...' : 'Delete'}
                       </p>
@@ -362,7 +365,7 @@ export default function Post({ post }: PostProps) {
         <ShareButton
           isOpen={isShareOpen}
           onClose={() => setIsShareOpen(false)}
-          reelId={post._id}
+          reelId={post?._id}
         />
 
       </div>

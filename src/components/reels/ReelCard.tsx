@@ -11,6 +11,7 @@ import { BiDotsVertical } from 'react-icons/bi';
 import CommentSection from '../interactions/CommentSection';
 import ShareButton from '../ShareBtn';
 import GetLocation from '../interactions/GetLocation';
+import api from '../../services/api/axiosConfig';
 
 interface ReelCardProps {
   reel: {
@@ -120,6 +121,20 @@ export default function ReelCard({ reel }: ReelCardProps) {
   const [isShareOpen, setIsShareOpen] = useState(false);
   // console.log(" this is reels ->  ", reel);
 
+
+  useEffect(() => {
+    const setView = async () => {
+      try {
+        const response = await api.post(`/post/view?postId=${reel._id}`)
+        console.log(response.data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+
+
+    setView();
+  }, [])
 
   return (
     <div

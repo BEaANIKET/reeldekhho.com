@@ -33,7 +33,7 @@ const StoryViewer = lazy(() => import('./components/story/StoryViewer'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
 const Editprofile = lazy(() => import('./pages/Editprofile'));
 const SavedPage = lazy(() => import('./pages/SavedPage'));
-const UserPosts= lazy(() => import('./pages/UsersPosts'));
+const UserPosts = lazy(() => import('./pages/UsersPosts'));
 
 const LoadComponents = () => {
   return (
@@ -53,6 +53,9 @@ function AppContent() {
       try {
         const response = await api.get('/auth/profile')
         dispatch(setUserProfile(response.data.user))
+        localStorage.setItem('city', response?.data?.user?.city);
+        console.log(response.data.user);
+
       } catch (error) {
         // console.log(error);
       } finally {
@@ -100,8 +103,8 @@ function AppContent() {
               <Route path='/posts' element={<UserPosts />} />
             </Route>
           </Routes>
-      </Suspense>
-    </Router>
+        </Suspense>
+      </Router>
     </div >
   );
 }

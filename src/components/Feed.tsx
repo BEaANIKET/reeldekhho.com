@@ -53,8 +53,8 @@ const LoaderSkeloton = () => {
 };
 
 export default function Feed() {
-  const { loading, error, loadMorePosts } = useGetPosts();
-  const posts = useSelector((state) => state?.post?.posts);
+  const { loading, error, loadMorePosts, posts } = useGetPosts();
+  // const posts = useSelector((state) => state?.post?.posts);
   const user = useSelector((state) => state?.auth?.user);
 
   const observerRef = useIntersectionObserver(
@@ -79,7 +79,7 @@ export default function Feed() {
         <div className="lg:col-span-2 mx-auto md:mt-0 max-w-2xl">
           <Suspense fallback={<div> </div>}>
             <div className=''>
-              {posts?.length > 0 ? (
+              {posts && posts.length && posts?.length > 0 ? (
                 posts.map((post, index) => <Post key={index} post={post} />)
               ) : (
                 <div className="text-center text-gray-500">No posts available</div>
