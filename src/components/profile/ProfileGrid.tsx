@@ -1,5 +1,5 @@
 import { Grid, Bookmark, Heart, LoaderIcon, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api/axiosConfig';
 import { useDispatch } from 'react-redux';
@@ -8,11 +8,138 @@ import { updateParticularPost } from '../../store/slices/authSlice';
 // import { useSelector } from 'react-redux';
 // import { ProfilePostSkeloton } from './ProfilePostSkeloton';
 
+const ProfileGrid = ({ post, handleBoostClick, isLoading }) => {
+  const [viewCount, setViewCount] = useState(0);
+
+  useEffect(() => {
+    const fetchViewCount = async () => {
+      try {
+        const response = await api.get(`/post/getview?postId=${post._id}`);
+        setViewCount(response.data.viewCount);
+      } catch (error) {
+        console.error('Error fetching view count:', error);
+      }
+    };
+
+    fetchViewCount();
+  }, [post._id]);
+
+  return (
+    <div className="">
+      {/* Other post content */}
+      <div className="md:flex gap-3  hidden sm:gap-6 md:gap-9 text-white">
+        <div className="flex items-center gap-1">
+          <Heart className="w-4 h-4 sm:w-6 sm:h-6 fill-current" />
+          <span className="font-semibold">{post?.likes}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20.656 17.008a9.993 9.993 0 10-3.59 3.615L22 22z" />
+          </svg>
+          <span className="font-semibold">{post?.comments || 0}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M15 3a9 9 0 11-9 9 9.01 9.01 0 019-9zm-1 5H9a1 1 0 000 2h3v5a1 1 0 002 0V9a1 1 0 00-1-1z" />
+          </svg>
+          <span className="font-semibold flex items-center justify-center">
+            {viewCount} {/* Show the view count here */}
+          </span>
+        </div>
+      </div>
+
+      <div className=" absolute bottom-0 left-0 flex items-center gap-1">
+        <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M15 3a9 9 0 11-9 9 9.01 9.01 0 019-9zm-1 5H9a1 1 0 000 2h3v5a1 1 0 002 0V9a1 1 0 00-1-1z" />
+        </svg>
+        <span className="font-semibold flex items-center justify-center">
+          {viewCount} {/* Show the view count here */}
+        </span>
+      </div>
+
+      <button
+        onClick={(e) => handleBoostClick(e, post._id)}
+        disabled={post.isBoosted.status}
+        className={`absolute top-2 right-2 p-2 rounded-full shadow-lg transform transition-all duration-300 ease-in-out
+          ${post.isBoosted.status
+            ? 'bg-gradient-to-r from-green-400 to-green-500 cursor-not-allowed scale-105'
+            : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 hover:scale-105'
+          } text-white`}
+      >
+        {isLoading[post?._id] ? (
+          <LoaderIcon className='animate-spin w-4 h-4' />
+        ) : post.isBoosted.status ? (
+          <span className="flex items-center space-x-1 px-1 transition-opacity duration-200">
+            <span className=" text-[0.5rem] sm:text-xs font-medium whitespace-nowrap">Boosted</span>
+          </span>
+        ) : (
+          <Plus className="sm:w-5 sm:h-5 w-[0.85rem] h-[0.85rem] animate-pulse" />
+        )}
+      </button>
+    </div>
+  );
+};
+const ProfileGrid2 = ({ post, handleBoostClick, isLoading }) => {
+  const [viewCount, setViewCount] = useState(0);
+
+  useEffect(() => {
+    const fetchViewCount = async () => {
+      try {
+        const response = await api.get(`/post/getview?postId=${post._id}`);
+        setViewCount(response.data.viewCount);
+      } catch (error) {
+        console.error('Error fetching view count:', error);
+      }
+    };
+
+    fetchViewCount();
+  }, [post._id]);
+
+  return (
+    <div className="">
+      {/* Other post content */}
+
+      <div className=" absolute bottom-0 left-0 flex items-center gap-1 text-white">
+        <svg
+          className="w-4 h-4 sm:w-6 sm:h-6"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 100 6 3 3 0 000-6z" />
+        </svg>
+        <span className="font-semibold flex items-center justify-center">
+          {viewCount} {/* Show the view count here */}
+        </span>
+      </div>
+
+      <button
+        onClick={(e) => handleBoostClick(e, post._id)}
+        disabled={post.isBoosted.status}
+        className={`absolute top-2 right-2 p-2 rounded-full shadow-lg transform transition-all duration-300 ease-in-out
+          ${post.isBoosted.status
+            ? 'bg-gradient-to-r from-green-400 to-green-500 cursor-not-allowed scale-105'
+            : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 hover:scale-105'
+          } text-white`}
+      >
+        {isLoading[post?._id] ? (
+          <LoaderIcon className='animate-spin w-4 h-4' />
+        ) : post.isBoosted.status ? (
+          <span className="flex items-center space-x-1 px-1 transition-opacity duration-200">
+            <span className=" text-[0.5rem] sm:text-xs font-medium whitespace-nowrap">Boosted</span>
+          </span>
+        ) : (
+          <Plus className="sm:w-5 sm:h-5 w-[0.85rem] h-[0.85rem] animate-pulse" />
+        )}
+      </button>
+    </div>
+  );
+};
+
 export default function PostGrid(props) {
   console.log(props);
   const navigate = useNavigate()
   const posts = props.posts;
-  console.log(posts);
 
   const dispatch = useDispatch();
 
@@ -70,7 +197,7 @@ export default function PostGrid(props) {
           }))
         },
         prefill: {
-          name: 'User Name',
+          name: 'User Name', // You can get this from your user context
           email: 'user@example.com',
           contact: '9999999999'
         },
@@ -94,6 +221,7 @@ export default function PostGrid(props) {
     }
   };
 
+
   return (
     <>
       {posts ? <div className="max-w-6xl mx-auto px-4 py-8">
@@ -112,11 +240,11 @@ export default function PostGrid(props) {
         </div>
 
         {/* Instagram-style Grid */}
-        <div className="grid grid-cols-3 gap-1  mt-4">
+        <div className="grid grid-cols-3 gap-1 mt-4">
           {posts && posts.length ? posts.map((post: any) => (
 
-            // onClick={() => navigate(`/reels/${post._id}`)}
-            <div onClick={() => navigate(`/posts`)} key={post._id} className="relative aspect-square group cursor-pointer">
+            <div onClick={() => navigate(`/reels/${post._id}`)} key={post._id} className="relative aspect-square group">
+              {/* Check File Type */}
               {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
                 <video
                   src={post.file.url}
@@ -135,40 +263,15 @@ export default function PostGrid(props) {
                 </div>
               )}
 
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <div className="flex gap-3 sm:gap-6 md:gap-9 text-white">
-                  <div className="flex items-center gap-1">
-                    <Heart className="w-4 h-4 sm:w-6 sm:h-6 fill-current" />
-                    <span className="font-semibold">{post?.likes}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.656 17.008a9.993 9.993 0 10-3.59 3.615L22 22z" />
-                    </svg>
-                    <span className="font-semibold">{post?.comments || 0}</span>
-                  </div>
-                </div>
+              <div className="absolute  inset-0 bg-black  bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 md:flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <ProfileGrid post={post} handleBoostClick={handleBoostClick} isLoading={isLoading} />
               </div>
 
-              < button
-                onClick={(e) => handleBoostClick(e, post._id)}
-                disabled={post.isBoosted.status}
-                className={`absolute top-2 right-2 p-2 rounded-full shadow-lg transform transition-all duration-300 ease-in-out
-              ${post.isBoosted.status
-                    ? 'bg-gradient-to-r from-green-400 to-green-500 cursor-not-allowed scale-105'
-                    : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 hover:scale-105'
-                  } text-white`}
-              >
-                {isLoading[post?._id] ? (
-                  <LoaderIcon className='animate-spin w-4 h-4' />
-                ) : post.isBoosted.status ? (
-                  <span className="flex items-center space-x-1 px-1 transition-opacity duration-200">
-                    <span className=" text-[0.5rem] sm:text-xs font-medium whitespace-nowrap">Boosted</span>
-                  </span>
-                ) : (
-                  <Plus className="sm:w-5 sm:h-5 w-[0.85rem] h-[0.85rem] animate-pulse" />
-                )}
-              </button>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <ProfileGrid2 post={post} handleBoostClick={handleBoostClick} isLoading={isLoading} />
+              </div>
+
+
             </div>
           )) : (
             <div className="flex items-center justify-center h-full w-full text-gray-500">
