@@ -13,18 +13,17 @@ import api from "../../services/api/axiosConfig";
 export default function SellerProfileHeader() {
 
   // const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const bottomSheetRef = useRef<HTMLDivElement | HTMLButtonElement>(null)
+  const bottomSheetRef = useRef<HTMLDivElement | HTMLButtonElement>(null);
   const { id } = useParams();
   const [profile, setProfile] = useState(true);
   const [Seller, setSeller] = useState(false);
-  const [video, setVideo] = useState(true);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const [checkFollowed, setCheckFollowed] = useState(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
   const navigate = useNavigate()
-  const { following,createFollower, removeFollower } = useFollow({ id:undefined });
+  const { following, createFollower, removeFollower } = useFollow({ id: undefined });
 
   console.log(following)
 
@@ -35,7 +34,6 @@ export default function SellerProfileHeader() {
     setSeller(res.data.sellerposts);
     console.log(7)
   };
-
 
   const checkFollowing = () => {
     const val = following?.find((follow: any) => follow.followedId._id === id);
@@ -98,7 +96,7 @@ export default function SellerProfileHeader() {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 pb-2">
         <div className="max-w-screen-lg mx-auto mt-2 sm:mt-5 md:mt-10 px-4">
           {/* Profile Section */}
           <div className="flex flex-row items-center md:items-start gap-6">
@@ -290,33 +288,25 @@ export default function SellerProfileHeader() {
         }
 
         {/* Video Card Section */}
-        <div className="mt-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
-            <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
-              {video ? (
-                <video
-                  src={`${import.meta.env.VITE_ADMIN_URL}/public/Images/${profile?.smallvideo}`}
-                  autoPlay
-                  loop
-                  muted
-                  controls
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
-                  <div className="text-center">
-                    <div className="flex items-center justify-center text-gray-500 dark:text-gray-400 mb-2">
-                      <FilePlus className="h-12 w-12" />
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">
-                      Add Video
-                    </p>
-                  </div>
+        {
+          profile?.role === 'seller' && (
+            <div className="mt-1">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 ">
+                <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
+                  <video
+                    src={`${import.meta.env.VITE_ADMIN_URL}/public/Images/${profile?.smallvideo}`}
+                    autoPlay
+                    loop
+                    muted
+                    controls
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                 </div>
-              )}
+              </div>
             </div>
-          </div>
-        </div>
+          )
+        }
+
       </div>
       {Seller ? <SellerPostGrid posts={Seller} /> : null}
     </>

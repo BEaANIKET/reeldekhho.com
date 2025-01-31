@@ -138,7 +138,7 @@ const ProfileGrid2 = ({ post, handleBoostClick, isLoading }) => {
 
 export default function PostGrid(props) {
   console.log(props);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const posts = props.posts;
 
   const dispatch = useDispatch();
@@ -224,7 +224,7 @@ export default function PostGrid(props) {
 
   return (
     <>
-      {posts ? <div className="max-w-6xl mx-auto px-4 py-8">
+      {posts ? <div className="max-w-6xl mx-auto px-4 py-4">
         {/* Post Type Navigation */}
         <div className="flex justify-center border-t dark:border-gray-700">
           <div className="flex space-x-12">
@@ -232,10 +232,10 @@ export default function PostGrid(props) {
               <Grid className="w-4 h-4" />
               <span className="text-sm font-medium">POSTS</span>
             </button>
-            <button className="flex items-center space-x-2 px-4 py-4 text-gray-500 hover:text-gray-900">
+            {/* <button className="flex items-center space-x-2 px-4 py-4 text-gray-500 hover:text-gray-900">
               <Bookmark className="w-4 h-4" />
               <span className="text-sm font-medium">SAVED</span>
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -243,8 +243,10 @@ export default function PostGrid(props) {
         <div className="grid grid-cols-3 gap-1 mt-4">
           {posts && posts.length ? posts.map((post: any) => (
 
-            <div onClick={() => navigate(`/reels/${post._id}`)} key={post._id} className="relative aspect-square group">
-              {/* Check File Type */}
+            // onClick={() => navigate(`/reels/${post._id}`)}
+            <div onClick={() => {
+              navigate(`/posts?id=${post._id}`);
+            }} key={post._id} className="relative aspect-square group cursor-pointer">   
               {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
                 <video
                   src={post.file.url}
