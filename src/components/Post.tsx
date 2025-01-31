@@ -171,7 +171,7 @@ export default function Post({ post }: PostProps) {
 
 
   return (
-    <div className=" relative  w-full max-w-lg bg-inherit border dark:border-gray-700 rounded-lg mb-4">
+    <div className=" relative  w-full max-w-lg bg-inherit rounded-lg">
 
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
@@ -264,7 +264,7 @@ export default function Post({ post }: PostProps) {
       </div>
 
       <div className="p-4">
-        <div className="flex justify-between mb-4">
+        <div className="flex justify-between mb-1">
           <div className="flex space-x-4">
             {isLoggedIn ? <> <button
               onClick={handleLike}
@@ -295,20 +295,29 @@ export default function Post({ post }: PostProps) {
             { }
 
           </div>
-          {post.user?.longitude && post.user?.lattitude ? <GetLocation link={post.user?.googleMapLink} createdDate={post.createdAt} longitude={post.user.longitude} lattitude={post.user.lattitude} /> : null}
-
+          {
+            post.user?.longitude && post.user?.lattitude ?
+              <GetLocation
+                link={post.user?.googleMapLink}
+                createdDate={post.createdAt}
+                longitude={post.user.longitude}
+                lattitude={post.user.lattitude}
+              />
+              :
+              null
+          }
 
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <button
             className="text-gray-500 dark:text-gray-400 text-sm"
             onClick={() => setShowComments((prev) => !prev)}
           >
             View all comments
           </button>
-          <p className="text-gray-400 text-xs uppercase">
-            {formatTimeAgo(post.createdAt)}
+          <p className="text-gray-400 text-xs">
+            {formatTimeAgo(post.createdAt)} ago
           </p>
         </div>
 

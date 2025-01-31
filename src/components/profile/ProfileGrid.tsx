@@ -10,7 +10,7 @@ import { updateParticularPost } from '../../store/slices/authSlice';
 
 export default function PostGrid(props) {
   console.log(props);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const posts = props.posts;
   console.log(posts);
 
@@ -116,7 +116,9 @@ export default function PostGrid(props) {
           {posts && posts.length ? posts.map((post: any) => (
 
             // onClick={() => navigate(`/reels/${post._id}`)}
-            <div onClick={() => navigate(`/posts`)} key={post._id} className="relative aspect-square group cursor-pointer">
+            <div onClick={() => {
+              navigate(`/posts?id=${post._id}`);
+            }} key={post._id} className="relative aspect-square group cursor-pointer">
               {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
                 <video
                   src={post.file.url}

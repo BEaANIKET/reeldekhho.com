@@ -13,8 +13,6 @@ export default function ProfileHeader(props: any) {
   const { loading, error } = useGetProfile();
 
   const Navigate = useNavigate();
-
-  const [video, setVideo] = useState(true);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const user = useSelector((state: any) => state?.auth?.user);
   console.log(user);
@@ -165,7 +163,7 @@ export default function ProfileHeader(props: any) {
       {/* Video Card Section */}
       
       {
-        user.role === 'seller' && (
+        user?.role === 'seller' && (
           <div className="mt-1">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
               <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
