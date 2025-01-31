@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import HeaderStatic from '../components/HeaderStatic';
 import api from '../services/api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function SearchPage() {
   const [info, setInfo] = useState([]);
@@ -19,7 +20,7 @@ export default function SearchPage() {
     setLoading(true);
     try {
       const res = await api.get(`/post/getsearchresult`, {
-        params: { search, city: selectedCity },
+        params: { search, city: localStorage.getItem('city') },
       });
       setInfo(res.data);
     } catch (error) {
@@ -71,6 +72,11 @@ export default function SearchPage() {
     return () => clearTimeout(debounceTimeout);
   }, [search, selectedCity, isPostView]);
 
+  const handleChageCity = async (e) => {
+    setSelectedCity(e?.target?.value)
+    localStorage.setItem('city', e?.target?.value)
+  }
+
   const SkeletonPostGrid = () => (
     <div className="columns-2 sm:columns-3 gap-4">
       {Array(6)
@@ -113,7 +119,7 @@ export default function SearchPage() {
             <LocateFixed className="text-sky-600" />
             <select
               value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
+              onChange={handleChageCity}
               className="w-32 p-2 bg-inherit dark:text-white text-sm focus:outline-none"
             >
               <option value="">Select City</option>
@@ -165,7 +171,7 @@ export default function SearchPage() {
         ) : isPostView ? (
           info.length ? (
             < div className=' flex flex-col w-full '>
-              <div className="columns-2 sm:columns-3 gap-4">
+              <div className="columns-2 sm:columns-3 gap-1">
                 <SearchPost info={info} />
               </div>
               {/* <div className=' mt-3 w-full flex justify-end font-semibold opacity-85 '>  <p className=' cursor-pointer'> Load more ..</p></div> */}
