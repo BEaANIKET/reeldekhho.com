@@ -171,7 +171,7 @@ export default function Post({ post }: PostProps) {
 
 
   return (
-    <div className=" relative  w-full max-w-lg bg-inherit border dark:border-gray-700 rounded-lg">
+    <div className=" relative  w-screen max-w-lg bg-inherit border dark:border-gray-700 rounded-lg">
 
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post?.user?._id}`} className="flex items-center space-x-2">
