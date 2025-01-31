@@ -112,7 +112,7 @@ export default function PostGrid(props) {
         </div>
 
         {/* Instagram-style Grid */}
-        <div className="grid grid-cols-3 gap-1 md:gap-8 mt-4">
+        <div className="grid grid-cols-3 gap-1  mt-4">
           {posts && posts.length ? posts.map((post: any) => (
 
             // onClick={() => navigate(`/reels/${post._id}`)}

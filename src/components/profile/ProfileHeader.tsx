@@ -26,7 +26,7 @@ export default function ProfileHeader(props: any) {
     console.log(totalUnseen);
     setUnSeenMsgCount(totalUnseen)
 
-  }, [unseenMsg])  
+  }, [unseenMsg])
 
   const handleShare = () => {
     setIsShareOpen(true)
@@ -166,7 +166,7 @@ export default function ProfileHeader(props: any) {
           <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
             {video ? (
               <video
-                src={`${import.meta.env.VITE_ADMIN_URL}/public/Images/${props?.smallvideo}`}
+                src={props?.smallvideo}
                 autoPlay
                 loop
                 muted

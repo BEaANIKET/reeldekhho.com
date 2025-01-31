@@ -7,8 +7,8 @@ import HeaderStatic from './HeaderStatic'
 const Post = lazy(() => import('./Post'));
 
 export default function Feed() {
-  const { loading, error, loadMorePosts } = useGetPosts();
-  const posts = useSelector((state) => state.post.posts);
+  const { loading, error, loadMorePosts, posts } = useGetPosts();
+  // const posts = useSelector((state) => state.post.posts);
 
   const observerRef = useIntersectionObserver(
     loadMorePosts,
@@ -28,7 +28,7 @@ export default function Feed() {
       <HeaderStatic />
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 margintopo">
 
-        {/* Posts Area */} 
+        {/* Posts Area */}
         <div className=" lg:col-span-2 mx-auto md:mt-0 max-w-2xl">
 
           <Suspense
@@ -38,7 +38,7 @@ export default function Feed() {
               </div>
             }
           >
-            <div className=""> 
+            <div className="">
               {posts?.length > 0 ? (
                 posts.map((post) => <Post key={post._id} post={post} />)
               ) : (
