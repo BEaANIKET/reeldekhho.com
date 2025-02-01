@@ -235,6 +235,9 @@ import { useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, MoreVertical, Heart, Send, MessageCircle } from "lucide-react";
 import { formatTimeAgo } from "../utils/dateUtils";
+import ReelCard from "../components/reels/ReelCard";
+import Post from "../components/Post";
+import useSavedPost from "../hooks/post/useSavedpost";
 
 const UserPosts = () => {
     const user = useSelector((state) => state.auth.user);
@@ -251,12 +254,12 @@ const UserPosts = () => {
         return userPost.slice(postIndex); // Start with the current post and older posts
     });
 
-    const [value, setValue]= useState(0);
+    const [value, setValue] = useState(0);
 
     useEffect(() => {
         if (!userPost || postIndex === -1) return navigate('/profile');
         console.log('hello in useeffect');
-        
+
 
         // Prepend previous posts
         let previousPosts = userPost.slice(0, postIndex);
@@ -286,10 +289,10 @@ const UserPosts = () => {
 
     }, []);
 
-    console.log('hello');
+    console.log(displayedPosts);
 
     return (
-        <div className="p-6 max-w-3xl mx-auto" ref={containerRef}>
+        <div className=" max-w-3xl mx-auto" ref={containerRef}>
             <header className="flex items-center gap-4 mb-6">
                 <ArrowLeft className="w-6 h-6 cursor-pointer" onClick={() => navigate("/profile")} />
                 <h1 className="text-2xl font-bold">Posts</h1>
@@ -300,7 +303,7 @@ const UserPosts = () => {
                     <div
                         key={post?._id}
                         data-post-id={post?._id} // Unique identifier for scrolling
-                        className="bg-white relative w-full max-w-lg dark:bg-gray-800 rounded-lg"
+                        className="bg-white relative w-screen max-w-lg dark:bg-gray-800 rounded-lg"
                     >
                         <div className="flex items-center justify-between p-4">
                             <div className="flex items-center space-x-2">
@@ -340,6 +343,7 @@ const UserPosts = () => {
                             <p className="text-gray-400 text-xs uppercase">{formatTimeAgo("5day")}</p>
                         </div>
                     </div>
+                    // <Post post={post} />
                 ))}
         </div>
     );

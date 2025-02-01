@@ -116,7 +116,7 @@ const Header = () => {
           </button>
         </div>
         <ul className="flex flex-col mt-4">
-          <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
+          <li onClick={() => navigate('/')} className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
             Home
           </li>
           {

@@ -3,11 +3,19 @@ import { Home, Search, Compass, Film, Heart, PlusSquare, MessageCircle, Menu, Us
 import ThemeToggle from './layout/ThemeToggle';
 import applogo from '/assets/applogo.png'
 import { useSelector } from 'react-redux';
+// import useGetPosts from '../hooks/post/useGetPost';
 
 export default function Sidebar() {
   const location = useLocation();
   const user = useSelector(state => state.auth?.user);
+  // const { fetchPosts } = useGetPosts()
 
+  const handleHomeClick = () => {
+    console.log("ksahdkasd");
+
+    // fetchPosts();
+    // window.location.href = '/';
+  }
   return (
     <>
       <div className="fixed bottom-0 z-20 left-0 w-full bg-inherit border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r ">
@@ -16,7 +24,9 @@ export default function Sidebar() {
             <img className=' w-20 scale-110 ' src={applogo} alt="" />
           </div>
 
-          <NavItem to="/" icon={<Home />} label="Home" active={location.pathname === '/'} />
+          <div className=' w-full' onClick={handleHomeClick}>
+            <NavItem to="/" icon={<Home />} label="Home" active={location.pathname === '/'} />
+          </div>
           <NavItem to="/search" icon={<Search />} label="Search" />
           {/* <NavItem to="/explore" icon={<Compass />} label="Explore" /> */}
           <NavItem to="/reels" icon={<Film />} label="Reels" active={location.pathname === '/reels'} />
