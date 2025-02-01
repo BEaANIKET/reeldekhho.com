@@ -72,11 +72,11 @@ const SearchPost = (props) => {
                         />
                     )}
 
-                    <div className=" bg-white text-black  p-4 text-xs sm:text-sm  ">
-                        <p className=" text-nowrap font-semibold "> Seller: {value?.user?.fullName}</p>
-                        <p className=" text-nowrap "> captions: {value?.caption}</p>
-                        <p className=" text-nowrap  "> category: {value?.category} </p>
-                        <p className=" text-nowrap font-semibold "> price: ₹{(value?.price).toFixed(2)} </p>
+                    <div className=" bg-white text-black  p-1 text-xs sm:text-sm  ">
+                        {/* <p className=" text-nowrap font-semibold "> Seller: {value?.user?.fullName}</p> */}
+                        <p className=" text-nowrap "> {value?.caption}</p>
+                        {/* <p className=" text-nowrap  "> category: {value?.category} </p> */}
+                        {/* <p className=" text-nowrap font-semibold "> price: ₹{(value?.price).toFixed(2)} </p> */}
                     </div>
                 </div>
             ))}

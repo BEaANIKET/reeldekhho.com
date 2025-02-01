@@ -6,20 +6,25 @@ const useGetPosts = () => {
     let excludeIds = []
     const [posts, setPosts] = useState([]);
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            setLoading(true);
-            try {
-                excludeIds = posts.map(post => post._id).join(',');
-                const response = await api.get(`/post/get?excludeIds=${excludeIds}&city=${localStorage.getItem('city')}`);
-                setPosts(response?.data?.posts)
-            } catch (err) {
-                setError(err.response?.data?.message || "An error occurred");
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchPosts = async () => {
+        setLoading(true);
+        console.log(" Fetching posts...");
+        try {
+            excludeIds = posts.map(post => post._id).join(',');
+            const response = await api.get(`/post/get?excludeIds=${excludeIds}&city=${localStorage.getItem('city')}`);
+            setPosts(response?.data?.posts)
+            console.log(response?.data?.posts);
 
+            console.log(" Fetching posts...");
+
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchPosts();
     }, []);
 
@@ -33,7 +38,7 @@ const useGetPosts = () => {
         }
     }
 
-    return { loading, error, posts, loadMorePosts };
+    return { loading, error, posts, loadMorePosts, fetchPosts };
 };
 
 export default useGetPosts;
