@@ -356,7 +356,7 @@ export default function Post({ post }: PostProps) {
 
               </div>
             )) : null}
-            < CommentSection postId={post.id} createComment={createComment} loader={loader} setLoader={setLoader} />
+            < CommentSection postId={post._id} createComment={createComment} loader={loader} setLoader={setLoader} />
           </div>
         ) : null}
 

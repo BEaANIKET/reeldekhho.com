@@ -9,19 +9,283 @@ import {
     MessageCircle,
     Rocket,
     Loader2,
+    DeleteIcon,
+    BookmarkX,
+    Delete,
+    Bookmark,
 } from "lucide-react";
 import { formatTimeAgo } from "../utils/dateUtils";
 import api from "../services/api/axiosConfig";
 import { updateParticularPost } from "../store/slices/authSlice";
-// import ReelCard from "../components/reels/ReelCard";
-// import Post from "../components/Post";
-// import useSavedPost from "../hooks/post/useSavedpost";
+import useSavedPost from "../hooks/post/useSavedpost";
+import useHandleLikes from "../hooks/post/useHandleLike";
+import { BiDotsVertical } from "react-icons/bi";
+import CommentSection from "../components/interactions/CommentSection";
+import useHandleComment from "../hooks/post/useHandleComments";
+import ShareButton from "../components/ShareBtn";
 
+
+const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) => {
+
+    const [showMoreOptions, setShowMoreOptions] = useState(false)
+    const [isSaved, setIsSaved] = useState(false);
+    const { addSavedPost, removeSavedPost } = useSavedPost()
+    const { likeCount: likes, isLiked, likePost } = useHandleLikes(post._id);
+    const [showComments, setShowComments] = useState(false);
+    const { getComment, createComment, deleteComment, comments } = useHandleComment(post._id)
+    const [showPopup, setShowPopup] = useState(false);
+    const [loader, setLoader] = useState({
+        addLoader: false,
+        removeLoader: false,
+    })
+
+    const handleLike = async () => {
+        await likePost(post?._id);
+    };
+
+
+    useEffect(() => {
+        const value = savedPost.find((save: any) => save?.postId?._id === post?._id)
+        if (value) {
+            setIsSaved(true);
+        } else {
+            setIsSaved(false);
+        }
+    }, [savedPost])
+
+
+    const handleSave = () => {
+        addSavedPost(post._id);
+        setShowMoreOptions(false);
+    }
+
+    const handleUnsave = () => {
+        removeSavedPost(post._id);
+        setShowMoreOptions(false);
+    }
+
+    const [isOverlay, setIsOverlay] = useState(false)
+
+    const handleThreeDot = () => {
+        setShowMoreOptions(!showMoreOptions);
+
+        setIsOverlay(true);
+    };
+
+    const [commentLoder, setCommentLoder] = useState(false)
+    const [isShareOpen, setIsShareOpen] = useState(false);
+
+
+    const handleDelete = (id: number) => {
+        if (!loader.removeLoader) {
+            setCommentLoder(true);
+            deleteComment(id)
+            setShowPopup(false);
+            setCommentLoder(false);
+        }
+    };
+
+
+    return (
+        <div
+            key={post?._id}
+            data-post-id={post?._id}
+            className="bg-white relative w-screen max-w-lg dark:bg-gray-800 rounded-lg"
+        >
+            <div className="flex items-center justify-between p-4">
+                <div className="flex items-center space-x-2">
+                    <img
+                        src={user?.profilePicture}
+                        alt={user?.fullName}
+                        className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <span className="font-semibold dark:text-white">
+                        {user?.fullName}
+                    </span>
+                </div>
+                <button onClick={handleThreeDot} className="dark:text-white">
+                    <MoreVertical className="cursor-pointer" />
+                </button>
+            </div>
+            <p className="dark:text-white px-3 pb-2">{post.caption}</p>
+            <div className="relative">
+                {post.file.fileType.includes("mp4") ? (
+                    <video
+                        className="w-full max-h-[60vh] object-cover"
+                        muted
+                        loop
+                        autoPlay
+                    >
+                        <source
+                            src={post?.file.url}
+                            type={`video/${post.file.fileType}`}
+                        />
+                    </video>
+                ) : (
+                    <img
+                        src={post?.file.url}
+                        alt="Post Media"
+                        className="w-full object-cover min-h-64 max-h-[500px]"
+                    />
+                )}
+            </div>
+            <div className="sm:p-4 p-2">
+                <div className="flex justify-between items-center mb-2">
+                    <div className="flex space-x-4">
+                        <button
+                            onClick={handleLike}
+                            className="transform active:scale-125 transition-transform duration-200"
+                        >
+                            <Heart
+                                className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
+                            />
+                        </button>
+                        <span style={{ marginLeft: '6px', fontSize: '17px' }} className=" dark:text-white">{likes} {likes > 1 ? "Likes" : "Like"}</span>
+
+                        <MessageCircle className="w-6 h-6 dark:text-white cursor-pointer" />
+                        <button onClick={() => setIsShareOpen(true)}>
+                            <Send className="w-6 h-6 dark:text-white" />
+                        </button>
+                    </div>
+
+                    <div className="flex gap-2">
+                        {post?.isBoosted.status ? (
+                            <button
+                                disabled={true}
+                                className="px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 
+                                bg-blue-50 text-blue-600
+                                hover:bg-blue-100
+                                transition-colors duration-200 
+                                border border-blue-200"
+                            >
+                                <Rocket size={14} className="inline-block" />
+                                Boosted
+                            </button>
+                        ) : (
+
+                            (<button
+                                disabled={isLoading[post._id] ? true : false}
+                                onClick={(e) => handleBoostClick(e, post._id)}
+                                className="px-3 py-1.5 rounded-lg text-sm font-medium border dark:border-gray-600
+                            hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                            >
+                                {isLoading[post._id] ? <Loader2 className="animate-spin" /> : 'Boost'}
+                            </button>)
+                        )}
+                        <button
+                            onClick={() => alert('Feature coming soon!')}
+                            className="px-3 py-1.5 rounded-lg text-sm font-medium border dark:border-gray-600
+                            hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                        >
+                            Insights
+                        </button>
+                    </div>
+                </div>
+                <div className="space-y-1">
+                    <button
+                        className="text-gray-500 dark:text-gray-400 text-sm"
+                        onClick={() => setShowComments((prev) => !prev)}
+                    >
+                        View all comments
+                    </button>
+                    <p className="text-gray-400 text-xs">
+                        {formatTimeAgo(post.createdAt)} ago
+                    </p>
+                </div>
+
+                {showMoreOptions && (
+                    <div
+                        // ref={moreOptionsRef}
+                        className="absolute top-0 right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border dark:border-gray-700"
+                    >
+                        <div className="py-1">
+                            {
+                                isSaved ?
+                                    <button
+                                        onClick={handleUnsave}
+                                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                    >
+                                        <BookmarkX className="w-5 h-5 mr-2" />
+                                        UnSave
+                                    </button> :
+                                    <button
+                                        onClick={handleSave}
+                                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                                    >
+                                        <Bookmark className="w-5 h-5 mr-2" />
+                                        Save
+                                    </button>
+                            }
+                            {/* <button
+                                onClick={handleDelete}
+                                className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                            >
+                                <span className="material-icons-outlined text-lg mr-2"><Delete className='w-5 h-5' /></span>
+                                Delete
+                            </button> */}
+                        </div>
+                    </div>
+                )}
+
+                {showComments ? (
+                    <div >
+                        {comments && comments.length ? comments.map((comment) => (
+                            <div key={comment._id} className="flex items-start space-x-4 mb-2">
+                                <img
+                                    src={comment?.user?.profilePicture}
+                                    alt={comment?.user?.fullName}
+                                    className="w-8 h-8 rounded-full object-cover"
+                                />
+                                <div className="flex-grow h-full items-start flex flex-col">
+                                    <p className="font-semibold dark:text-white">{comment?.user?.fullName}</p>
+                                    <p className="dark:text-white">{comment?.text}</p>
+                                </div>
+
+                                <div className="relative">
+                                    <BiDotsVertical
+                                        className="dark:text-white text-black text-lg cursor-pointer"
+                                        onClick={() => setShowPopup((prev) => (prev === comment?._id ? false : comment?._id))}
+                                    />
+                                    {showPopup === comment._id && (
+                                        <div className="absolute top-full right-[21px] mt-[-24px] rounded-sm">
+                                            <p
+                                                className=" text-white font-semibold rounded-sm cursor-pointer text-sm p-2 bg-red-500  hover:underline"
+                                                onClick={() => handleDelete(comment?._id)}
+                                            >
+                                                {commentLoder ? 'loading...' : 'Delete'}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+
+                            </div>
+                        )) : null}
+                        < CommentSection postId={post._id} createComment={createComment} loader={loader} setLoader={setLoader} />
+                    </div>
+                ) : null}
+            </div>
+
+            {isOverlay && (
+                <div onClick={() => {
+                    setShowMoreOptions(false)
+                    setIsOverlay(false)
+                }} className=" inset-0  h-screen w-screen fixed "></div>
+            )}
+
+            <ShareButton
+                isOpen={isShareOpen}
+                onClose={() => setIsShareOpen(false)}
+                reelId={post?._id}
+            />
+
+        </div>
+    )
+}
 const UserPosts = () => {
     const user = useSelector((state) => state.auth.user);
     const userPost = useSelector((state) => state.auth.posts);
-    // console.log('line number 253: ',userPost);
-    
+    const savedPost = useSelector((state) => state?.savedPosts?.saved_Posts)
+
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -60,11 +324,11 @@ const UserPosts = () => {
                 window.scrollTo({ top: targetPosition, behavior: "auto" }); // Instant move without animation
             }
         }, 15);
-    },[])
+    }, [])
 
-    const updateState= () => {
+    const updateState = () => {
         console.log(userPost);
-        const newArray= userPost.slice(postIndex);
+        const newArray = userPost.slice(postIndex);
         setDisplayedPosts(newArray);
         let previousPosts = userPost.slice(0, postIndex);
         setDisplayedPosts((prev) => [...previousPosts, ...prev]);
@@ -148,7 +412,7 @@ const UserPosts = () => {
                 console.log(err);
             }
         } finally {
-              setIsLoading((prev) => ({ ...prev, [postId]: false }));
+            setIsLoading((prev) => ({ ...prev, [postId]: false }));
         }
     };
 
@@ -166,93 +430,7 @@ const UserPosts = () => {
 
             {userPost &&
                 displayedPosts.map((post: any) => (
-                    <div
-                        key={post?._id}
-                        data-post-id={post?._id} // Unique identifier for scrolling
-                        className="bg-white relative w-screen max-w-lg dark:bg-gray-800 rounded-lg"
-                    >
-                        <div className="flex items-center justify-between p-4">
-                            <div className="flex items-center space-x-2">
-                                <img
-                                    src={user?.profilePicture}
-                                    alt={user?.fullName}
-                                    className="w-8 h-8 rounded-full object-cover"
-                                />
-                                <span className="font-semibold dark:text-white">
-                                    {user?.fullName}
-                                </span>
-                            </div>
-                            <button className="dark:text-white">
-                                <MoreVertical className="cursor-pointer" />
-                            </button>
-                        </div>
-                        <p className="dark:text-white px-3 pb-2">{post.caption}</p>
-                        <div className="relative">
-                            {post.file.fileType.includes("video") ? (
-                                <video
-                                    className="w-full max-h-[60vh] object-cover"
-                                    muted
-                                    loop
-                                    autoPlay
-                                >
-                                    <source
-                                        src={post?.file.url}
-                                        type={`video/${post.file.fileType}`}
-                                    />
-                                </video>
-                            ) : (
-                                <img
-                                    src={post?.file.url}
-                                    alt="Post Media"
-                                    className="w-full object-cover min-h-64 max-h-[500px]"
-                                />
-                            )}
-                        </div>
-                        <div className="sm:p-4 p-2">
-                            <div className="flex justify-between items-center mb-2">
-                                <div className="flex space-x-4">
-                                    <Heart className="w-6 h-6 dark:text-white cursor-pointer" />
-                                    <MessageCircle className="w-6 h-6 dark:text-white cursor-pointer" />
-                                    <Send className="w-6 h-6 dark:text-white cursor-pointer" />
-                                </div>
-                                <div className="flex gap-2">
-                                    {post?.isBoosted.status ? (
-                                        <button
-                                            disabled={true}
-                                            className="px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 
-                                                bg-blue-50 text-blue-600 
-                                                hover:bg-blue-100 
-                                                transition-colors duration-200 
-                                                border border-blue-200"
-                                        >
-                                            <Rocket size={14} className="inline-block" />
-                                            Boosted
-                                        </button>
-                                    ) : (
-
-                                        (<button
-                                        disabled={isLoading[post._id] ? true : false}
-                                            onClick={(e) => handleBoostClick(e, post._id)}
-                                            className="px-3 py-1.5 rounded-lg text-sm font-medium border dark:border-gray-600
-                                            hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
-                                        >
-                                            {isLoading[post._id] ? <Loader2 className="animate-spin"/> : 'Boost'}
-                                        </button>)
-                                    )}
-                                    <button
-                                        onClick={() => alert('Feature coming soon!')}
-                                        className="px-3 py-1.5 rounded-lg text-sm font-medium border dark:border-gray-600
-                                            hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
-                                    >
-                                        Insights
-                                    </button>
-                                </div>
-                            </div>
-                            <p className="text-gray-400 text-xs uppercase">
-                                {formatTimeAgo("5day")}
-                            </p>
-                        </div>
-                    </div>
+                    <PostComponents post={post} handleBoostClick={handleBoostClick} user={user} isLoading={isLoading} savedPost={savedPost} />
                     // <Post post={post} />
                 ))}
         </div>

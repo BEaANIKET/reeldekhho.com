@@ -19,8 +19,9 @@ export default function SearchPage() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
+      const city = (localStorage.getItem('city') || "").trim();
       const res = await api.get(`/post/getsearchresult`, {
-        params: { search, city: localStorage.getItem('city') },
+        params: { search, city },
       });
       setInfo(res.data);
     } catch (error) {
