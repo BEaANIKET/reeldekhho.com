@@ -27,6 +27,7 @@ export default function ProfileHeader(props: any) {
     setUnSeenMsgCount(totalUnseen)
 
   }, [unseenMsg])
+  const navigate = useNavigate()
 
   const handleShare = () => {
     setIsShareOpen(true)
@@ -102,7 +103,7 @@ export default function ProfileHeader(props: any) {
                     posts
                   </span>
                 </div>
-                <div>
+                <div className="cursor-pointer" onClick={() => navigate(`/followers/${user._id}`)}>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
                     {user?.followers || 0}
                   </span>
@@ -110,7 +111,7 @@ export default function ProfileHeader(props: any) {
                     followers
                   </span>
                 </div>
-                <div>
+                <div className=" cursor-pointer" onClick={() => navigate(`/following/${user._id}`)}>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
                     {user?.following || 0}
                   </span>
@@ -142,7 +143,7 @@ export default function ProfileHeader(props: any) {
       <div className="sm:mt-4 mt-2 flex gap-4 flex-grow">
         <button
           onClick={() => Navigate("/editProfile")}
-          className=" flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800"
+          className=" cursor-pointer flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800"
         >
           Edit Profile
         </button>
@@ -161,7 +162,7 @@ export default function ProfileHeader(props: any) {
       />
 
       {/* Video Card Section */}
-      
+
       {
         user?.role === 'seller' && (
           <div className="mt-1">

@@ -54,8 +54,6 @@ const LoaderSkeloton = () => {
 
 export default function Feed() {
   const { loading, error, loadMorePosts, posts } = useGetPosts();
-  // const posts = useSelector((state) => state?.post?.posts);
-  const user = useSelector((state) => state?.auth?.user);
 
   const observerRef = useIntersectionObserver(
     useCallback(() => {

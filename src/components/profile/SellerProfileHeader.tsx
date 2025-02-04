@@ -32,12 +32,10 @@ export default function SellerProfileHeader() {
     const res = await api.post(`/post/getprofile/${id}`);
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);
-    console.log(7)
   };
 
   const checkFollowing = () => {
     const val = following?.find((follow: any) => follow.followedId._id === id);
-    console.log(val);
     if (val) {
       setCheckFollowed(val);
     }
