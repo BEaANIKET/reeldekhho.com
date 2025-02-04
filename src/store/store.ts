@@ -6,6 +6,7 @@ import postSlices from './slices/postSlices'
 import savedPostSlice from './slices/savedPost'
 import socketReducer from './slices/socketSlices';
 import notificationsSlices from './slices/notificationsSlices'
+import reviewSlice from './slices/reviewSlice'
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     savedPosts: savedPostSlice,
     socket: socketReducer,
     notifications: notificationsSlices,
+    reviews: reviewSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
