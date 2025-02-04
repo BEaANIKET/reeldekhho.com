@@ -137,14 +137,14 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
                             className="transform active:scale-125 transition-transform duration-200"
                         >
                             <Heart
-                                className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
+                                className={`w-4 h-4 sm:w-6 sm:h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
                             />
                         </button>
-                        <span style={{ marginLeft: '6px', fontSize: '17px' }} className=" dark:text-white">{likes} {likes > 1 ? "Likes" : "Like"}</span>
+                        <span style={{ marginLeft: '6px' }} className=" dark:text-white text-sm md:text-lg">{likes} {likes > 1 ? "Likes" : "Like"}</span>
 
-                        <MessageCircle className="w-6 h-6 dark:text-white cursor-pointer" />
+                        <MessageCircle className="sm:w-6 sm:h-6 w-4 h-4 dark:text-white cursor-pointer" />
                         <button onClick={() => setIsShareOpen(true)}>
-                            <Send className="w-6 h-6 dark:text-white" />
+                            <Send className="sm:w-6 sm:h-6 w-4 h-4 dark:text-white" />
                         </button>
                     </div>
 
@@ -152,13 +152,13 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
                         {post?.isBoosted.status ? (
                             <button
                                 disabled={true}
-                                className="px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 
+                                className="sm:px-3 sm:py-1.5 px-2 py-1 rounded-lg text-sm font-medium flex items-center gap-1.5 
                                 bg-blue-50 text-blue-600
                                 hover:bg-blue-100
                                 transition-colors duration-200 
                                 border border-blue-200"
                             >
-                                <Rocket size={14} className="inline-block" />
+                                <Rocket className="inline-block w-3 h-3 sm:w-4 sm:h-4 " />
                                 Boosted
                             </button>
                         ) : (

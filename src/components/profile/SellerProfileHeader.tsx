@@ -9,6 +9,7 @@ import useFollow from "../../hooks/useFollow";
 import { ProfileSkeloton } from "./ProfileSkeloton";
 import ProfileRating from "./ProfileRating";
 import api from "../../services/api/axiosConfig";
+import { useSelector } from "react-redux";
 
 export default function SellerProfileHeader() {
 
@@ -24,8 +25,18 @@ export default function SellerProfileHeader() {
   const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
   const navigate = useNavigate()
   const { following, createFollower, removeFollower } = useFollow({ id: undefined });
+  const [reviewId, setReviewId] = useState(undefined);
 
-  console.log(following)
+  const reviewedId = useSelector((state) => state.reviews.reviewedUser);
+
+  console.log(reviewedId);
+
+  useEffect(() => {
+    const reviwedSeller = reviewedId.find((user) => user.reviewedId === id);
+    console.log('seller review-', reviwedSeller?.reviewedId)
+    setReviewId(reviwedSeller)
+  }, [reviewedId])
+
 
   const fetchprofile = async () => {
     console.log(6)
@@ -36,7 +47,7 @@ export default function SellerProfileHeader() {
   };
 
   const checkFollowing = () => {
-    const val = following?.find((follow: any) => follow.followedId._id === id);
+    const val = following?.find((follow: any) => follow?.followedId?._id === id);
     console.log(val);
     if (val) {
       setCheckFollowed(val);
@@ -207,13 +218,21 @@ export default function SellerProfileHeader() {
             </button>
           )}
 
-          <button
-            onClick={() => setIsRateBottomSheetOpen(true)}
-            className="flex-1 flex justify-center items-center gap-2 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 active:scale-95"
-          >
-            <Star className="text-[#FFAA00] w-5 h-5" /> {/* Bright and saturated gold */}
-            Rate us
-          </button>
+          {
+            reviewId?.reviewedId === id ?
+              <div
+                className="flex-1 flex justify-center items-center gap-2 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 dark:bg-gray-800 "
+              > Rated {reviewId?.totalStars} <Star className="text-[#FFAA00] fill-[#FFAA00] w-5 h-5" /> </div>
+              :
+              <button
+                onClick={() => setIsRateBottomSheetOpen(true)}
+                className="flex-1 flex justify-center items-center gap-2 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 active:scale-95"
+              >
+                <Star className="text-[#FFAA00] w-5 h-5" /> {/* Bright and saturated gold */}
+                Rate us
+              </button>
+          }
+
         </div>
 
         {/* rating display */}

@@ -21,6 +21,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Followers from './components/Follow/Followers';
 import Following from './components/Follow/Followings';
+import { setReviews } from './store/slices/reviewSlice';
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -65,6 +66,21 @@ function AppContent() {
 
     getUser();
   }, [])
+
+  useEffect(() => {
+    const getReviewedId= async() => {
+      try{
+        const resposne= await api.get('/user/userReview');
+        console.log('review',resposne.data.reviewedId);
+        const reviewArray= (resposne.data.reviewedId);
+        dispatch(setReviews(reviewArray));
+      }catch(error) {
+        console.log(error);
+      }
+    }
+
+    getReviewedId();
+  }, []);
 
   useChat()
 

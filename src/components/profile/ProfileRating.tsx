@@ -1,6 +1,8 @@
 import { Loader2Icon, Star } from "lucide-react";
 import { useState } from "react";
 import api from "../../services/api/axiosConfig";
+import { useDispatch } from "react-redux";
+import { updateReviews } from "../../store/slices/reviewSlice";
 
 interface ProfileRatingProps {
   setIsRateBottomSheetOpen: (value: boolean) => void;
@@ -16,11 +18,19 @@ export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setP
     setRating(value);
   };
 
+  const dispatch= useDispatch();
+
   const handleClick = async () => {
     try {
       setLoading(true)
       const response = await api.post(`/user/review?id=${sellerId}`, { star: rating })
+      console.log(response.data.reviwedId.reviewedId ,response.data.reviwedId.totalStars )
       setProfile(response.data.user)
+      
+      dispatch(updateReviews({
+        reviewedId: response.data.reviwedId.reviewedId,
+        totalStars: response.data.reviwedId.totalStars
+      }));
       alert(`Thank you for rating us ${rating} stars!`);
     } catch (error) {
       // console.log(error);
@@ -47,8 +57,8 @@ export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setP
             {[1, 2, 3, 4, 5].map((star) => (
               <Star
                 key={star}
-                onClick={() => handleRating(star)} // Set the rating
-                className={`w-8 h-8 cursor-pointer ${star <= rating ? "text-yellow-500" : "text-gray-400"
+                onClick={() => handleRating(star)}
+                className={`w-8 h-8 cursor-pointer ${star <= rating ? "text-yellow-500 fill-yellow-500" : "text-gray-400"
                   }`}
               />
             ))}
