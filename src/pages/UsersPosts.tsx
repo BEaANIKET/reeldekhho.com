@@ -39,6 +39,7 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
         removeLoader: false,
     })
 
+    const navigate= useNavigate();
     const handleLike = async () => {
         await likePost(post?._id);
     };
@@ -88,7 +89,6 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
 
     return (
         <div
-            key={post?._id}
             data-post-id={post?._id}
             className="bg-white relative w-screen max-w-lg dark:bg-gray-800 rounded-lg"
         >
@@ -108,7 +108,9 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
                 </button>
             </div>
             <p className="dark:text-white px-3 pb-2">{post.caption}</p>
-            <div className="relative">
+            <div
+                onClick={() => navigate(`/reels/${post?._id}`)}
+                className="relative cursor-pointer">
                 {post.file.fileType.includes("mp4") ? (
                     <video
                         className="w-full max-h-[60vh] object-cover"
@@ -142,7 +144,10 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
                         </button>
                         <span style={{ marginLeft: '6px' }} className=" dark:text-white text-sm md:text-lg">{likes} {likes > 1 ? "Likes" : "Like"}</span>
 
-                        <MessageCircle className="sm:w-6 sm:h-6 w-4 h-4 dark:text-white cursor-pointer" />
+                        <button onClick={() => setShowComments((prev) => !prev)}>
+                            <MessageCircle className="sm:w-6 sm:h-6 w-4 h-4 dark:text-white cursor-pointer" />
+                        </button>
+
                         <button onClick={() => setIsShareOpen(true)}>
                             <Send className="sm:w-6 sm:h-6 w-4 h-4 dark:text-white" />
                         </button>
@@ -430,7 +435,7 @@ const UserPosts = () => {
 
             {userPost &&
                 displayedPosts.map((post: any) => (
-                    <PostComponents post={post} handleBoostClick={handleBoostClick} user={user} isLoading={isLoading} savedPost={savedPost} />
+                    <PostComponents post={post} key={post?._id} handleBoostClick={handleBoostClick} user={user} isLoading={isLoading} savedPost={savedPost} />
                     // <Post post={post} />
                 ))}
         </div>

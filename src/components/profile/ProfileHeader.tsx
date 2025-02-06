@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { ProfileSkeloton } from "./ProfileSkeloton";
 import { useEffect, useState } from "react";
 import ShareFeature from "./ShareFeature";
-import useUserFollow from "../../hooks/useUserFollow";
 
 export default function ProfileHeader(props: any) {
   const totalposts = props.value;
@@ -17,9 +16,6 @@ export default function ProfileHeader(props: any) {
   const user = useSelector((state: any) => state?.auth?.user);
   const userFollow= useSelector( (state : any) => state.userFollow )
   console.log(userFollow);
-
-  const { userLoading }= useUserFollow();
-
 
   const unseenMsg = useSelector(state => state?.chat?.unSeenCount);
   const [unSeenMsgCount, setUnSeenMsgCount] = useState(0)
@@ -37,7 +33,7 @@ export default function ProfileHeader(props: any) {
     setIsShareOpen(true)
   };
 
-  if (loading || userLoading) {
+  if (loading) {
     return <ProfileSkeloton />;
   }
 
