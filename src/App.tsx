@@ -48,6 +48,7 @@ function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     const getUser = async () => {
       setLoading(true)
@@ -56,7 +57,6 @@ function AppContent() {
         dispatch(setUserProfile(response.data.user))
         localStorage.setItem('city', response?.data?.user?.city);
         console.log(response.data.user);
-
       } catch (error) {
         // console.log(error);
       } finally {
@@ -82,7 +82,7 @@ function AppContent() {
     getReviewedId();
   }, []);
 
-  useChat()
+  useChat();
 
   if (loading) {
     return <LoadComponents />

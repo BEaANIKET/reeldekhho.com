@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../services/api/axiosConfig";
+import useUserFollow from "./useUserFollow";
+import { useDispatch } from "react-redux";
+import { setUserFollow } from "../store/slices/userFollowSlice";
 // import toast from "react-hot-toast";
 
 const useFollow = ({ id }: { id: string | undefined }) => {
@@ -7,6 +10,8 @@ const useFollow = ({ id }: { id: string | undefined }) => {
   const [followError, setFollowError] = useState(false);
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
+
+  const dispatch= useDispatch();
 
   const getFollowData = async (id:undefined | string) => {
     console.log('id- ',id);
@@ -37,11 +42,11 @@ const useFollow = ({ id }: { id: string | undefined }) => {
       await api.post(
         `/follow/createFollower?id=${id}`
       );
+      getFollowData(id)
 
-      getFollowData(undefined);
     } catch (error: any) {
       console.log(error);
-      alert(error.response.data.message || "Error in following")
+      alert(error?.response?.data?.message || "Error in following")
     }
   }
 
@@ -51,7 +56,7 @@ const useFollow = ({ id }: { id: string | undefined }) => {
         `follow/unfollow?id=${id}`
       );
 
-      getFollowData(undefined);
+      getFollowData(id);
 
     } catch (error) {
       console.log(error);

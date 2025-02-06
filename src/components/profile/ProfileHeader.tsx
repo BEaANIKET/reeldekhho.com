@@ -6,16 +6,20 @@ import { useNavigate } from "react-router-dom";
 import { ProfileSkeloton } from "./ProfileSkeloton";
 import { useEffect, useState } from "react";
 import ShareFeature from "./ShareFeature";
+import useUserFollow from "../../hooks/useUserFollow";
 
 export default function ProfileHeader(props: any) {
   const totalposts = props.value;
-
   const { loading, error } = useGetProfile();
 
   const Navigate = useNavigate();
   const [isShareOpen, setIsShareOpen] = useState(false);
   const user = useSelector((state: any) => state?.auth?.user);
-  console.log(user);
+  const userFollow= useSelector( (state : any) => state.userFollow )
+  console.log(userFollow);
+
+  const { userLoading }= useUserFollow();
+
 
   const unseenMsg = useSelector(state => state?.chat?.unSeenCount);
   const [unSeenMsgCount, setUnSeenMsgCount] = useState(0)
@@ -32,7 +36,7 @@ export default function ProfileHeader(props: any) {
     setIsShareOpen(true)
   };
 
-  if (loading) {
+  if (loading || userLoading) {
     return <ProfileSkeloton />;
   }
 
@@ -104,7 +108,7 @@ export default function ProfileHeader(props: any) {
                 </div>
                 <div>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                    {user?.followers || 0}
+                    {userFollow?.follower.length || 0}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     followers
@@ -112,7 +116,7 @@ export default function ProfileHeader(props: any) {
                 </div>
                 <div>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                    {user?.following || 0}
+                    {userFollow?.following.length || 0}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     following

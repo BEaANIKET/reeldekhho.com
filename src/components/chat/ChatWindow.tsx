@@ -166,12 +166,6 @@ export default function ChatWindow({ chatId, users }: ChatWindowProps) {
                             </div>
                             <div className="flex items-center space-x-4">
                                 <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                                    <Phone className="w-5 h-5" />
-                                </button>
-                                <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                                    <Video className="w-5 h-5" />
-                                </button>
-                                <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                                     <Info className="w-5 h-5" />
                                 </button>
                             </div>
