@@ -116,9 +116,9 @@ const Following = () => {
                         ) : (
                             <div className="flex flex-col items-center justify-center p-8 text-center">
                                 <Frown className="w-12 h-12 text-gray-400 mb-4" /> {/* Icon */}
-                                <p className="text-lg font-medium text-gray-700">No Followers Found</p>
+                                <p className="text-lg font-medium text-gray-700">No Following Found</p>
                                 <p className="text-sm text-gray-500 mt-2">
-                                    When someone follows you, they'll appear here.
+                                    When the user follows someone , they'll appear here.
                                 </p>
                             </div>
                         )

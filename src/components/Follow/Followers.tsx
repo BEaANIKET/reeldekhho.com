@@ -126,7 +126,7 @@ const Followers = () => {
                                 <Frown className="w-12 h-12 text-gray-400 mb-4" /> {/* Icon */}
                                 <p className="text-lg font-medium text-gray-700">No Followers Found</p>
                                 <p className="text-sm text-gray-500 mt-2">
-                                    When someone follows you, they'll appear here.
+                                    When someone follows the user, they'll appear here.
                                 </p>
                             </div>
                         )

@@ -1,8 +1,7 @@
-import { MapPin, FilePlus, Loader2Icon, Check, Star, ChevronDown } from "lucide-react";
+import { MapPin, Loader2Icon, Star, ChevronDown } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import { IoMdChatboxes } from "react-icons/io";
 import SellerPostGrid from "./SellerPostGrid";
 import useFollow from "../../hooks/useFollow";
@@ -12,7 +11,6 @@ import api from "../../services/api/axiosConfig";
 import { useSelector } from "react-redux";
 
 export default function SellerProfileHeader() {
-
   // const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const bottomSheetRef = useRef<HTMLDivElement | HTMLButtonElement>(null);
   const { id } = useParams();
@@ -23,31 +21,33 @@ export default function SellerProfileHeader() {
   const [checkFollowed, setCheckFollowed] = useState(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
+
   const navigate = useNavigate()
-  const { following, createFollower, removeFollower } = useFollow({ id: undefined });
+  const { following, followers, createFollower, removeFollower } = useFollow({ id: id });
+
+  const user = useSelector((state: any) => state.auth.user);
+
   const [reviewId, setReviewId] = useState(undefined);
 
-  const reviewedId = useSelector((state) => state.reviews.reviewedUser);
-
-  console.log(reviewedId);
+  const reviewedId = useSelector((state: any) => state.reviews.reviewedUser);
 
   useEffect(() => {
-    const reviwedSeller = reviewedId.find((user) => user.reviewedId === id);
+    const reviwedSeller = reviewedId.find((user: any) => user.reviewedId === id);
     console.log('seller review-', reviwedSeller?.reviewedId)
     setReviewId(reviwedSeller)
   }, [reviewedId])
 
-
   const fetchprofile = async () => {
-    console.log(6)
+
     const res = await api.post(`/post/getprofile/${id}`);
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);
   };
 
   const checkFollowing = () => {
-
-    const val = following?.find((follow: any) => follow?.followedId?._id === id);
+    const val = followers?.find((follow: any) => follow?.followerDetails._id === user?._id)
+    console.log(val);
+      
     if (val) {
       setCheckFollowed(val);
     }
@@ -76,32 +76,29 @@ export default function SellerProfileHeader() {
   }, [id]);
 
   useEffect(() => {
+    console.log("extra userEffect")
     checkFollowing();
     setPageLoading(false);
-  }, [following]);
+  }, [followers]);
 
   const handleClick = async () => {
     setLoading(true);
     await createFollower(id);
-    await fetchprofile();
     setLoading(false);
   };
 
   const handleUnfollow = async () => {
-    // setLoading(true);
     await removeFollower(id);
     setIsBottomSheetOpen(false);
-    await fetchprofile();
-    setCheckFollowed(null)
-    // setLoading(false);
-  }
-
-  if (pageLoading) {
-    return <ProfileSkeloton />;
+    setCheckFollowed(null);
   }
 
   const handleWhatsapp = () => {
     window.open(`https://wa.me/${profile?.phone}`);
+  }
+
+  if (pageLoading) {
+    return <ProfileSkeloton />;
   }
 
   return (
@@ -158,7 +155,7 @@ export default function SellerProfileHeader() {
                   <div>
                     <Link to={`/followers/${id}`}>
                       <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                        {profile?.followers}
+                        {followers?.length || '0'}
                       </span>
                       <span className="text-xs sm:text-sm text-gray-500 font-medium">
                         followers
@@ -168,7 +165,7 @@ export default function SellerProfileHeader() {
                   <div>
                     <Link to={`/following/${id}`}>
                       <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                        {profile?.following}
+                        {following?.length || '0'}
                       </span>
                       <span className="text-xs sm:text-sm text-gray-500 font-medium">
                         following
