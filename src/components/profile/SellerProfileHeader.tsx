@@ -47,6 +47,7 @@ export default function SellerProfileHeader() {
   const checkFollowing = () => {
     const val = followers?.find((follow: any) => follow?.followerDetails._id === user?._id)
     console.log(val);
+      
     if (val) {
       setCheckFollowed(val);
     }
