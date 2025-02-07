@@ -26,7 +26,7 @@ export default function SellerProfileHeader() {
   const navigate = useNavigate()
   const { following, followers, createFollower, removeFollower } = useFollow({ id: id });
 
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
   const user = useSelector((state: any) => state.auth.user);
 
   const [reviewId, setReviewId] = useState(undefined);
@@ -42,7 +42,6 @@ export default function SellerProfileHeader() {
   const fetchprofile = async () => {
     try {
       setPageLoading(true)
-      setPageLoading(true)
       const res = await api.post(`/post/getprofile/${id}`);
       setProfile(res.data.profile);
       setSeller(res.data.sellerposts);
@@ -51,16 +50,10 @@ export default function SellerProfileHeader() {
     } finally {
       setPageLoading(false)
     }
-    setPageLoading(true)
-    const res = await api.post(`/post/getprofile/${id}`);
-    setProfile(res.data.profile);
-    dispatch(setSellerData({post:res.data.sellerposts, seller:res.data.profile }));
-    setSeller(res.data.sellerposts);
   };
 
   const checkFollowing = () => {
     const val = followers?.find((follow: any) => follow?.followerDetails._id === user?._id)
-    console.log(val);
 
     if (val) {
       setCheckFollowed(val);
@@ -90,9 +83,7 @@ export default function SellerProfileHeader() {
   }, [followers]);
 
   const handleClick = async () => {
-    setLoading(true);
     await createFollower(id);
-    setLoading(false);
   };
 
   const handleUnfollow = async () => {
