@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import HeaderStatic from '../components/HeaderStatic';
 import api from '../services/api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 export default function SearchPage() {
   const [info, setInfo] = useState([]);
@@ -46,7 +45,9 @@ export default function SearchPage() {
   const fetchCities = async () => {
     try {
       const res = await api.get(`/post/getcitylist`);
-      res.data.sort((a, b) => a.city.localeCompare(b.Title));
+      console.log(res);
+
+      res.data.value.sort((a, b) => a.city.localeCompare(b.city));
       setCityList(res.data.value || []);
     } catch (error) {
       console.error('Error fetching cities:', error);

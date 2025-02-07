@@ -1,8 +1,7 @@
 
-import { lazy, ParamHTMLAttributes, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useRef, useState } from 'react';
 import Suggestions from './Suggestions';
 import useGetPosts from '../hooks/post/useGetPost';
-import { useSelector } from 'react-redux';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import HeaderStatic from './HeaderStatic';
 import toast from 'react-hot-toast';
@@ -140,7 +139,7 @@ export default function Feed() {
               <div className='w-8 h-1.5 rounded-md bg-[#00000081] self-center'></div>
               <h1 className='font-bold text-lg text-center'>Report</h1>
               <h2 className='font-bold text-center'>Why are you Reporting this post?</h2>
-              
+
               <p
                 onClick={handleSubmitReport}
                 id="I just don't like it"

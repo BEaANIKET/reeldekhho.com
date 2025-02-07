@@ -127,9 +127,9 @@ const Header = () => {
               </>
             ) : (
               <>
-                <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
+                <Link to='/forget' className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
                   Change Password
-                </li>
+                </Link>
                 <li onClick={handleLogout} className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
                   Logout
                 </li>

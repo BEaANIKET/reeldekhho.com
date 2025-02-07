@@ -22,6 +22,7 @@ import { Toaster } from 'react-hot-toast';
 import Followers from './components/Follow/Followers';
 import Following from './components/Follow/Followings';
 import { setReviews } from './store/slices/reviewSlice';
+import ChangePassword from './pages/Changepassword';
 import SellerPost from './components/profile/SellerPost';
 
 const Feed = lazy(() => import('./components/Feed'));
@@ -93,13 +94,13 @@ function AppContent() {
   }, [])
 
   useEffect(() => {
-    const getReviewedId= async() => {
-      try{
-        const resposne= await api.get('/user/userReview');
-        console.log('review',resposne.data.reviewedId);
-        const reviewArray= (resposne.data.reviewedId);
+    const getReviewedId = async () => {
+      try {
+        const resposne = await api.get('/user/userReview');
+        console.log('review', resposne.data.reviewedId);
+        const reviewArray = (resposne.data.reviewedId);
         dispatch(setReviews(reviewArray));
-      }catch(error) {
+      } catch (error) {
         console.log(error);
       }
     }
@@ -143,6 +144,7 @@ function AppContent() {
               <Route path='/reels/:id' element={<SearchReels />} />
               <Route path='/saved' element={<SavedPage />} />
               <Route path='/posts' element={<UserPosts />} />
+              <Route path='/forget' element={<ChangePassword />} />
             </Route>
           </Routes>
         </Suspense>
