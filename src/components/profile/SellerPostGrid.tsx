@@ -35,7 +35,8 @@ export default function SellerPostGrid(props: any) {
       {/* Instagram-style Grid */}
       <div className="grid grid-cols-3 gap-1 md:gap-8 mt-4">
         {posts.map((post) => (
-          <div onClick={() => navigate(`/reels/${post._id}`)} key={post._id} className="relative aspect-square group cursor-pointer">
+          // onClick={() => navigate(`/reels/${post._id}`)}
+          <div onClick={() => navigate(`/sellerPost?id=${post._id}`)} key={post._id} className="relative aspect-square group cursor-pointer">
             {/* Check File Type */}
             {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
               <video
