@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FileIcon, UploadIcon, XIcon } from 'lucide-react';
+import { FileIcon, Loader2, UploadIcon, XIcon } from 'lucide-react';
 import useUploadFile from '../hooks/addPost/useUploadFile';
 import useAddPost from '../hooks/addPost/useAddPost';
 import { useNavigate } from 'react-router-dom';
@@ -9,10 +9,8 @@ import axios from 'axios';
 
 interface ProductForm {
   productName: string;
-  price: string;
   description: string;
   caption: string;
-  category: string;
   file: {
     url: string;
     fileType: string;
@@ -72,10 +70,8 @@ const AddProduct: React.FC = () => {
   const [cities, setCities] = useState([])
   const [formData, setFormData] = useState<ProductForm>({
     productName: '',
-    price: '',
     description: '',
     caption: '',
-    category: '',
     file: {
       url: '',
       fileType: '',
@@ -87,6 +83,7 @@ const AddProduct: React.FC = () => {
   const { loading, error, uploadFile } = useUploadFile()
   const { loading: addProductLoading, error: addProducterror, addPost } = useAddPost()
   const [fileinp, setFileinp] = useState<File | null>(null);
+  const [fileUploadLoder, setFileUploadLoder] = useState(false)
 
   const simulateUpload = () => {
     setUploadProgress(0);
@@ -109,8 +106,9 @@ const AddProduct: React.FC = () => {
         alert('Please upload a valid image or video file.');
         return;
       }
-
+      setFileUploadLoder(true)
       const success = await uploadFile(selectedFile);
+      setFileUploadLoder(false)
       if (success) {
         setFormData({
           ...formData,
@@ -171,10 +169,8 @@ const AddProduct: React.FC = () => {
       alert('Product added successfully');
       setFormData({
         productName: '',
-        price: '',
         description: '',
         caption: '',
-        category: '',
         file: {
           url: '',
           fileType: '',
@@ -235,9 +231,21 @@ const AddProduct: React.FC = () => {
             </>
           ) : (
             <>
-              <UploadIcon className="text-gray-500 w-12 h-12" />
-              <span className="text-lg font-semibold">Upload Image or Video</span>
-              <span className="text-sm">Click to select a file</span>
+              {
+                fileUploadLoder ? (
+                  <div className="flex items-center justify-center h-full w-full bg-gray-100 rounded-md text-gray-500 text-center">
+                    <Loader2 className="animate-spin w-6 h-6 text-gray-400" />
+                  </div>
+                ) : (
+                  <>
+                    <UploadIcon className="text-gray-500 w-12 h-12" />
+                    <span className="text-lg font-semibold">Upload Image or Video</span>
+                    <span className="text-sm">Click to select a file</span>
+                  </>
+
+                )
+              }
+
             </>
           )}
         </label>
@@ -290,7 +298,7 @@ const AddProduct: React.FC = () => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium" htmlFor="price">
               Price
             </label>
@@ -306,7 +314,7 @@ const AddProduct: React.FC = () => {
                 required
               />
             </div>
-          </div>
+          </div> */}
 
           <div>
             <label className="block text-sm font-medium" htmlFor="description">
@@ -344,7 +352,7 @@ const AddProduct: React.FC = () => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium" htmlFor="category">
               Category
             </label>
@@ -363,7 +371,7 @@ const AddProduct: React.FC = () => {
                 ))}
               </select>
             </div>
-          </div>
+          </div> */}
 
           <button
             type="submit"

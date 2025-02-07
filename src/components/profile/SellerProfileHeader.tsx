@@ -17,7 +17,7 @@ export default function SellerProfileHeader() {
   const [profile, setProfile] = useState(true);
   const [Seller, setSeller] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [pageLoading, setPageLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [checkFollowed, setCheckFollowed] = useState(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
@@ -38,23 +38,26 @@ export default function SellerProfileHeader() {
   }, [reviewedId])
 
   const fetchprofile = async () => {
-    setPageLoading(true)
-    const res = await api.post(`/post/getprofile/${id}`);
-    setProfile(res.data.profile);
-    setSeller(res.data.sellerposts);
+    try {
+      setPageLoading(true)
+      setPageLoading(true)
+      const res = await api.post(`/post/getprofile/${id}`);
+      setProfile(res.data.profile);
+      setSeller(res.data.sellerposts);
+    } catch (error) {
+
+    } finally {
+      setPageLoading(false)
+    }
   };
 
   const checkFollowing = () => {
     const val = followers?.find((follow: any) => follow?.followerDetails._id === user?._id)
     console.log(val);
-      
+
     if (val) {
       setCheckFollowed(val);
     }
-  };
-
-  const runfunction = async () => {
-    await fetchprofile();
   };
 
   useEffect(() => {
@@ -72,12 +75,11 @@ export default function SellerProfileHeader() {
   }, []);
 
   useEffect(() => {
-    runfunction();
+    fetchprofile();
   }, [id]);
 
   useEffect(() => {
     checkFollowing();
-    setPageLoading(false);
   }, [followers]);
 
   const handleClick = async () => {
