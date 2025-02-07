@@ -8,7 +8,8 @@ import useFollow from "../../hooks/useFollow";
 import { ProfileSkeloton } from "./ProfileSkeloton";
 import ProfileRating from "./ProfileRating";
 import api from "../../services/api/axiosConfig";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSellerData } from "../../store/slices/sellerSlice";
 
 export default function SellerProfileHeader() {
   // const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -17,7 +18,7 @@ export default function SellerProfileHeader() {
   const [profile, setProfile] = useState(true);
   const [Seller, setSeller] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [pageLoading, setPageLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(false);
   const [checkFollowed, setCheckFollowed] = useState(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
@@ -25,6 +26,7 @@ export default function SellerProfileHeader() {
   const navigate = useNavigate()
   const { following, followers, createFollower, removeFollower } = useFollow({ id: id });
 
+  const dispatch= useDispatch();
   const user = useSelector((state: any) => state.auth.user);
 
   const [reviewId, setReviewId] = useState(undefined);
@@ -35,12 +37,13 @@ export default function SellerProfileHeader() {
     const reviwedSeller = reviewedId.find((user: any) => user.reviewedId === id);
     console.log('seller review-', reviwedSeller?.reviewedId)
     setReviewId(reviwedSeller)
-  }, [reviewedId])
+  }, [reviewedId]);
 
   const fetchprofile = async () => {
-
+    setPageLoading(true)
     const res = await api.post(`/post/getprofile/${id}`);
     setProfile(res.data.profile);
+    dispatch(setSellerData({post:res.data.sellerposts, seller:res.data.profile }));
     setSeller(res.data.sellerposts);
   };
 
@@ -76,7 +79,6 @@ export default function SellerProfileHeader() {
   }, [id]);
 
   useEffect(() => {
-    console.log("extra userEffect")
     checkFollowing();
     setPageLoading(false);
   }, [followers]);

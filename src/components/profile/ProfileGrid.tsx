@@ -8,7 +8,7 @@ import { updateParticularPost } from '../../store/slices/authSlice';
 // import { useSelector } from 'react-redux';
 // import { ProfilePostSkeloton } from './ProfilePostSkeloton';
 
-const ProfileGrid = ({ post, handleBoostClick, isLoading }) => {
+const ProfileGrid = ({ post }) => {
   const [viewCount, setViewCount] = useState(0);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const ProfileGrid = ({ post, handleBoostClick, isLoading }) => {
         </span>
       </div>
 
-      <button
+      {/* <button
         onClick={(e) => handleBoostClick(e, post._id)}
         disabled={post.isBoosted.status}
         className={`absolute top-2 right-2 p-2 rounded-full shadow-lg transform transition-all duration-300 ease-in-out
@@ -75,11 +75,11 @@ const ProfileGrid = ({ post, handleBoostClick, isLoading }) => {
         ) : (
           <Plus className="sm:w-5 sm:h-5 w-[0.85rem] h-[0.85rem] animate-pulse" />
         )}
-      </button>
+      </button> */}
     </div>
   );
 };
-const ProfileGrid2 = ({ post, handleBoostClick, isLoading }) => {
+const ProfileGrid2 = ({ post }) => {
   const [viewCount, setViewCount] = useState(0);
 
   useEffect(() => {
@@ -113,7 +113,7 @@ const ProfileGrid2 = ({ post, handleBoostClick, isLoading }) => {
         </span>
       </div>
 
-      <button
+      {/* <button
         onClick={(e) => handleBoostClick(e, post._id)}
         disabled={post.isBoosted.status}
         className={`absolute top-2 right-2 p-2 rounded-full shadow-lg transform transition-all duration-300 ease-in-out
@@ -131,7 +131,7 @@ const ProfileGrid2 = ({ post, handleBoostClick, isLoading }) => {
         ) : (
           <Plus className="sm:w-5 sm:h-5 w-[0.85rem] h-[0.85rem] animate-pulse" />
         )}
-      </button>
+      </button> */}
     </div>
   );
 };
@@ -141,85 +141,85 @@ export default function PostGrid(props) {
   const navigate = useNavigate();
   const posts = props.posts;
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState<Record<string, boolean>>({});
+  // const [isLoading, setIsLoading] = useState<Record<string, boolean>>({});
 
-  const loadRazorpayScript = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  };
+  // const loadRazorpayScript = () => {
+  //   return new Promise((resolve) => {
+  //     const script = document.createElement('script');
+  //     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+  //     script.onload = () => resolve(true);
+  //     script.onerror = () => resolve(false);
+  //     document.body.appendChild(script);
+  //   });
+  // };
 
-  const handleBoostClick = async (e: any, postId: String) => {
-    e.stopPropagation();
-    setIsLoading((prev) => ({ ...prev, [postId]: true }));
-    try {
+  // const handleBoostClick = async (e: any, postId: String) => {
+  //   e.stopPropagation();
+  //   setIsLoading((prev) => ({ ...prev, [postId]: true }));
+  //   try {
 
-      const isScriptLoaded = await loadRazorpayScript();
-      if (!isScriptLoaded) {
-        throw new Error('Failed to load Razorpay script');
-      }
+  //     const isScriptLoaded = await loadRazorpayScript();
+  //     if (!isScriptLoaded) {
+  //       throw new Error('Failed to load Razorpay script');
+  //     }
 
-      const orderRes = await api.post("/post/boostPost", {
-        postId: postId,
-        amount: 500 * 100
-      })
+  //     const orderRes = await api.post("/post/boostPost", {
+  //       postId: postId,
+  //       amount: 500 * 100
+  //     })
 
-      console.log(orderRes);
+  //     console.log(orderRes);
 
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: orderRes?.data.order.amount,
-        currency: 'INR',
-        name: 'Boost Post',
-        description: `Boosting post with post-id: ${postId}`,
-        order_id: orderRes?.data.order.id,
-        handler: async (response: any) => {
+  //     const options = {
+  //       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+  //       amount: orderRes?.data.order.amount,
+  //       currency: 'INR',
+  //       name: 'Boost Post',
+  //       description: `Boosting post with post-id: ${postId}`,
+  //       order_id: orderRes?.data.order.id,
+  //       handler: async (response: any) => {
 
-          const verifyPayment = await api.post('/post/boost-post/verify-payment', {
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_signature: response.razorpay_signature,
-            postId: postId
-          })
-          // console.log(verifyPayment.data.post);
-          const index = posts.findIndex((post) => post?._id === verifyPayment.data.post._id);
-          const updatedPost = verifyPayment.data.post;
+  //         const verifyPayment = await api.post('/post/boost-post/verify-payment', {
+  //           razorpay_payment_id: response.razorpay_payment_id,
+  //           razorpay_order_id: response.razorpay_order_id,
+  //           razorpay_signature: response.razorpay_signature,
+  //           postId: postId
+  //         })
+  //         // console.log(verifyPayment.data.post);
+  //         const index = posts.findIndex((post) => post?._id === verifyPayment.data.post._id);
+  //         const updatedPost = verifyPayment.data.post;
 
-          dispatch(updateParticularPost({
-            index,
-            post: updatedPost
-          }))
-        },
-        prefill: {
-          name: 'User Name', // You can get this from your user context
-          email: 'user@example.com',
-          contact: '9999999999'
-        },
-        theme: {
-          color: '#3B82F6'
-        }
-      };
+  //         dispatch(updateParticularPost({
+  //           index,
+  //           post: updatedPost
+  //         }))
+  //       },
+  //       prefill: {
+  //         name: 'User Name', // You can get this from your user context
+  //         email: 'user@example.com',
+  //         contact: '9999999999'
+  //       },
+  //       theme: {
+  //         color: '#3B82F6'
+  //       }
+  //     };
 
-      const razorpay = new (window as any).Razorpay(options);
-      razorpay.open();
-    } catch (err) {
+  //     const razorpay = new (window as any).Razorpay(options);
+  //     razorpay.open();
+  //   } catch (err) {
 
-      if (err?.response) {
-        // console.log(err?.response?.data)
-        alert('Payment verification failed. Please contact support.');
-      } else {
-        // console.log(err);
-      }
-    } finally {
-      setIsLoading((prev) => ({ ...prev, [postId]: false }));
-    }
-  };
+  //     if (err?.response) {
+  //       // console.log(err?.response?.data)
+  //       alert('Payment verification failed. Please contact support.');
+  //     } else {
+  //       // console.log(err);
+  //     }
+  //   } finally {
+  //     setIsLoading((prev) => ({ ...prev, [postId]: false }));
+  //   }
+  // };
 
 
   return (
@@ -251,7 +251,7 @@ export default function PostGrid(props) {
                 <video
                   src={post.file.url}
                   className="w-full h-full object-cover"
-                  muted
+                  controls
                 ></video>
               ) : ["jpg", "jpeg", "png", "gif", "webp"].includes(post?.file?.fileType?.toLowerCase()) ? (
                 <img
@@ -266,11 +266,11 @@ export default function PostGrid(props) {
               )}
 
               <div className="absolute  inset-0 bg-black  bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 md:flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <ProfileGrid post={post} handleBoostClick={handleBoostClick} isLoading={isLoading} />
+                <ProfileGrid post={post} />
               </div>
 
               <div className="absolute inset-0 flex items-center justify-center">
-                <ProfileGrid2 post={post} handleBoostClick={handleBoostClick} isLoading={isLoading} />
+                <ProfileGrid2 post={post} />
               </div>
 
 

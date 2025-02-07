@@ -13,11 +13,10 @@ const useGetPosts = () => {
         try {
             const city = (localStorage.getItem('city') || "").trim();
             excludeIds = posts.map(post => post._id).join(',');
+            console.log('excludeIds',excludeIds);
             const response = await api.get(`/post/get?excludeIds=${excludeIds}&city=${city}`);
             setPosts(response?.data?.posts)
-            console.log(response?.data?.posts);
-
-            console.log(" Fetching posts...");
+            console.log(response?.data);
 
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -38,6 +37,7 @@ const useGetPosts = () => {
             const city = (localStorage.getItem('city') || "").trim();
             excludeIds = posts.map(post => post._id).join(',');
             const response = await api.get(`/post/get?excludeIds=${excludeIds}&city=${city}`);
+            console.log("load more", response?.data)
             setPosts(prevPosts => [...prevPosts, ...response.data.posts]);
             setIsMore(response?.data?.posts?.length > 0)
         } catch (err) {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -19,14 +19,15 @@ import api from "../services/api/axiosConfig";
 import { updateParticularPost } from "../store/slices/authSlice";
 import useSavedPost from "../hooks/post/useSavedpost";
 import useHandleLikes from "../hooks/post/useHandleLike";
-import { BiDotsVertical } from "react-icons/bi";
+import { BiCross, BiDotsVertical } from "react-icons/bi";
 import CommentSection from "../components/interactions/CommentSection";
 import useHandleComment from "../hooks/post/useHandleComments";
 import ShareButton from "../components/ShareBtn";
 
 
-const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) => {
+const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, savedPost }) => {
 
+    const [boostOpen, setBoostOpen] = useState(false);
     const [showMoreOptions, setShowMoreOptions] = useState(false)
     const [isSaved, setIsSaved] = useState(false);
     const { addSavedPost, removeSavedPost } = useSavedPost()
@@ -39,7 +40,7 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
         removeLoader: false,
     })
 
-    const navigate= useNavigate();
+    const navigate = useNavigate();
     const handleLike = async () => {
         await likePost(post?._id);
     };
@@ -170,7 +171,7 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
 
                             (<button
                                 disabled={isLoading[post._id] ? true : false}
-                                onClick={(e) => handleBoostClick(e, post._id)}
+                                onClick={() => setBoostOpen(true)}
                                 className="px-3 py-1.5 rounded-lg text-sm font-medium border dark:border-gray-600
                             hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                             >
@@ -283,9 +284,171 @@ const PostComponents = ({ post, handleBoostClick, user, isLoading, savedPost }) 
                 reelId={post?._id}
             />
 
+            {boostOpen && <div className="w-screen h-screen bg-[#00000025] fixed top-0 z-20"></div>}
+            {boostOpen && <BoostForm postId={post._id} setAmount={setAmount} setBoostOpen={setBoostOpen} handleBoostClick={handleBoostClick} />}
         </div>
     )
 }
+
+
+const BoostForm = ({ postId, setBoostOpen, handleBoostClick, setAmount }) => {
+
+    const [boostData, setBoostData] = useState({
+        gender: '',
+        ageGroup: '',
+        address: '',
+        postalCode: '',
+        areaRadius: '',
+        dailyBudget: '',
+        days: '',
+    });
+    console.log(postId);
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault()
+        setAmount(Number(boostData.dailyBudget) * Number(boostData.days))
+        setBoostData({
+            gender: '',
+            ageGroup: '',
+            address: '',
+            postalCode: '',
+            areaRadius: '',
+            dailyBudget: '',
+            days: '',
+        });
+        await handleBoostClick(postId)
+        setBoostOpen(false);
+    }
+
+    const handleChange = (e:any) => {
+        const { name, value } = e.currentTarget;
+        setBoostData((prev: any) => ({ ...prev, [name]: value }))
+    }
+    return (
+        <div className="zFold:w-96 w-80 h-[90vh] overflow-scroll p-5 rounded-lg bg-white fixed z-30 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg">
+            <div className="flex justify-between items-center mb-4">
+                <button onClick={() => setBoostOpen(false)}>
+                    <ArrowLeft />
+                </button>
+                <h2 className="text-lg font-semibold flex-grow text-center">Boost Your Post</h2>
+                <div className="w-10"></div> {/* Spacer to balance alignment */}
+            </div>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+                <div>
+                    <h3 className="text-md font-medium text-gray-700 mb-2">Demographic</h3>
+                    <div className="mb-3">
+                        <label htmlFor="gender" className="block text-sm font-medium text-gray-600">
+                            Gender
+                        </label>
+                        <select id="gender" required onChange={handleChange} value={boostData.gender} name="gender" className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="ageGroup" className="block text-sm font-medium text-gray-600">
+                            Age Group
+                        </label>
+                        <select id="ageGroup" required onChange={handleChange} name="ageGroup" value={boostData.ageGroup} className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                            <option value="">Select Age Group</option>
+                            <option value="18-24">18-24</option>
+                            <option value="25-34">25-34</option>
+                            <option value="35-44">35-44</option>
+                            <option value="45-54">45-54</option>
+                            <option value="55+">55+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 className="text-md font-medium text-gray-700 mb-2">Area</h3>
+                    <div className="mb-3">
+                        <label htmlFor="address" className="block text-sm font-medium text-gray-600">
+                            Address
+                        </label>
+                        <select id="address" required onChange={handleChange} name="address" value={boostData.address} className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                            <option value="">Select Address</option>
+                            <option value="address1">Address 1</option>
+                            <option value="address2">Address 2</option>
+                            <option value="address3">Address 3</option>
+                        </select>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="postalCode" className="block text-sm font-medium text-gray-600">
+                            Postal Code
+                        </label>
+                        <input
+                            type="text"
+                            id="postalCode"
+                            onChange={handleChange}
+                            required
+                            name="postalCode"
+                            value={boostData.postalCode}
+                            placeholder="Enter Postal Code"
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="areaRadius" className="block text-sm font-medium text-gray-600">
+                            Area Radius
+                        </label>
+                        <select id="areaRadius" required onChange={handleChange} name="areaRadius" value={boostData.areaRadius} className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                            <option value="">Select Radius</option>
+                            <option value="5">5 km</option>
+                            <option value="10">10 km</option>
+                            <option value="20">20 km</option>
+                            <option value="50">50 km</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 className="text-md font-medium text-gray-700 mb-2">Campaign Details</h3>
+                    <div className="mb-3">
+                        <label htmlFor="dailyBudget" className="block text-sm font-medium text-gray-600">
+                            Daily Budget
+                        </label>
+                        <input
+                            type="number"
+                            id="dailyBudget"
+                            onChange={handleChange}
+                            required
+                            name="dailyBudget"
+                            value={boostData.dailyBudget}
+                            placeholder="Enter daily budget"
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="days" className="block text-sm font-medium text-gray-600">
+                            Number of Days
+                        </label>
+                        <input
+                            type="number"
+                            id="days"
+                            onChange={handleChange}
+                            required
+                            name="days"
+                            value={boostData.days}
+                            placeholder="Enter number of days"
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                        />
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                >
+                    Boost Post
+                </button>
+            </form>
+        </div>
+    );
+}
+
 const UserPosts = () => {
     const user = useSelector((state) => state.auth.user);
     const userPost = useSelector((state) => state.auth.posts);
@@ -296,6 +459,7 @@ const UserPosts = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useDispatch()
+    const [amount, setAmount] = useState(0);
 
     const paramValue = searchParams.get("id"); // Get the post ID from the URL
     const postIndex = userPost?.findIndex((p) => p._id === paramValue);
@@ -308,7 +472,6 @@ const UserPosts = () => {
         if (!userPost || postIndex === -1) return navigate("/profile");
         console.log("hello in useeffect");
 
-        // Prepend previous posts
         setDisplayedPosts(() => {
             if (!userPost) return [];
             return userPost.slice(postIndex); // Start with the current post and older posts
@@ -350,8 +513,7 @@ const UserPosts = () => {
         });
     };
 
-    const handleBoostClick = async (e: any, postId: String) => {
-        e.stopPropagation();
+    const handleBoostClick = async (postId: String) => {
         setIsLoading((prev) => ({ ...prev, [postId]: true }));
         try {
 
@@ -359,10 +521,11 @@ const UserPosts = () => {
             if (!isScriptLoaded) {
                 throw new Error('Failed to load Razorpay script');
             }
+            console.log(amount+"$");
 
             const orderRes = await api.post("/post/boostPost", {
                 postId: postId,
-                amount: 500 * 100
+                amount: amount * 100
             })
 
             console.log(orderRes);
@@ -435,8 +598,7 @@ const UserPosts = () => {
 
             {userPost &&
                 displayedPosts.map((post: any) => (
-                    <PostComponents post={post} key={post?._id} handleBoostClick={handleBoostClick} user={user} isLoading={isLoading} savedPost={savedPost} />
-                    // <Post post={post} />
+                    <PostComponents post={post} key={post?._id} setAmount={setAmount} handleBoostClick={handleBoostClick} user={user} isLoading={isLoading} savedPost={savedPost} />
                 ))}
         </div>
     );

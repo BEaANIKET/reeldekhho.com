@@ -46,6 +46,7 @@ export default function SearchPage() {
   const fetchCities = async () => {
     try {
       const res = await api.get(`/post/getcitylist`);
+      res.data.sort((a, b) => a.city.localeCompare(b.Title));
       setCityList(res.data.value || []);
     } catch (error) {
       console.error('Error fetching cities:', error);
