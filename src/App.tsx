@@ -49,15 +49,39 @@ function AppContent() {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
 
+  // useEffect(() => {
+  //   const getUser = async () => {
+  //     setLoading(true)
+  //     try {
+  //       const response = await api.get('/auth/profile')
+  //       dispatch(setUserProfile(response.data.user))
+  //       localStorage.setItem('city', response?.data?.user?.city);
+  //       console.log(response.data.user);
+  //     } catch (error) {
+  //       // console.log(error);
+  //     } finally {
+  //       setLoading(false)
+  //     }
+  //   }
+
+  //   getUser();
+  // }, [])
+
   useEffect(() => {
     const getUser = async () => {
       setLoading(true)
       try {
         const response = await api.get('/auth/profile')
         dispatch(setUserProfile(response.data.user))
-        localStorage.setItem('city', response?.data?.user?.city);
+        if (response?.data?.user?.city) {
+          localStorage.setItem('city', response?.data?.user?.city);
+        }
+        else {
+          localStorage.removeItem('city');
+        }
         console.log(response.data.user);
       } catch (error) {
+        localStorage.removeItem('city');
         // console.log(error);
       } finally {
         setLoading(false)
@@ -91,7 +115,7 @@ function AppContent() {
   return (
     <div className={isDarkMode ? 'dark' : ''}>
       <Socketwindow />
-      <Toaster />
+      <Toaster position="top-center" reverseOrder={false} />
       <Router>
         <Suspense fallback={<LoadComponents />}>
           <Routes>

@@ -15,7 +15,7 @@ import useSavedPost from '../hooks/post/useSavedpost';
 import GetLocation from './interactions/GetLocation';
 import { formatTimeAgo } from '../utils/dateUtils';
 import ShareButton from './ShareBtn';
-import api from '../services/api/axiosConfig';
+
 interface PostProps {
   post: {
     id: number;
@@ -34,6 +34,8 @@ interface PostProps {
     };
     createdAt: string;
   };
+  setReportBottomSheet: (value: boolean) => void;
+  setCurntPostId: (value) => void ;
 }
 
 export const identifyMediaType = (fileType: string) => {
@@ -48,7 +50,7 @@ export const identifyMediaType = (fileType: string) => {
       : 'unknown';
 };
 
-export default function Post({ post }: PostProps) {
+export default function Post({ post,setReportBottomSheet,setCurntPostId }: PostProps) {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   const [isPlay, setIsPlay] = useState(true);
@@ -152,17 +154,24 @@ export default function Post({ post }: PostProps) {
     setShowMoreOptions(false);
   }
 
-  const handleReport = async () => {
-    try {
-      const response = await api.post(`/post/report-post?id=${post?._id}`);
-      // console.log(response.data);
-    } catch (error) {
-      // console.log(error)
-      alert(error.response.data.message || "Something went wrong!");
-    } finally {
-      setShowMoreOptions(false);
-    }
+  // const handleReport = async () => {
+  //   try {
+  //     const response = await api.post(`/post/report-post?id=${post?._id}`);
+  //     console.log(response.data);
+  //     toast.success("Post Reported Successfully");
+  //   } catch (error) {
+  //     console.log(error)
+  //     toast.error(error?.response?.data.message || "Something went wrong!");
+  //   } finally {
+  //     setShowMoreOptions(false);
+  //   }
 
+  // };
+
+  const handleReport = async () => {
+    setCurntPostId(post?._id)
+    setReportBottomSheet(true)
+    setShowMoreOptions(false);
   };
 
   const toggleMoreOption = () => {

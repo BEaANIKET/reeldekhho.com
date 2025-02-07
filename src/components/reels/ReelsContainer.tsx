@@ -71,12 +71,12 @@ export default function ReelsContainer() {
               <ReelCard reel={reel} />
             </div>
           ))}
-          <div
+          {/* <div
             ref={lastDivRef}
-            className="relative flex dark:bg-black bg-white text-black dark:text-white justify-center items-center z-10 h-full w-full snap-start overflow-hidden"
+            className="relative flex dark:bg-black bg-white text-black dark:text-white justify-center items-center z-10  w-full snap-start overflow-hidden"
           >
             {loader ? <p>Loading more reels...</p> : hasmore ? <p>Scroll down for more reels...</p> : <p>No more reels!</p>}
-          </div>
+          </div> */}
         </div>
       )}
     </div>

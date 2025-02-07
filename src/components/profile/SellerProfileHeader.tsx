@@ -17,7 +17,7 @@ export default function SellerProfileHeader() {
   const [profile, setProfile] = useState(true);
   const [Seller, setSeller] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [pageLoading, setPageLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(false);
   const [checkFollowed, setCheckFollowed] = useState(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function SellerProfileHeader() {
   }, [reviewedId])
 
   const fetchprofile = async () => {
-
+    setPageLoading(true)
     const res = await api.post(`/post/getprofile/${id}`);
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);
@@ -76,7 +76,6 @@ export default function SellerProfileHeader() {
   }, [id]);
 
   useEffect(() => {
-    console.log("extra userEffect")
     checkFollowing();
     setPageLoading(false);
   }, [followers]);
