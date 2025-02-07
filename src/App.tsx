@@ -23,6 +23,7 @@ import Followers from './components/Follow/Followers';
 import Following from './components/Follow/Followings';
 import { setReviews } from './store/slices/reviewSlice';
 import ChangePassword from './pages/Changepassword';
+import SellerPost from './components/profile/SellerPost';
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -134,6 +135,7 @@ function AppContent() {
               <Route path="/following/:id" element={<Following />} />
               <Route path="/editProfile" element={<Editprofile />} />
               <Route path="/seller/:id" element={<SellerProfile />} />
+              <Route path='/sellerPost' element= {<SellerPost />} />
               <Route path="/messages/:id" element={<MessagesPage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/add-product" element={<AddProduct />} />

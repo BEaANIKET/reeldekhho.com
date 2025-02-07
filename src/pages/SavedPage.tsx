@@ -7,6 +7,7 @@ import useSavedPost from "../hooks/post/useSavedpost";
 const SavedPage = () => {
 
     const savedPosts = useSelector((state) => state?.savedPosts?.saved_Posts)
+    console.log('savedPost',savedPosts);
     const navigate = useNavigate();
 
     const { savedLoading } = useSavedPost();
@@ -30,9 +31,9 @@ const SavedPage = () => {
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-6">Saved Posts</h1>
-            <div className="grid grid-cols-3 gap-4">
+            <div className={`${savedPosts.length ? "grid grid-cols-3 gap-4":" text-lg font-bold text-center" }`}>
                 {
-                    savedPosts && savedPosts.length && savedPosts.map((posts) => {
+                    savedPosts && savedPosts.length ? (savedPosts.map((posts) => {
                         return (
                             <div
                                 onClick={() => navigate(`/reels/${posts?.postId._id}`)}
@@ -47,7 +48,7 @@ const SavedPage = () => {
                                             loop
                                             className="w-full h-full object-cover"
                                         ></video>
-                                    ) : ["jpg", "jpeg", "png", "gif", "webp"].includes(posts?.postId.file?.fileType?.toLowerCase()) ? (
+                                    ) : ["jpg", "jpeg", "png", "gif", "webp"].includes(posts?.postId?.file?.fileType?.toLowerCase()) ? (
                                         <img
                                             src={posts.postId.file?.url}
                                             alt={posts?.postId.caption || "Post Image"}
@@ -64,20 +65,24 @@ const SavedPage = () => {
                                     <div className="flex gap-3 sm:gap-6 md:gap-9 text-white">
                                         <div className="flex items-center gap-1">
                                             <Heart className="w-4 h-4 sm:w-6 sm:h-6 fill-current" />
-                                            <span className="font-semibold">{posts?.postId.likes}</span>
+                                            <span className="font-semibold">{posts?.postId?.likes}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
                                             <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M20.656 17.008a9.993 9.993 0 10-3.59 3.615L22 22z" />
                                             </svg>
-                                            <span className="font-semibold">{posts?.postId.comments || 0}</span>
+                                            <span className="font-semibold">{posts?.postId?.comments || 0}</span>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
                         )
-                    })
+                    })) :(
+                        <div>
+                            No saved Post Found
+                        </div>
+                    )
                 }
             </div>
         </div>
