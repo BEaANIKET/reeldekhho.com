@@ -43,6 +43,7 @@ export default function SellerProfileHeader() {
     try {
       setPageLoading(true)
       const res = await api.post(`/post/getprofile/${id}`);
+      dispatch(setSellerData({post:res.data.sellerposts, seller:res.data.profile }));
       setProfile(res.data.profile);
       setSeller(res.data.sellerposts);
     } catch (error) {

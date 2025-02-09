@@ -6,6 +6,8 @@ import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import HeaderStatic from './HeaderStatic';
 import toast from 'react-hot-toast';
 import api from '../services/api/axiosConfig';
+import { LuCircleX } from 'react-icons/lu';
+import LikeList from './LikeList';
 // import { User } from 'lucide-react';
 const Post = lazy(() => import('./Post'));
 
@@ -57,8 +59,10 @@ export default function Feed() {
   const { loading, error, loadMorePosts, posts } = useGetPosts();
   const reportString = 'cursor-pointer ml-5';
   const [curntPostId, setCurntPostId] = useState(null);
+  const [likedPostId, setLikedPostId]= useState('');
 
   const [reportBottomSheet, setReportBottomSheet] = useState(false);
+  const [likeCard, setLikeCard] = useState(false)
 
   const reportRef = useRef<HTMLDivElement | null>(null);
 
@@ -104,6 +108,8 @@ export default function Feed() {
                     post={post}
                     setCurntPostId={setCurntPostId}
                     setReportBottomSheet={setReportBottomSheet}
+                    setLikeCard={setLikeCard}
+                    setLikedPostId={setLikedPostId}
                   />)
               ) : (
                 <div className="text-center text-gray-500">No posts available</div>
@@ -125,7 +131,14 @@ export default function Feed() {
         </div>
 
         {
-          reportBottomSheet && (
+           likeCard && (
+            <LikeList setLikeCard={setLikeCard} likedPostId={likedPostId} />
+          )
+        }
+
+
+        {
+          (reportBottomSheet || likeCard) && (
             <div
               onClick={() => setReportBottomSheet(false)}
               className='fixed w-screen h-screen bg-[#0000005b] top-0 z-40'>

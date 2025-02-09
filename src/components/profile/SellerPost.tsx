@@ -14,7 +14,7 @@ import {
     Delete,
     Bookmark,
 } from "lucide-react";
-import { formatTimeAgo } from "../../utils/dateUtils"; 
+import { formatTimeAgo } from "../../utils/dateUtils";
 import api from "../../services/api/axiosConfig";
 import { updateParticularPost } from "../../store/slices/authSlice";
 import useSavedPost from "../../hooks/post/useSavedpost";
@@ -23,9 +23,10 @@ import { BiCross, BiDotsVertical } from "react-icons/bi";
 import CommentSection from "../../components/interactions/CommentSection";
 import useHandleComment from "../../hooks/post/useHandleComments";
 import ShareButton from "../../components/ShareBtn";
+import LikeList from "../LikeList";
 
 
-const PostComponents = ({ post,seller, savedPost }) => {
+const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }) => {
 
     const [showMoreOptions, setShowMoreOptions] = useState(false)
     const [isSaved, setIsSaved] = useState(false);
@@ -142,7 +143,16 @@ const PostComponents = ({ post,seller, savedPost }) => {
                                 className={`w-4 h-4 sm:w-6 sm:h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
                             />
                         </button>
-                        <span style={{ marginLeft: '6px' }} className=" dark:text-white text-sm md:text-lg">{likes} {likes > 1 ? "Likes" : "Like"}</span>
+                        <span
+                        onClick={() => {
+                            setLikedPostId(post?._id)
+                            setLikeCard(true);
+                        }} 
+                        style={{ marginLeft: '6px' }} 
+                        className=" dark:text-white text-sm md:text-lg cursor-pointer"
+                        >
+                            {likes} {likes > 1 ? "Likes" : "Like"}
+                        </span>
 
                         <button onClick={() => setShowComments((prev) => !prev)}>
                             <MessageCircle className="sm:w-6 sm:h-6 w-4 h-4 dark:text-white cursor-pointer" />
@@ -255,11 +265,12 @@ const PostComponents = ({ post,seller, savedPost }) => {
 }
 
 const SellerPost = () => {
-    const sellerPost= useSelector((state) => state.SellerSlice.sellerPost);
-    const seller= useSelector((state) => state.SellerSlice.seller);
+    const sellerPost = useSelector((state) => state.SellerSlice.sellerPost);
+    const seller = useSelector((state) => state.SellerSlice.seller);
     const savedPost = useSelector((state) => state?.savedPosts?.saved_Posts)
 
-    console.log(seller);
+    const [likeCard, setLikeCard] = useState(false);
+    const [likedPostId, setLikedPostId] = useState('');
 
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -271,6 +282,13 @@ const SellerPost = () => {
     const [displayedPosts, setDisplayedPosts] = useState([]);
 
     useEffect(() => {
+        if (!sellerPost.length) {
+            navigate('/');
+        }
+    })
+
+    useEffect(() => {
+
         setDisplayedPosts(() => {
             if (!sellerPost.length) return [];
             return sellerPost.slice(postIndex);
@@ -293,16 +311,6 @@ const SellerPost = () => {
         }, 15);
     }, [])
 
-    // const updateState = () => {
-    //     console.log(userPost);
-    //     const newArray = userPost.slice(postIndex);
-    //     setDisplayedPosts(newArray);
-    //     let previousPosts = userPost.slice(0, postIndex);
-    //     setDisplayedPosts((prev) => [...previousPosts, ...prev]);
-    // }
-
-    console.log(displayedPosts);
-
     return (
         <div className=" max-w-3xl mx-auto" ref={containerRef}>
             <header className="flex items-center gap-4 mb-6">
@@ -313,9 +321,31 @@ const SellerPost = () => {
                 <h1 className="text-2xl font-bold">Posts</h1>
             </header>
 
+            {
+                likeCard && (
+                    <LikeList setLikeCard={setLikeCard} likedPostId={likedPostId} />
+                )
+            }
+
+
+            {
+                (likeCard) && (
+                    <div
+                        className='fixed w-screen h-screen bg-[#0000005b] top-0 z-40'>
+                    </div>
+                )
+            }
+
             {seller &&
                 displayedPosts.map((post: any) => (
-                    <PostComponents post={post} key={post?._id} seller={seller} savedPost={savedPost} />
+                    <PostComponents
+                        post={post}
+                        key={post?._id}
+                        seller={seller}
+                        savedPost={savedPost}
+                        setLikeCard={setLikeCard}
+                        setLikedPostId={setLikedPostId}
+                    />
                 ))}
         </div>
     );

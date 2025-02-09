@@ -35,7 +35,9 @@ interface PostProps {
     createdAt: string;
   };
   setReportBottomSheet: (value: boolean) => void;
-  setCurntPostId: (value) => void ;
+  setCurntPostId: (value) => void;
+  setLikeCard: (value:boolean) => void;
+  setLikedPostId: (value: string) => void;
 }
 
 export const identifyMediaType = (fileType: string) => {
@@ -50,7 +52,7 @@ export const identifyMediaType = (fileType: string) => {
       : 'unknown';
 };
 
-export default function Post({ post,setReportBottomSheet,setCurntPostId }: PostProps) {
+export default function Post({ post, setReportBottomSheet, setCurntPostId,setLikeCard,setLikedPostId }: PostProps) {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   const [isPlay, setIsPlay] = useState(true);
@@ -275,21 +277,44 @@ export default function Post({ post,setReportBottomSheet,setCurntPostId }: PostP
       <div className="p-4">
         <div className="flex justify-between mb-1">
           <div className="flex space-x-4">
-            {isLoggedIn ? <> <button
-              onClick={handleLike}
-              className="transform active:scale-125 transition-transform duration-200"
-            >
-              <Heart
-                className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
-              />
-            </button> <span style={{ marginLeft: '6px', fontSize: '17px' }} className=" dark:text-white">{likes} {likes > 1 ? "Likes" : "Like"}</span> </> : <> <button
-              onClick={() => navigate('/signup')}
-              className="transform active:scale-125 transition-transform duration-200"
-            >
-              <Heart
-                className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
-              />
-            </button> <span className="font-semibold dark:text-white">{likes} {likes > 1 ? "Likes" : "Like"}</span> </>}
+            {isLoggedIn ?
+              <>
+                <button
+                  onClick={handleLike}
+                  className="transform active:scale-125 transition-transform duration-200"
+                >
+                  <Heart
+                    className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
+                  />
+                </button>
+                <span
+                  style={{ marginLeft: '6px', fontSize: '17px' }}
+                  className=" dark:text-white cursor-pointer"
+                  onClick={() => {
+                    setLikedPostId(post?._id)
+                    setLikeCard(true)
+                  }}
+                >
+                  {likes} {likes > 1 ? "Likes" : "Like"}
+                </span>
+              </>
+              :
+              <>
+                <button
+                  onClick={() => navigate('/signup')}
+                  className="transform active:scale-125 transition-transform duration-200"
+                >
+                  <Heart
+                    className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
+                  />
+                </button>
+                <span
+                  className="cursor-pointer font-semibold dark:text-white"
+                >
+                  {likes} {likes > 1 ? "Likes" : "Like"}
+                </span>
+              </>
+            }
 
             {isLoggedIn ? <> <button onClick={() => setShowComments((prev) => !prev)}>
               <MessageCircle className="w-6 h-6 dark:text-white" />
