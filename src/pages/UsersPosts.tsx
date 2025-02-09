@@ -23,9 +23,9 @@ import { BiCross, BiDotsVertical } from "react-icons/bi";
 import CommentSection from "../components/interactions/CommentSection";
 import useHandleComment from "../hooks/post/useHandleComments";
 import ShareButton from "../components/ShareBtn";
+import LikeList from "../components/LikeList";
 
-
-const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, savedPost }) => {
+const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, savedPost, setLikeCard, setLikedPostId }) => {
 
     const [boostOpen, setBoostOpen] = useState(false);
     const [showMoreOptions, setShowMoreOptions] = useState(false)
@@ -143,7 +143,16 @@ const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, sa
                                 className={`w-4 h-4 sm:w-6 sm:h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
                             />
                         </button>
-                        <span style={{ marginLeft: '6px' }} className=" dark:text-white text-sm md:text-lg">{likes} {likes > 1 ? "Likes" : "Like"}</span>
+                        <span 
+                        onClick={() => {
+                            setLikedPostId(post?._id)
+                            setLikeCard(true);
+                        }}
+                        style={{ marginLeft: '6px' }} 
+                        className=" dark:text-white text-sm md:text-lg cursor-pointer"
+                        >
+                            {likes} {likes > 1 ? "Likes" : "Like"}
+                        </span>
 
                         <button onClick={() => setShowComments((prev) => !prev)}>
                             <MessageCircle className="sm:w-6 sm:h-6 w-4 h-4 dark:text-white cursor-pointer" />
@@ -320,7 +329,7 @@ const BoostForm = ({ postId, setBoostOpen, handleBoostClick, setAmount }) => {
         setBoostOpen(false);
     }
 
-    const handleChange = (e:any) => {
+    const handleChange = (e: any) => {
         const { name, value } = e.currentTarget;
         setBoostData((prev: any) => ({ ...prev, [name]: value }))
     }
@@ -468,6 +477,9 @@ const UserPosts = () => {
 
     const [isLoading, setIsLoading] = useState({});
 
+    const [likeCard, setLikeCard] = useState(false);
+    const [likedPostId, setLikedPostId] = useState('');
+
     useEffect(() => {
         if (!userPost || postIndex === -1) return navigate("/profile");
         console.log("hello in useeffect");
@@ -521,7 +533,7 @@ const UserPosts = () => {
             if (!isScriptLoaded) {
                 throw new Error('Failed to load Razorpay script');
             }
-            console.log(amount+"$");
+            console.log(amount + "$");
 
             const orderRes = await api.post("/post/boostPost", {
                 postId: postId,
@@ -584,8 +596,6 @@ const UserPosts = () => {
         }
     };
 
-    console.log(displayedPosts);
-
     return (
         <div className=" max-w-3xl mx-auto" ref={containerRef}>
             <header className="flex items-center gap-4 mb-6">
@@ -596,9 +606,33 @@ const UserPosts = () => {
                 <h1 className="text-2xl font-bold">Posts</h1>
             </header>
 
+            {
+                likeCard && (
+                    <LikeList setLikeCard={setLikeCard} likedPostId={likedPostId} />
+                )
+            }
+
+
+            {
+                (likeCard) && (
+                    <div
+                        className='fixed w-screen h-screen bg-[#0000005b] top-0 z-40'>
+                    </div>
+                )
+            }
+
             {userPost &&
                 displayedPosts.map((post: any) => (
-                    <PostComponents post={post} key={post?._id} setAmount={setAmount} handleBoostClick={handleBoostClick} user={user} isLoading={isLoading} savedPost={savedPost} />
+                    <PostComponents
+                        post={post} key={post?._id}
+                        setAmount={setAmount}
+                        handleBoostClick={handleBoostClick}
+                        user={user}
+                        isLoading={isLoading}
+                        savedPost={savedPost}
+                        setLikeCard={setLikeCard}
+                        setLikedPostId={setLikedPostId}
+                    />
                 ))}
         </div>
     );
