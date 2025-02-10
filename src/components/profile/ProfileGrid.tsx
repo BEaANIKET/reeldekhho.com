@@ -251,7 +251,6 @@ export default function PostGrid(props) {
                 <video
                   src={post.file.url}
                   className="w-full h-full object-cover"
-                  controls
                 ></video>
               ) : ["jpg", "jpeg", "png", "gif", "webp"].includes(post?.file?.fileType?.toLowerCase()) ? (
                 <img

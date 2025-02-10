@@ -309,10 +309,7 @@ export default function SellerProfileHeader() {
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 ">
                 <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
                   <video
-                    src={`${import.meta.env.VITE_ADMIN_URL}/public/Images/${profile?.smallvideo}`}
-                    autoPlay
-                    loop
-                    muted
+                    src={`${profile?.smallvideo}`}
                     controls
                     className="absolute inset-0 w-full h-full object-cover"
                   />
