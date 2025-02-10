@@ -6,7 +6,7 @@ const useUploadFile = () => {
     const [error, setError] = useState("");
 
     const uploadFile = async (file: File) => {
-        // console.log(file);
+        // //(file);
 
         if (!file) {
             setError("No file selected");

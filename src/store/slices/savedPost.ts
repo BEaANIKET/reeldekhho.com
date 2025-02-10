@@ -15,7 +15,7 @@ const SavedPostSlice = createSlice({
             state.saved_Posts = [...state.saved_Posts, action.payload]
         },
         removePost: (state, action) => {
-            // console.log(action.payload._id);  
+            // //(action.payload._id);  
             state.saved_Posts = [...state.saved_Posts.filter((post) => post?.postId?._id !== action.payload._id)]
         }
     }

@@ -41,7 +41,7 @@ const SignupPage = () => {
         if (success) {
             navigation('/login')
         } else {
-            // console.log(error);
+            // //(error);
         }
 
         setLoader(false)
@@ -51,11 +51,11 @@ const SignupPage = () => {
     const handleGoogleClick = async () => {
         try {
             const redirectUri = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
-            // console.log(redirectUri);
+            // //(redirectUri);
 
             window.location.href = redirectUri;
         } catch (error) {
-            // console.log(error);
+            // //(error);
         }
     };
 

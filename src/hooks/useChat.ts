@@ -21,7 +21,7 @@ const useChat = () => {
         const fetchChats = async () => {
             try {
                 const response = await api.get('/message/getee');
-                console.log(response.data, 'User chats:');
+                //(response.data, 'User chats:');
                 if (response.data && Array.isArray(response.data)) {
                     dispatch(setChats(response.data));
                 } else {
@@ -41,11 +41,11 @@ const useChat = () => {
     const fetchChatByUserId = async (chatId: string) => {
         try {
             const response = await api.get(`/message/get?id=${chatId}`);
-            console.log(response.data, "fdsfsdfsdf");
+            //(response.data, "fdsfsdfsdf");
 
             const messages = response.data?.conversation?.messages;
             const unseenMessage = response?.data?.unseenCount;
-            console.log(unseenMessage);
+            //(unseenMessage);
 
             if (messages) {
                 dispatch(setUnseenCount({ userId: chatId, unseenCount: unseenMessage }));
@@ -85,12 +85,12 @@ const useChat = () => {
         if (!socket) return;
 
         const handleNewMessage = (data: any) => {
-            console.log('New message received:', data);
+            //('New message received:', data);
             if (!chats.some(chat => chat._id === data.senderId) && logedinUser?._id !== data.senderId) {
                 fetchAndAddUser(data.senderId);
                 dispatch(setUnseenCount({ userId: data.senderId, unseenCount: 1 }));
             } else {
-                console.log(unseenCountMessage);
+                //(unseenCountMessage);
                 if (logedinUser?._id !== data.senderId) {
                     const currentUnseenCount = unseenCountMessage[data.senderId] || 0;
                     dispatch(setUnseenCount({ userId: data.senderId, unseenCount: currentUnseenCount + 1 }));

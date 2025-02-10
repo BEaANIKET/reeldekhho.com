@@ -18,22 +18,22 @@ export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setP
     setRating(value);
   };
 
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
 
   const handleClick = async () => {
     try {
       setLoading(true)
       const response = await api.post(`/user/review?id=${sellerId}`, { star: rating })
-      console.log(response.data.reviwedId.reviewedId ,response.data.reviwedId.totalStars )
+      //(response.data.reviwedId.reviewedId ,response.data.reviwedId.totalStars )
       setProfile(response.data.user)
-      
+
       dispatch(updateReviews({
         reviewedId: response.data.reviwedId.reviewedId,
         totalStars: response.data.reviwedId.totalStars
       }));
       alert(`Thank you for rating us ${rating} stars!`);
     } catch (error) {
-      // console.log(error);
+      // //(error);
       alert(`Something went wrong!`);
     } finally {
       setIsRateBottomSheetOpen(false)
@@ -76,8 +76,8 @@ export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setP
             onClick={handleClick}
             disabled={rating === 0} // Disable submit if no rating is selected
             className={`block w-full ${loading && 'flex items-center justify-center'} px-4 py-2 mb-2 rounded-md font-semibold ${rating > 0
-                ? "bg-blue-500 text-white hover:bg-blue-600"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
           >
             {

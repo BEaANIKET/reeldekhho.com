@@ -137,7 +137,7 @@ const ProfileGrid2 = ({ post }) => {
 };
 
 export default function PostGrid(props) {
-  console.log(props);
+  //(props);
   const navigate = useNavigate();
   const posts = props.posts;
 
@@ -170,7 +170,7 @@ export default function PostGrid(props) {
   //       amount: 500 * 100
   //     })
 
-  //     console.log(orderRes);
+  //     //(orderRes);
 
   //     const options = {
   //       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
@@ -187,7 +187,7 @@ export default function PostGrid(props) {
   //           razorpay_signature: response.razorpay_signature,
   //           postId: postId
   //         })
-  //         // console.log(verifyPayment.data.post);
+  //         // //(verifyPayment.data.post);
   //         const index = posts.findIndex((post) => post?._id === verifyPayment.data.post._id);
   //         const updatedPost = verifyPayment.data.post;
 
@@ -211,10 +211,10 @@ export default function PostGrid(props) {
   //   } catch (err) {
 
   //     if (err?.response) {
-  //       // console.log(err?.response?.data)
+  //       // //(err?.response?.data)
   //       alert('Payment verification failed. Please contact support.');
   //     } else {
-  //       // console.log(err);
+  //       // //(err);
   //     }
   //   } finally {
   //     setIsLoading((prev) => ({ ...prev, [postId]: false }));
@@ -246,7 +246,7 @@ export default function PostGrid(props) {
             // onClick={() => navigate(`/reels/${post._id}`)}
             <div onClick={() => {
               navigate(`/posts?id=${post._id}`);
-            }} key={post._id} className="relative aspect-square group cursor-pointer">   
+            }} key={post._id} className="relative aspect-square group cursor-pointer">
               {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
                 <video
                   src={post.file.url}

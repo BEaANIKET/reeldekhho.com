@@ -19,7 +19,7 @@ const useHandleComment = (postId) => {
                 text: commentText,
                 postId: postId,
             });
-            // console.log(response.data.comment);
+            // //(response.data.comment);
 
             setComments([response.data.comment, ...comments]);
         } catch (error) {

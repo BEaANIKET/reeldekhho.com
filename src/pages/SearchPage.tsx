@@ -45,7 +45,7 @@ export default function SearchPage() {
   const fetchCities = async () => {
     try {
       const res = await api.get(`/post/getcitylist`);
-      console.log(res);
+      //(res);
 
       res.data.value.sort((a, b) => a.city.localeCompare(b.city));
       setCityList(res.data.value || []);
@@ -77,7 +77,7 @@ export default function SearchPage() {
 
   const handleChageCity = async (e) => {
     setSelectedCity(e?.target?.value)
-    console.log(e?.target?.value);
+    //(e?.target?.value);
 
     if (e?.target?.value === 'All State') {
       localStorage.removeItem('city')

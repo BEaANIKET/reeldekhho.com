@@ -119,16 +119,16 @@ export default function ReelCard({ reel }: ReelCardProps) {
   };
   const [localLikes, setLocalLikes] = useState(reel.likes);
   const [isShareOpen, setIsShareOpen] = useState(false);
-  // console.log(" this is reels ->  ", reel);
+  // //(" this is reels ->  ", reel);
 
 
   useEffect(() => {
     const setView = async () => {
       try {
         const response = await api.post(`/post/view?postId=${reel._id}`)
-        console.log(response.data);
+        //(response.data);
       } catch (error) {
-        console.log(error.message);
+        //(error.message);
       }
     }
 

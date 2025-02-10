@@ -15,7 +15,7 @@ const useGetPost = () => {
             setLoading(true)
             try {
                 const response = await api.get('/auth/post')
-                // console.log(response.data.posts);
+                // //(response.data.posts);
                 dispatch(setUserPost(response.data.posts))
             } catch (error) {
                 setError(error?.response?.data?.message || 'Something went wrong')

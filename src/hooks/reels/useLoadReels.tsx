@@ -14,7 +14,7 @@ const useLoadReels = () => {
             const newReels = response.data.posts;
             setReels(newReels);
             setFetchedReelIds(newReels.map((reel: any) => reel._id));
-            // console.log(newReels);
+            // //(newReels);
         } catch (error) {
             console.error(error?.response?.data?.error);
         } finally {

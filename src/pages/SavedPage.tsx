@@ -7,7 +7,7 @@ import useSavedPost from "../hooks/post/useSavedpost";
 const SavedPage = () => {
 
     const savedPosts = useSelector((state) => state?.savedPosts?.saved_Posts)
-    console.log('savedPost',savedPosts);
+    //('savedPost',savedPosts);
     const navigate = useNavigate();
 
     const { savedLoading } = useSavedPost();
@@ -31,7 +31,7 @@ const SavedPage = () => {
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-6">Saved Posts</h1>
-            <div className={`${savedPosts.length ? "grid grid-cols-3 gap-4":" text-lg font-bold text-center" }`}>
+            <div className={`${savedPosts.length ? "grid grid-cols-3 gap-4" : " text-lg font-bold text-center"}`}>
                 {
                     savedPosts && savedPosts.length ? (savedPosts.map((posts) => {
                         return (
@@ -78,7 +78,7 @@ const SavedPage = () => {
 
                             </div>
                         )
-                    })) :(
+                    })) : (
                         <div>
                             No saved Post Found
                         </div>

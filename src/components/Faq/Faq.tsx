@@ -10,7 +10,7 @@ const Faq = () => {
   const [faqData, setFaqData] = useState([]);
   const fetchfaq = async () => {
     const res = await axios.get(`${backendUrl}/post/fetchfaq`);
-    // console.log(res.data, "coming from faq");
+    // //(res.data, "coming from faq");
     setFaqData(res.data);
   };
   useEffect(() => {

@@ -12,14 +12,14 @@ const useHandleReelsLikes = (postId) => {
     useEffect(() => {
         const fetchLikes = async () => {
             if (!postId) return;
-            // console.log("I am run ");
+            // //("I am run ");
 
             setLoading(true);
             try {
                 const response = await api.get(`/post/getlikes?postId=${postId}`);
                 setLikeCount(response.data.likesCount)
                 setIsLiked(response.data.isCurrUserLiked)
-                // console.log(response.data);
+                // //(response.data);
 
             } catch (err) {
                 setError(err?.response?.data?.message || 'Something went wrong');
@@ -36,7 +36,7 @@ const useHandleReelsLikes = (postId) => {
 
     const likePost = async () => {
         if (!postId) return;
-        // console.log("I am run ");
+        // //("I am run ");
 
         try {
             const updatedLikeCount = isLiked ? likeCount - 1 : likeCount + 1;

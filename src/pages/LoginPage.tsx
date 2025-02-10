@@ -13,7 +13,7 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(email, password);
+    //(email, password);
     setLoading(true);
     const success = await login(email, password)
     setLoading(false);
@@ -26,11 +26,11 @@ export default function LoginPage() {
   const handleGoogleClick = async () => {
     try {
       const redirectUri = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
-      // console.log(redirectUri);
+      // //(redirectUri);
 
       window.location.href = redirectUri;
     } catch (error) {
-      // console.log(error);
+      // //(error);
     }
   };
 

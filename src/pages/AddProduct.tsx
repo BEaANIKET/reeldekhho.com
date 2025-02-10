@@ -100,7 +100,7 @@ const AddProduct: React.FC = () => {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
-    // console.log('Selected file:', selectedFile);
+    // //('Selected file:', selectedFile);
     if (selectedFile) {
       if (!selectedFile.type.startsWith('image/') && !selectedFile.type.startsWith('video/')) {
         alert('Please upload a valid image or video file.');
@@ -164,7 +164,7 @@ const AddProduct: React.FC = () => {
     const success = await addPost(formData);
     dispatch(updateMyPosts(success));
 
-    // console.log("add product success: ", success);
+    // //("add product success: ", success);
     if (success) {
       alert('Product added successfully');
       setFormData({
@@ -191,7 +191,7 @@ const AddProduct: React.FC = () => {
   }, [filePreview]);
   const fetchcategory = async () => {
     const res = await axios.get(`${backendUrl}/post/getcategory`)
-    // console.log(res.data.value, 'fetch category');
+    // //(res.data.value, 'fetch category');
     setCities(res.data.value)
   }
   useEffect(() => {

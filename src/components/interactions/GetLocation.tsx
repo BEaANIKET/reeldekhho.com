@@ -1,14 +1,14 @@
 // import React, { useEffect, useState } from "react";
 // import { LuMapPin } from "react-icons/lu";
 // const GetLocation: React.FC = (props) => {
-//   console.log(props, 'this is my props');
+//   //(props, 'this is my props');
 //   const sellerlongitude = props.latitude;
 //   const sellerlatitude = props.longitude
 //     // const {createdDate} = props
 //   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
 //     null
 //   );
-//   console.log(location?.lat, location?.lng, 'location lattitude');
+//   //(location?.lat, location?.lng, 'location lattitude');
 
 //   const [error, setError] = useState<string | null>(null);
 
@@ -33,9 +33,9 @@
 //     getCurrentLocation()
 //   },[])
 
-//   console.log('please aa ja');
+//   //('please aa ja');
 
-//     console.log(props, 'this is my props');
+//     //(props, 'this is my props');
 //   return (
 //     // <div className="p-4">
 //     //   <button

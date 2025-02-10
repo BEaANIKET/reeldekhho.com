@@ -43,9 +43,9 @@ const Header = () => {
   const [unSeenMsgCount, setUnSeenMsgCount] = useState(0)
 
   useEffect(() => {
-    console.log(unseenMsg);
+    //(unseenMsg);
     const totalUnseen = Object.values(unseenMsg).reduce((sum, count) => sum + count, 0);
-    console.log(totalUnseen);
+    //(totalUnseen);
     setUnSeenMsgCount(totalUnseen)
   }, [unseenMsg])
 

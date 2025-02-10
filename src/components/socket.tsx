@@ -31,7 +31,7 @@ const Socketwindow = () => {
             });
 
             socket.on('newMessage2', (data) => {
-                console.log(data);
+                //(data);
 
             })
 
@@ -45,7 +45,7 @@ const Socketwindow = () => {
         return () => {
             if (socket) {
                 socket.disconnect();
-                console.log("Socket disconnected");
+                //("Socket disconnected");
             }
         };
     }, [dispatch, user?._id, user]);

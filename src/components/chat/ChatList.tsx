@@ -12,7 +12,7 @@ export default function ChatList({ onSelectChat }: { onSelectChat: (chatId: stri
         chat?.fullName?.toLowerCase().includes(searchQuery.toLowerCase())
     );
     const unSeenCountMessage = useSelector(state => state.chat?.unSeenCount);
-    console.log(unSeenCountMessage['678e689797814e55b5fc9cc8']);
+    //(unSeenCountMessage['678e689797814e55b5fc9cc8']);
 
     const navigate = useNavigate()
 

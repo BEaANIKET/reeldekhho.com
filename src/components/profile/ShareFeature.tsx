@@ -8,7 +8,7 @@ interface SharePopupProps {
 }
 
 export default function ShareFeature({ isOpen, onClose, profileId }: SharePopupProps) {
-    // console.log(profileId);
+    // //(profileId);
 
     const [showCopied, setShowCopied] = useState(false);
     const popupRef = useRef<HTMLDivElement>(null);

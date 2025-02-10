@@ -61,7 +61,7 @@ const useHandleLikes = (postId) => {
                 })
             );
             const response = await api.post(`/post/like?postId=${postId}`);
-            // console.log(response);
+            // //(response);
 
         } catch (err) {
             // Revert the state if request fails
