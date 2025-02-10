@@ -22,12 +22,12 @@ const useUserFollow = () => {
 
             dispatch(setUserFollow({ followers, following }))
         } catch (error) {
-            console.log("Error getting follow data:- ",error);
+            //("Error getting follow data:- ",error);
         } finally {
             setUserLoading(false);
         }
     }
-    return{
+    return {
         userLoading
     };
 }

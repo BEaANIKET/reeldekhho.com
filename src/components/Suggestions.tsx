@@ -1,4 +1,5 @@
 import { User } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 // const suggestions = [
 //   {
@@ -22,13 +23,19 @@ import { User } from 'lucide-react';
 // ];
 
 export default function Suggestions() {
+
+  const user = useSelector(state => state.auth?.user);
+
+
   return (
     <div className="p-4 sticky top-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-4">
           <User className="w-8 h-8 dark:text-white" />
           <div>
-            <h2 className="font-semibold dark:text-white">Welcome to Reeldekho</h2>
+            <h2 className="font-semibold dark:text-white">Welcome <span style={{
+              fontWeight: 'bold'
+            }} >{user?.fullName} </span></h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">Discover people to follow</p>
           </div>
         </div>
@@ -54,7 +61,7 @@ export default function Suggestions() {
           </div>
         ))}
       </div> */}
-      
+
     </div>
   );
 }

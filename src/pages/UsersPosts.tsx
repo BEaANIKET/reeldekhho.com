@@ -143,13 +143,13 @@ const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, sa
                                 className={`w-4 h-4 sm:w-6 sm:h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
                             />
                         </button>
-                        <span 
-                        onClick={() => {
-                            setLikedPostId(post?._id)
-                            setLikeCard(true);
-                        }}
-                        style={{ marginLeft: '6px' }} 
-                        className=" dark:text-white text-sm md:text-lg cursor-pointer"
+                        <span
+                            onClick={() => {
+                                setLikedPostId(post?._id)
+                                setLikeCard(true);
+                            }}
+                            style={{ marginLeft: '6px' }}
+                            className=" dark:text-white text-sm md:text-lg cursor-pointer"
                         >
                             {likes} {likes > 1 ? "Likes" : "Like"}
                         </span>
@@ -311,7 +311,7 @@ const BoostForm = ({ postId, setBoostOpen, handleBoostClick, setAmount }) => {
         dailyBudget: '',
         days: '',
     });
-    console.log(postId);
+    //(postId);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -482,7 +482,7 @@ const UserPosts = () => {
 
     useEffect(() => {
         if (!userPost || postIndex === -1) return navigate("/profile");
-        console.log("hello in useeffect");
+        //("hello in useeffect");
 
         setDisplayedPosts(() => {
             if (!userPost) return [];
@@ -507,7 +507,7 @@ const UserPosts = () => {
     }, [])
 
     const updateState = () => {
-        console.log(userPost);
+        //(userPost);
         const newArray = userPost.slice(postIndex);
         setDisplayedPosts(newArray);
         let previousPosts = userPost.slice(0, postIndex);
@@ -533,14 +533,14 @@ const UserPosts = () => {
             if (!isScriptLoaded) {
                 throw new Error('Failed to load Razorpay script');
             }
-            console.log(amount + "$");
+            //(amount + "$");
 
             const orderRes = await api.post("/post/boostPost", {
                 postId: postId,
                 amount: amount * 100
             })
 
-            console.log(orderRes);
+            //(orderRes);
 
             const options = {
                 key: import.meta.env.VITE_RAZORPAY_KEY_ID,
@@ -557,12 +557,12 @@ const UserPosts = () => {
                         razorpay_signature: response.razorpay_signature,
                         postId: postId
                     })
-                    // console.log(verifyPayment.data.post);
+                    // //(verifyPayment.data.post);
                     const index = userPost.findIndex((post: any) => post?._id === verifyPayment.data.post._id);
-                    console.log(index);
+                    //(index);
 
                     const updatedPost = verifyPayment.data.post;
-                    console.log(updatedPost)
+                    //(updatedPost)
 
                     dispatch(updateParticularPost({
                         index,
@@ -586,10 +586,10 @@ const UserPosts = () => {
         } catch (err) {
 
             if (err?.response) {
-                console.log(err?.response?.data)
+                //(err?.response?.data)
                 alert('Payment verification failed. Please contact support.');
             } else {
-                console.log(err);
+                //(err);
             }
         } finally {
             setIsLoading((prev) => ({ ...prev, [postId]: false }));

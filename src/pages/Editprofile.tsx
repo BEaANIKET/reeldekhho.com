@@ -56,10 +56,10 @@ const EditProfile: React.FC = () => {
     }
 
     try {
-      // console.log(formData, "59 data");
+      // //(formData, "59 data");
 
       const response = await api.post("/auth/updateprofile", formData);
-      // console.log(response);
+      // //(response);
 
       dispatch(setUserProfile(response.data.user))
       // Navigate to the profile page after success

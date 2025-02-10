@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 const useSavedPost = () => {
 
     const savedPosts = useSelector((state) => state?.savedPosts?.saved_Posts)
-    const [savedLoading,setSavedLoading]= useState(false)
+    const [savedLoading, setSavedLoading] = useState(false)
 
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector(state => state?.auth?.user);
@@ -29,7 +29,7 @@ const useSavedPost = () => {
             dispatch(setSavedPosts(response.data.savedPosts))
         } catch (error) {
             // console.error(error?.response?.data?.error || error);
-        }finally{
+        } finally {
             setSavedLoading(false)
         }
     };
@@ -37,9 +37,9 @@ const useSavedPost = () => {
 
     const removeSavedPost = async (id: string) => {
         try {
-            // console.log(id);
+            // //(id);
             const response = await api.delete(`/post/deletesaved?id=${id}`, { data: { postId: id } });
-            // console.log(response.data);
+            // //(response.data);
 
             const value = {
                 _id: id
@@ -52,9 +52,9 @@ const useSavedPost = () => {
     };
 
     useEffect(() => {
-        if (user && savedPosts.length===0) {
-            console.log('saved effect ran');
-            
+        if (user && savedPosts.length === 0) {
+            //('saved effect ran');
+
             getSavedPosts();
         }
     }, [user])

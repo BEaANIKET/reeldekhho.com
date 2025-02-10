@@ -10,7 +10,7 @@ export default function CommentSection({ postId, createComment, loader, setLoade
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // console.log(comment);
+    // //(comment);
     setLoader((prev) => ({ ...prev, addLoader: true }));
     await createComment(comment)
     setComment('');

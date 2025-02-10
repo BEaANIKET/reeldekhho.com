@@ -59,7 +59,7 @@ export default function Feed() {
   const { loading, error, loadMorePosts, posts } = useGetPosts();
   const reportString = 'cursor-pointer ml-5';
   const [curntPostId, setCurntPostId] = useState(null);
-  const [likedPostId, setLikedPostId]= useState('');
+  const [likedPostId, setLikedPostId] = useState('');
 
   const [reportBottomSheet, setReportBottomSheet] = useState(false);
   const [likeCard, setLikeCard] = useState(false)
@@ -78,10 +78,10 @@ export default function Feed() {
     const reportMessage = event?.currentTarget.id;
     try {
       const response = await api.post(`/post/report-post?id=${curntPostId}`, { message: reportMessage });
-      console.log(response.data);
+      //(response.data);
       toast.success("Post Reported Successfully");
     } catch (error) {
-      console.log(error)
+      //(error)
       toast.error(error?.response?.data.message || "Something went wrong!");
     } finally {
       setReportBottomSheet(false);
@@ -131,7 +131,7 @@ export default function Feed() {
         </div>
 
         {
-           likeCard && (
+          likeCard && (
             <LikeList setLikeCard={setLikeCard} likedPostId={likedPostId} />
           )
         }

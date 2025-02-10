@@ -18,7 +18,7 @@ const Verify = () => {
                 const response = await axios.get(`${baseurl}/auth/profile`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                // console.log('response:', response.data);
+                // //('response:', response.data);
                 localStorage.clear()
                 localStorage.setItem('token', token)
                 dispatch(setUserProfile(response?.data?.user))

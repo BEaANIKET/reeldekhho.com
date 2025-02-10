@@ -9,32 +9,32 @@ import api from "../../services/api/axiosConfig";
 
 const Following = () => {
     const { id } = useParams();
-    const { following, followLoading,getFollowData } = useFollow({ id });
-    // console.log('following- ', following);
+    const { following, followLoading, getFollowData } = useFollow({ id });
+    // //('following- ', following);
     const user = useSelector((state) => state?.auth.user)
-    const [loading, setLoading]= useState<any>({})
+    const [loading, setLoading] = useState<any>({})
 
     if (followLoading) {
         return <FollowSkeleton />;
     }
 
-    const handleClick = async(followId, btnId) => {
-        console.log(followId,btnId);
-        
-        setLoading((prev:any) => ({ ...prev, [followId]:true }));
-        try{
-           if(btnId==='follow') {
-            await api.post(
-                `/follow/createFollower?id=${followId}`
-              );
-            getFollowData(id)
-        }
-        }catch(error:any) {
+    const handleClick = async (followId, btnId) => {
+        //(followId,btnId);
+
+        setLoading((prev: any) => ({ ...prev, [followId]: true }));
+        try {
+            if (btnId === 'follow') {
+                await api.post(
+                    `/follow/createFollower?id=${followId}`
+                );
+                getFollowData(id)
+            }
+        } catch (error: any) {
             alert(error.response.data.message || "Error in following")
-        }finally{
-            setTimeout(() => setLoading((prev:any) => ({ ...prev, [followId]:false })), 2000)
+        } finally {
+            setTimeout(() => setLoading((prev: any) => ({ ...prev, [followId]: false })), 2000)
         }
-        setTimeout(() => setLoading((prev:any) => ({ ...prev, [followId]:false })), 2000)
+        setTimeout(() => setLoading((prev: any) => ({ ...prev, [followId]: false })), 2000)
     }
 
     return (
@@ -104,7 +104,7 @@ const Following = () => {
                                                     ) :
                                                         (
                                                             <>
-                                                                { loading[folloin.followedDetails._id] ? <Loader2Icon className="animate-spin sm:w-4 sm:h-4 w-3 h-3"/> : <UserPlus className="sm:w-4 sm:h-4 w-3 h-3" /> }  Follow
+                                                                {loading[folloin.followedDetails._id] ? <Loader2Icon className="animate-spin sm:w-4 sm:h-4 w-3 h-3" /> : <UserPlus className="sm:w-4 sm:h-4 w-3 h-3" />}  Follow
                                                             </>
                                                         )
                                                 )}

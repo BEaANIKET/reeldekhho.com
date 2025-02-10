@@ -61,7 +61,7 @@ const ChangePassword: React.FC = () => {
         setError("");
         try {
             const response = await api.post("/auth/changepass", { oldPassword, newPassword });
-            console.log(response.data);
+            //(response.data);
 
             toast.success("Password changed successfully.");
         } catch (error) {

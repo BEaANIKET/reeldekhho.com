@@ -11,10 +11,10 @@ const useFollow = ({ id }: { id: string | undefined }) => {
   const [following, setFollowing] = useState([]);
   const [followers, setFollowers] = useState([]);
 
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
 
-  const getFollowData = async (id:undefined | string) => {
-    console.log('id- ',id);
+  const getFollowData = async (id: undefined | string) => {
+    //('id- ',id);
     try {
       setFollowLoading(true);
       const result1 = api.get(`/follow/getFollowed?id=${id}`);
@@ -22,7 +22,7 @@ const useFollow = ({ id }: { id: string | undefined }) => {
       const [response1, response2] = await Promise.all([result1, result2])
 
       const { following } = response1.data
-      const { followers } = response2.data  
+      const { followers } = response2.data
       setFollowing(following);
       setFollowers(followers);
 
@@ -37,7 +37,7 @@ const useFollow = ({ id }: { id: string | undefined }) => {
 
 
   const createFollower = async (id: string | undefined) => {
-    
+
     try {
       await api.post(
         `/follow/createFollower?id=${id}`
@@ -45,7 +45,7 @@ const useFollow = ({ id }: { id: string | undefined }) => {
       getFollowData(id)
 
     } catch (error: any) {
-      console.log(error);
+      //(error);
       alert(error?.response?.data?.message || "Error in following")
     }
   }
@@ -59,7 +59,7 @@ const useFollow = ({ id }: { id: string | undefined }) => {
       getFollowData(id);
 
     } catch (error) {
-      console.log(error);
+      //(error);
     }
   }
 

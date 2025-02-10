@@ -18,7 +18,7 @@ interface MessageBubbleProps {
 
 export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
     // Format timestamp in Indian style
-    console.log(message);
+    //(message);
 
     const formattedTimestamp = format(new Date(message.createdAt), "dd MMM yyyy, hh:mm a", {
         locale: enIN,

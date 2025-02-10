@@ -58,9 +58,9 @@ function AppContent() {
   //       const response = await api.get('/auth/profile')
   //       dispatch(setUserProfile(response.data.user))
   //       localStorage.setItem('city', response?.data?.user?.city);
-  //       console.log(response.data.user);
+  //       //(response.data.user);
   //     } catch (error) {
-  //       // console.log(error);
+  //       // //(error);
   //     } finally {
   //       setLoading(false)
   //     }
@@ -75,16 +75,12 @@ function AppContent() {
       try {
         const response = await api.get('/auth/profile')
         dispatch(setUserProfile(response.data.user))
-        if (response?.data?.user?.city) {
-          localStorage.setItem('city', response?.data?.user?.city);
-        }
-        else {
-          localStorage.removeItem('city');
-        }
-        console.log(response.data.user);
+
+        localStorage.removeItem('city');
+        //(response.data.user);
       } catch (error) {
         localStorage.removeItem('city');
-        // console.log(error);
+        // //(error);
       } finally {
         setLoading(false)
       }
@@ -97,11 +93,11 @@ function AppContent() {
     const getReviewedId = async () => {
       try {
         const resposne = await api.get('/user/userReview');
-        console.log('review', resposne.data.reviewedId);
+        //('review', resposne.data.reviewedId);
         const reviewArray = (resposne.data.reviewedId);
         dispatch(setReviews(reviewArray));
       } catch (error) {
-        console.log(error);
+        //(error);
       }
     }
 
@@ -135,7 +131,7 @@ function AppContent() {
               <Route path="/following/:id" element={<Following />} />
               <Route path="/editProfile" element={<Editprofile />} />
               <Route path="/seller/:id" element={<SellerProfile />} />
-              <Route path='/sellerPost' element= {<SellerPost />} />
+              <Route path='/sellerPost' element={<SellerPost />} />
               <Route path="/messages/:id" element={<MessagesPage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/add-product" element={<AddProduct />} />

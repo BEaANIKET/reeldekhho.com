@@ -8,12 +8,12 @@ import api from "../../services/api/axiosConfig";
 
 const Followers = () => {
     const { id } = useParams();
-    const { followers, followLoading,getFollowData } = useFollow({ id });
+    const { followers, followLoading, getFollowData } = useFollow({ id });
     const user = useSelector((state) => state?.auth.user)
-    const [loading, setLoading]= useState<any>({});
-    console.log(user);
-    console.log(followers);
-    
+    const [loading, setLoading] = useState<any>({});
+    //(user);
+    //(followers);
+
 
     if (followLoading) {
         return <FollowSkeleton />;
@@ -23,21 +23,21 @@ const Followers = () => {
     //     return <div>Error loading followers.</div>;
     // }
 
-    const handleClick = async(followId, btnId) => {
-        console.log(followId,btnId);
-        
-        setLoading((prev:any) => ({ ...prev, [followId]:true }));
-        try{
-           if(btnId==='follow') {
-            await api.post(
-                `/follow/createFollower?id=${followId}`
-              );
-            getFollowData(id)
-        }  
-        }catch(error:any) {
+    const handleClick = async (followId, btnId) => {
+        //(followId,btnId);
+
+        setLoading((prev: any) => ({ ...prev, [followId]: true }));
+        try {
+            if (btnId === 'follow') {
+                await api.post(
+                    `/follow/createFollower?id=${followId}`
+                );
+                getFollowData(id)
+            }
+        } catch (error: any) {
             alert(error.response.data.message || "Error in following")
-        }finally{
-            setTimeout(() => setLoading((prev:any) => ({ ...prev, [followId]:false })), 2000)
+        } finally {
+            setTimeout(() => setLoading((prev: any) => ({ ...prev, [followId]: false })), 2000)
         }
         // setTimeout(() => setLoading((prev:any) => ({ ...prev, [followId]:false })), 2000)
     }
@@ -86,18 +86,18 @@ const Followers = () => {
                                                         <span className="text-[10px] block sm:hidden text-xs text-gray-500 bg-gray-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
                                                             Follows you
                                                         </span>
-                                                    )} */}  
+                                                    )} */}
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <button
                                                 disabled={loading[follower.followerDetails._id] || follower.isFollowedByMe || follower.followerDetails._id === user._id}
-                                                onClick={(e) => handleClick( follower.followerDetails._id , e.currentTarget.id )}
+                                                onClick={(e) => handleClick(follower.followerDetails._id, e.currentTarget.id)}
                                                 id={follower.isFollowedByMe || follower.followerDetails._id === user._id ? 'following' : 'follow'}
                                                 className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs sm:text-sm font-medium 
                                                     ${follower.isFollowedByMe ? "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                                                    : follower.followerDetails._id === user._id ? 'bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-not-allowed' : "bg-blue-500 hover:bg-blue-600 text-white"}
+                                                        : follower.followerDetails._id === user._id ? 'bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-not-allowed' : "bg-blue-500 hover:bg-blue-600 text-white"}
                                         }`}
                                             >
                                                 {follower.isFollowedByMe ? (

@@ -14,16 +14,16 @@ export default function ProfileHeader(props: any) {
   const Navigate = useNavigate();
   const [isShareOpen, setIsShareOpen] = useState(false);
   const user = useSelector((state: any) => state?.auth?.user);
-  const userFollow= useSelector( (state : any) => state.userFollow )
-  console.log(userFollow);
+  const userFollow = useSelector((state: any) => state.userFollow)
+  //(userFollow);
 
   const unseenMsg = useSelector(state => state?.chat?.unSeenCount);
   const [unSeenMsgCount, setUnSeenMsgCount] = useState(0)
 
   useEffect(() => {
-    console.log(unseenMsg);
+    //(unseenMsg);
     const totalUnseen = Object.values(unseenMsg).reduce((sum, count) => sum + count, 0);
-    console.log(totalUnseen);
+    //(totalUnseen);
     setUnSeenMsgCount(totalUnseen)
 
   }, [unseenMsg])

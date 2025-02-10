@@ -9,10 +9,10 @@ const LikeList = ({ setLikeCard, likedPostId }: { setLikeCard: (value: boolean) 
     async function getLikedUser() {
         try {
             const res = await api.get(`/like/getlikes?id=${likedPostId}`);
-            console.log(res.data);
+            //(res.data);
             setLikedUser(res.data);
         } catch (error) {
-            console.log(error);
+            //(error);
             setLikeCard(false)
         } finally {
             setLikedLoading(false)

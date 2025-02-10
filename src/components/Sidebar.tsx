@@ -11,7 +11,7 @@ export default function Sidebar() {
   // const { fetchPosts } = useGetPosts()
 
   const handleHomeClick = () => {
-    console.log("ksahdkasd");
+    //("ksahdkasd");
 
     // fetchPosts();
     // window.location.href = '/';

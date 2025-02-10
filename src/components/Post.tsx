@@ -36,7 +36,7 @@ interface PostProps {
   };
   setReportBottomSheet: (value: boolean) => void;
   setCurntPostId: (value) => void;
-  setLikeCard: (value:boolean) => void;
+  setLikeCard: (value: boolean) => void;
   setLikedPostId: (value: string) => void;
 }
 
@@ -52,7 +52,7 @@ export const identifyMediaType = (fileType: string) => {
       : 'unknown';
 };
 
-export default function Post({ post, setReportBottomSheet, setCurntPostId,setLikeCard,setLikedPostId }: PostProps) {
+export default function Post({ post, setReportBottomSheet, setCurntPostId, setLikeCard, setLikedPostId }: PostProps) {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   const [isPlay, setIsPlay] = useState(true);
@@ -74,8 +74,8 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId,setLik
 
   const { addSavedPost, removeSavedPost } = useSavedPost()
   const savedPost = useSelector((state) => state?.savedPosts?.saved_Posts)
-  // console.log(savedPost);
-  // console.log(post);
+  // //(savedPost);
+  // //(post);
 
   useEffect(() => {
     const value = savedPost.find((save: any) => save?.postId?._id === post?._id)
@@ -159,10 +159,10 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId,setLik
   // const handleReport = async () => {
   //   try {
   //     const response = await api.post(`/post/report-post?id=${post?._id}`);
-  //     console.log(response.data);
+  //     //(response.data);
   //     toast.success("Post Reported Successfully");
   //   } catch (error) {
-  //     console.log(error)
+  //     //(error)
   //     toast.error(error?.response?.data.message || "Something went wrong!");
   //   } finally {
   //     setShowMoreOptions(false);

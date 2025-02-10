@@ -11,11 +11,11 @@ import useUserFollow from '../hooks/useUserFollow';
 
 export default function Profile() {
   const user = useSelector((state) => state?.auth?.user)
-  console.log(user);
+  //(user);
 
   const navigate = useNavigate()
 
-  const { userLoading }= useUserFollow();
+  const { userLoading } = useUserFollow();
 
   useEffect(() => {
     if (!user) {

@@ -41,7 +41,7 @@ export default function ChatWindow({ chatId, users }: ChatWindowProps) {
         if (unSeenMsgCount[chatId]) {
             try {
                 const response = await api.post(`/message/setunseenmsg?id=${chatId}`);
-                console.log(response.data);
+                //(response.data);
             } catch (error) {
                 console.error('Error marking unseen messages:', error);
             }
