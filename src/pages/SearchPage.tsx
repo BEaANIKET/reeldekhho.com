@@ -77,6 +77,12 @@ export default function SearchPage() {
 
   const handleChageCity = async (e) => {
     setSelectedCity(e?.target?.value)
+    console.log(e?.target?.value);
+
+    if (e?.target?.value === 'All State') {
+      localStorage.removeItem('city')
+      return
+    }
     localStorage.setItem('city', e?.target?.value)
   }
 
@@ -126,10 +132,15 @@ export default function SearchPage() {
               className="w-32 p-2 bg-inherit dark:text-white text-sm focus:outline-none"
             >
               <option value="">Select City</option>
+              <option value={'All State'} >
+                All State
+              </option>
               {cityList.map((item) => (
-                <option key={item._id} value={item.city}>
-                  {item.city}
-                </option>
+                <>
+                  <option key={item._id} value={item.city}>
+                    {item.city}
+                  </option>
+                </>
               ))}
             </select>
           </div>

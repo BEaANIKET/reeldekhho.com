@@ -8,7 +8,7 @@ import { updateMyPosts } from '../store/slices/authSlice';
 import axios from 'axios';
 
 interface ProductForm {
-  productName: string;
+  title: string;
   description: string;
   caption: string;
   file: {
@@ -69,7 +69,7 @@ const AddProduct: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [cities, setCities] = useState([])
   const [formData, setFormData] = useState<ProductForm>({
-    productName: '',
+    title: '',
     description: '',
     caption: '',
     file: {
@@ -168,7 +168,7 @@ const AddProduct: React.FC = () => {
     if (success) {
       alert('Product added successfully');
       setFormData({
-        productName: '',
+        title: '',
         description: '',
         caption: '',
         file: {
@@ -287,9 +287,9 @@ const AddProduct: React.FC = () => {
             <div className="relative">
               <input
                 id="productName"
-                name="productName"
+                name="title"
                 type="text"
-                value={formData.productName}
+                value={formData.title}
                 onChange={handleInputChange}
                 className="w-full border rounded-md p-2 mt-1"
                 placeholder="Product Name"
