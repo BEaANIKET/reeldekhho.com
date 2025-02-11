@@ -3,36 +3,42 @@ import { FaBars, FaBell, FaFacebook, FaInstagram, FaTimes, FaYoutube } from "rea
 import axios from "axios";
 import { BiLogoPlayStore } from "react-icons/bi";
 import { FaX } from "react-icons/fa6";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { BsChat } from "react-icons/bs";
 import NotificationSidebar from "./notifications";
 import useNotifications from "../hooks/useNotifications";
+import { setSetting, setValue } from "../store/slices/headersSlice";
 
 const Header = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const adminUrl = import.meta.env.VITE_ADMIN_URL;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [value, setValue] = useState([])
-  const [settin, setSettin] = useState([])
+  // const [value, setValue] = useState([])
+  // const [settin, setSettin] = useState([])
   const user = useSelector(state => state?.auth?.user)
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false);
   const { unseenCount, } = useNotifications();
+  const { value = [], settin = [] } = useSelector(state => state?.header)
+  const dispatch = useDispatch()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   const fetchheader = async () => {
     const res = await axios.get(`${backendUrl}/post/fetchheader`)
-    setValue(res.data.value)
-    setSettin(res.data.settin)
+    dispatch(setSetting(res.data.settin));
+    dispatch(setValue(res.data.value));
+    // setValue(res.data.value)
+    // setSettin(res.data.settin)
   }
   useEffect(() => {
     if (!value || !value.length) {
       fetchheader();
     }
-  }, [value])
+  }, [dispatch])
 
   const handleLogout = async () => {
     localStorage.clear();
@@ -161,30 +167,30 @@ const Header = () => {
 
         <div className="relative h-screen">
           <ul className="absolute flex justify-center w-full space-x-4 p-4 bg-white" style={{ marginBottom: '1px' }}>
-            <Link to={settin.facebook}>
+            <Link target="_blank" to={settin.facebook}>
               <li>
                 <FaFacebook className="text-xl text-blue-600 cursor-pointer" />
               </li>
             </Link>
 
-            <Link to={settin.instagram}>
+            <Link target="_blank" to={settin.instagram}>
               <li>
                 <FaInstagram className="text-xl text-red-600 cursor-pointer" />
               </li>
             </Link>
 
-            <Link to={settin.twitter}>
+            <Link target="_blank" to={settin.twitter}>
               <li>
                 <FaX className="text-xl text-black-600 cursor-pointer" />
               </li>
             </Link>
 
-            <Link to={settin.youtube}>
+            <Link target="_blank" to={settin.youtube}>
               <li>
                 <FaYoutube className="text-xl text-red-600 cursor-pointer" />
               </li>
             </Link>
-            <Link to={settin.playstore}>
+            <Link target="_blank" to={settin.playstore}>
               <li>
                 <BiLogoPlayStore className="text-xl text-gray-800 cursor-pointer" />
               </li>

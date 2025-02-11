@@ -8,6 +8,7 @@ import useFollow from '../hooks/useFollow';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import useUserFollow from '../hooks/useUserFollow';
+import { ProfileSkeloton } from '../components/profile/ProfileSkeloton';
 
 export default function Profile() {
   const user = useSelector((state) => state?.auth?.user)
@@ -28,7 +29,7 @@ export default function Profile() {
   const posts = useSelector((state: any) => state.auth.posts || []);
 
   if (loading || userLoading) {
-    return <ProfilePostSkeloton />;
+    return <ProfileSkeloton />;
   }
 
 

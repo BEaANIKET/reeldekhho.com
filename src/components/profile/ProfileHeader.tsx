@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ProfileSkeloton } from "./ProfileSkeloton";
 import { useEffect, useState } from "react";
 import ShareFeature from "./ShareFeature";
+import { Button, Modal, Image } from 'antd';
 
 export default function ProfileHeader(props: any) {
   const totalposts = props.value;
@@ -19,6 +20,8 @@ export default function ProfileHeader(props: any) {
 
   const unseenMsg = useSelector(state => state?.chat?.unSeenCount);
   const [unSeenMsgCount, setUnSeenMsgCount] = useState(0)
+  const [popup, setPopup] = useState(false)
+  // const 
 
   useEffect(() => {
     //(unseenMsg);
@@ -33,9 +36,10 @@ export default function ProfileHeader(props: any) {
     setIsShareOpen(true)
   };
 
-  if (loading) {
-    return <ProfileSkeloton />;
-  }
+
+  // if (true) {
+  //   return < ProfileSkeloton />
+  // }
 
   if (error) {
     return (
@@ -47,9 +51,11 @@ export default function ProfileHeader(props: any) {
     );
   }
 
+
   const iconClick = async (e: any) => {
     Navigate(e);
   };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 pb-2">
       <div className="max-w-screen-lg mx-auto mt-2 sm:mt-5 md:mt-10 px-4">
@@ -58,17 +64,10 @@ export default function ProfileHeader(props: any) {
           {/* Profile Picture */}
           <div className="flex-shrink-0">
             <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-[25%] overflow-hidden">
-              <img
+              <Image
                 src={user?.profilePicture}
-                alt="Profile"
-                className="w-full h-full object-cover"
               />
             </div>
-            {/* <div className="sm:hidden flex items-center justify-start gap-4 ">
-              <h1 className="text font-semibold text-gray-800 dark:text-gray-200">
-                {user?.fullName}
-              </h1>
-            </div> */}
           </div>
 
           {/* User Info Section */}
@@ -169,7 +168,7 @@ export default function ProfileHeader(props: any) {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
               <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
                 <video
-                  src={`${props?.smallvideo}`}
+                  src={`${user?.smallvideo}`}
                   controls
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -178,6 +177,7 @@ export default function ProfileHeader(props: any) {
           </div>
         )
       }
+
     </div>
   );
 }

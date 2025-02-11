@@ -1,4 +1,4 @@
-import { Grid, Bookmark, Heart, LoaderIcon, Plus } from 'lucide-react';
+import { Grid, Bookmark, Heart, LoaderIcon, Plus, Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api/axiosConfig';
@@ -224,7 +224,7 @@ export default function PostGrid(props) {
 
   return (
     <>
-      {posts ? <div className="max-w-6xl mx-auto px-4 py-4">
+      <div className="max-w-6xl mx-auto px-4 py-4">
         {/* Post Type Navigation */}
         <div className="flex justify-center border-t dark:border-gray-700">
           <div className="flex space-x-12">
@@ -240,49 +240,50 @@ export default function PostGrid(props) {
         </div>
 
         {/* Instagram-style Grid */}
-        <div className="grid grid-cols-3 gap-1 mt-4">
-          {posts && posts.length ? posts.map((post: any) => (
+        {
+          posts && posts.length ?
+            (
+              <div className="grid grid-cols-3 w-full gap-1 mt-4">
+                {posts.map((post: any) => (
 
-            // onClick={() => navigate(`/reels/${post._id}`)}
-            <div onClick={() => {
-              navigate(`/posts?id=${post._id}`);
-            }} key={post._id} className="relative aspect-square group cursor-pointer">
-              {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
-                <video
-                  src={post.file.url}
-                  className="w-full h-full object-cover"
-                ></video>
-              ) : ["jpg", "jpeg", "png", "gif", "webp"].includes(post?.file?.fileType?.toLowerCase()) ? (
-                <img
-                  src={post?.file.url}
-                  alt={post?.caption || "Post Image"}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
-                  Unsupported Format
-                </div>
-              )}
+                  <div onClick={() => {
+                    navigate(`/posts?id=${post._id}`);
+                  }} key={post._id} className="relative aspect-square group cursor-pointer">
+                    {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
+                      <video
+                        src={post.file.url}
+                        className="w-full h-full object-cover"
+                      ></video>
+                    ) : ["jpg", "jpeg", "png", "gif", "webp"].includes(post?.file?.fileType?.toLowerCase()) ? (
+                      <img
+                        src={post?.file.url}
+                        alt={post?.caption || "Post Image"}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+                        Unsupported Format
+                      </div>
+                    )}
 
-              <div className="absolute  inset-0 bg-black  bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 md:flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <ProfileGrid post={post} />
+                    <div className="absolute  inset-0 bg-black  bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 md:flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <ProfileGrid post={post} />
+                    </div>
+
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <ProfileGrid2 post={post} />
+                    </div>
+
+
+                  </div>
+
+                ))}
               </div>
-
-              <div className="absolute inset-0 flex items-center justify-center">
-                <ProfileGrid2 post={post} />
-              </div>
-
-
-            </div>
-          )) : (
-            <div className="flex items-center justify-center h-full w-full text-gray-500">
-              No Posts Found
-            </div>
-          )}
-        </div>
-      </div > : <div>no post found</div>
-      }
-
+            ) : (
+              <div className=' w-full text-center mt-3  font-medium opacity-70'>No Post Found</div>
+            )
+        }
+      </div>
     </>
 
   );
