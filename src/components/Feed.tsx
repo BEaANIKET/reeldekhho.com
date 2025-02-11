@@ -1,5 +1,5 @@
 
-import { lazy, Suspense, useCallback, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Suggestions from './Suggestions';
 import useGetPosts from '../hooks/post/useGetPost';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
@@ -53,8 +53,8 @@ const LoaderSkeloton = () => {
   );
 };
 
-export default function Feed() {
-  const { loading, error, loadMorePosts, posts } = useGetPosts();
+export default function Feed({ homeClick }) {
+  const { loading, error, fetchPosts, loadMorePosts, posts } = useGetPosts();
   const reportString = 'cursor-pointer ml-5';
   const [curntPostId, setCurntPostId] = useState(null);
   const [likedPostId, setLikedPostId] = useState('');
@@ -70,6 +70,13 @@ export default function Feed() {
     () => { },
     { threshold: 0.3 }
   );
+
+
+  useEffect(() => {
+    fetchPosts();
+    console.log("hello I am runing ");
+
+  }, [homeClick]);
 
   const handleSubmitReport = async (event: HTMLParagraphElement) => {
     const reportMessage = event?.currentTarget.id;

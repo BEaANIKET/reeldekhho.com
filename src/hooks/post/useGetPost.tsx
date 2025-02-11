@@ -25,9 +25,6 @@ const useGetPosts = () => {
         }
     };
 
-    useEffect(() => {
-        fetchPosts();
-    }, []);
 
     const loadMorePosts = async () => {
         if (!isMore) {

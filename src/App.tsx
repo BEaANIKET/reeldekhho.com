@@ -51,6 +51,8 @@ function AppContent() {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
 
+  const [homeClick, setHomeClick] = useState(false)
+
   useEffect(() => {
     const getUser = async () => {
       setLoading(true)
@@ -145,8 +147,8 @@ function AppContent() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/stories/:username" element={<StoryViewer />} />
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Feed />} />
+            <Route path="/" element={<Layout setHomeClick={setHomeClick} />}>
+              <Route index element={<Feed homeClick={homeClick} />} />
               <Route path="/reels" element={<ReelsPage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/explore" element={<ExplorePage />} />

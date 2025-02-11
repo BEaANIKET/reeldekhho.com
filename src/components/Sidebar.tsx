@@ -3,18 +3,16 @@ import { Home, Search, Compass, Film, Heart, PlusSquare, MessageCircle, Menu, Us
 import ThemeToggle from './layout/ThemeToggle';
 import applogo from '/assets/applogo.png'
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 // import useGetPosts from '../hooks/post/useGetPost';
 
-export default function Sidebar() {
+export default function Sidebar({ setHomeClick }) {
   const location = useLocation();
   const user = useSelector(state => state.auth?.user);
   // const { fetchPosts } = useGetPosts()
 
   const handleHomeClick = () => {
-    //("ksahdkasd");
-
-    // fetchPosts();
-    // window.location.href = '/';
+    setHomeClick(prev => !prev)
   }
   const navigate = useNavigate();
 
