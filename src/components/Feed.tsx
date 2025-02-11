@@ -6,21 +6,19 @@ import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import HeaderStatic from './HeaderStatic';
 import toast from 'react-hot-toast';
 import api from '../services/api/axiosConfig';
-import { LuCircleX } from 'react-icons/lu';
 import LikeList from './LikeList';
 // import { User } from 'lucide-react';
 const Post = lazy(() => import('./Post'));
 
 const LoaderSkeloton = () => {
   return (
-    <div className="flex flex-col">
-      <div className="w-full h-14 dark:bg-black bg-white animate-pulse rounded-md mb-2"></div>
-      <div className="flex max-w-lg h-fit">
+    <div className="flex flex-col  w-screen max-w-lg items-center ">
+      <div className="flex max-w-lg h-fit  w-full">
         {/* Feed Skeleton */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 space-y-6 w-full flex flex-col items-center justify-center">
           {/* Post Skeleton */}
           {[...Array(5)].map((_, index) => (
-            <div key={index} className="bg-white dark:bg-black rounded-lg shadow-md p-4 space-y-4 animate-pulse">
+            <div key={index} className="bg-white dark:bg-black w-full rounded-lg shadow-md p-4 space-y-4 animate-pulse">
               {/* Post Header */}
               <div className="flex items-center space-x-4">
                 <div className="bg-gray-400 w-10 h-10 rounded-full"></div>
@@ -65,7 +63,6 @@ export default function Feed() {
   const [likeCard, setLikeCard] = useState(false)
 
   const reportRef = useRef<HTMLDivElement | null>(null);
-
   const observerRef = useIntersectionObserver(
     useCallback(() => {
       loadMorePosts();
@@ -89,39 +86,46 @@ export default function Feed() {
     }
   }
 
-  if (loading) {
-    return <LoaderSkeloton />;
-  }
 
   return (
     <>
       <HeaderStatic />
-      <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 margintopo">
-        {/* Posts Area */}
-        <div className="lg:col-span-2 mx-auto md:mt-0 max-w-2xl">
-          <Suspense fallback={<div> </div>}>
-            <div className=''>
-              {posts && posts.length && posts?.length > 0 ? (
-                posts.map((post, index) =>
-                  <Post
-                    key={index}
-                    post={post}
-                    setCurntPostId={setCurntPostId}
-                    setReportBottomSheet={setReportBottomSheet}
-                    setLikeCard={setLikeCard}
-                    setLikedPostId={setLikedPostId}
-                  />)
-              ) : (
-                <div className="text-center text-gray-500">No posts available</div>
-              )}
-            </div>
-          </Suspense>
 
-          {/* last div  */}
-          <div className="w-full dark:text-white text-black text-center mt-3" ref={observerRef}>
-            Loading ...
-          </div>
-        </div>
+      <div className="max-w-4xl mx-auto  container flex  margintopo">
+        {/* Posts Area */}
+        {
+          loading ? (
+            <div className=' w-full flex justify-center' >
+              <LoaderSkeloton />
+            </div>
+          ) : (
+            <div className="lg:col-span-2 mx-auto md:mt-0 max-w-2xl">
+              <Suspense fallback={<div> </div>}>
+                <div className=''>
+                  {posts && posts.length && posts?.length > 0 ? (
+                    posts.map((post, index) =>
+                      <Post
+                        key={index}
+                        post={post}
+                        setCurntPostId={setCurntPostId}
+                        setReportBottomSheet={setReportBottomSheet}
+                        setLikeCard={setLikeCard}
+                        setLikedPostId={setLikedPostId}
+                      />)
+                  ) : (
+                    <div className="text-center text-gray-500">No posts available</div>
+                  )}
+                </div>
+              </Suspense>
+
+              {/* last div  */}
+              <div className="w-full dark:text-white text-black text-center mt-3" ref={observerRef}>
+                Loading ...
+              </div>
+            </div>
+
+          )
+        }
 
         {/* Suggestions Sidebar */}
         <div className="hidden lg:block">
@@ -192,7 +196,8 @@ export default function Feed() {
           )
         }
 
-      </div>
+      </div >
+
     </>
   );
 }

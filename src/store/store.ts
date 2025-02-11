@@ -9,6 +9,7 @@ import notificationsSlices from './slices/notificationsSlices'
 import reviewSlice from './slices/reviewSlice'
 import userFollowSlice from './slices/userFollowSlice'
 import SellerDataSlice from './slices/sellerSlice'
+import headersSlice from './slices/headersSlice';
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +22,8 @@ export const store = configureStore({
     notifications: notificationsSlices,
     reviews: reviewSlice,
     userFollow: userFollowSlice,
-    SellerSlice:SellerDataSlice
+    SellerSlice: SellerDataSlice,
+    header: headersSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -10,6 +10,7 @@ import ProfileRating from "./ProfileRating";
 import api from "../../services/api/axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setSellerData } from "../../store/slices/sellerSlice";
+import { Image, Modal } from "antd";
 
 export default function SellerProfileHeader() {
   // const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -32,6 +33,7 @@ export default function SellerProfileHeader() {
   const [reviewId, setReviewId] = useState(undefined);
 
   const reviewedId = useSelector((state: any) => state.reviews.reviewedUser);
+  const [popup, setPopup] = useState(false)
 
   useEffect(() => {
     const reviwedSeller = reviewedId.find((user: any) => user.reviewedId === id);
@@ -110,10 +112,8 @@ export default function SellerProfileHeader() {
             {/* Profile Picture */}
             <div className="flex-shrink-0">
               <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-blue-500 rounded-[25%] overflow-hidden">
-                <img
+                <Image
                   src={profile?.profilePicture}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
                 />
               </div>
 
@@ -183,6 +183,7 @@ export default function SellerProfileHeader() {
                 <p className="text-gray-600 dark:text-gray-400 sm:text-base text-xs">
                   <span>Website @ </span>
                   <a
+                    target="_blank"
                     href={`https://${profile?.website}`}
                     className="text-blue-500 hover:underline"
                   >

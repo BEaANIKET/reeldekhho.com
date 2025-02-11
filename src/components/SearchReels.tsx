@@ -101,11 +101,7 @@ const SearchReels = () => {
                             <ReelCard reel={reel} />
                         </div>
                     ))}
-                    <div
-                        className="relative flex dark:bg-black bg-white text-black dark:text-white justify-center items-center z-10 h-8 w-full snap-start overflow-hidden"
-                    >
-                        {loading ? <p>Loading more reels...</p> : hasMore ? <p>Scroll down for more reels...</p> : <p>No more reels!</p>}
-                    </div>
+
                 </div>
             )}
         </div>

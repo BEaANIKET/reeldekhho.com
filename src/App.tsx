@@ -51,24 +51,6 @@ function AppContent() {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
 
-  // useEffect(() => {
-  //   const getUser = async () => {
-  //     setLoading(true)
-  //     try {
-  //       const response = await api.get('/auth/profile')
-  //       dispatch(setUserProfile(response.data.user))
-  //       localStorage.setItem('city', response?.data?.user?.city);
-  //       //(response.data.user);
-  //     } catch (error) {
-  //       // //(error);
-  //     } finally {
-  //       setLoading(false)
-  //     }
-  //   }
-
-  //   getUser();
-  // }, [])
-
   useEffect(() => {
     const getUser = async () => {
       setLoading(true)
@@ -93,7 +75,6 @@ function AppContent() {
     const getReviewedId = async () => {
       try {
         const resposne = await api.get('/user/userReview');
-        //('review', resposne.data.reviewedId);
         const reviewArray = (resposne.data.reviewedId);
         dispatch(setReviews(reviewArray));
       } catch (error) {
@@ -105,6 +86,49 @@ function AppContent() {
   }, []);
 
   useChat();
+
+  useEffect(() => {
+    function pauseVideosOnTabChange() {
+      if (document.hidden) {
+        document.querySelectorAll("video").forEach((video) => {
+          if (!video.paused) {
+            video.pause();
+          }
+        });
+      }
+    }
+
+    document.addEventListener("visibilitychange", pauseVideosOnTabChange);
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.tagName === "VIDEO") {
+            node.addEventListener("play", () => {
+              document.querySelectorAll("video").forEach((vid) => {
+                if (vid !== node) vid.pause();
+              });
+            });
+          }
+        });
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    document.querySelectorAll("video").forEach((video) => {
+      video.addEventListener("play", () => {
+        document.querySelectorAll("video").forEach((vid) => {
+          if (vid !== video) vid.pause();
+        });
+      });
+    });
+
+    return () => {
+      document.removeEventListener("visibilitychange", pauseVideosOnTabChange);
+      observer.disconnect();
+    };
+  }, []);
+
 
   if (loading) {
     return <LoadComponents />

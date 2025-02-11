@@ -16,7 +16,8 @@ const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
   posts: null,
-  isMute: false
+  isMute: false,
+  // headersData:[],
 };
 
 const authSlice = createSlice({
@@ -31,11 +32,11 @@ const authSlice = createSlice({
       state.posts = actions.payload;
     },
     updateParticularPost: (state, action) => {
-      state.posts[action.payload.index]= action.payload.post 
+      state.posts[action.payload.index] = action.payload.post
     },
     updateMyPosts: (state, action) => {
-      if(state.posts){
-        state.posts= [ ...state.posts, action.payload ]
+      if (state.posts) {
+        state.posts = [...state.posts, action.payload]
       }
     },
     setUserMute: (state, action) => {
@@ -44,5 +45,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUserProfile, setUserPost, updateParticularPost,updateMyPosts, setUserMute } = authSlice.actions;
+export const { setUserProfile, setUserPost, updateParticularPost, updateMyPosts, setUserMute } = authSlice.actions;
 export default authSlice.reducer;
