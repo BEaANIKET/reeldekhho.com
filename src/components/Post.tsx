@@ -15,6 +15,7 @@ import useSavedPost from '../hooks/post/useSavedpost';
 import GetLocation from './interactions/GetLocation';
 import { formatTimeAgo } from '../utils/dateUtils';
 import ShareButton from './ShareBtn';
+import api from '../services/api/axiosConfig';
 
 interface PostProps {
   post: {
@@ -180,6 +181,36 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
     setShowMoreOptions(!showMoreOptions)
   }
 
+  const [viewCount, setViewCount] = useState('');
+
+
+  useEffect(() => {
+    const fetchViewCount = async () => {
+      try {
+        const response = await api.get(`/post/getview?postId=${post._id}`);
+        if (Number(response.data.viewCount) > 1000) {
+          let countOfView = Math.floor(response.data.viewCount / 1000) + 'k'
+          setViewCount(countOfView);
+        }
+        else {
+          setViewCount(response.data.viewCount);
+        }
+      } catch (error) {
+        console.error('Error fetching view count:', error.messages);
+      }
+    };
+
+    if (post && post._id) {
+      fetchViewCount();
+    }
+
+  }, [post, post?._id]);
+
+  useEffect(() => {
+    console.log(viewCount);
+
+  }, [viewCount])
+
 
   return (
     <div className=" relative  w-screen max-w-lg bg-inherit rounded-lg">
@@ -241,6 +272,19 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
       </p>
       <div className="relative">
 
+        <div className=" absolute top-0 left-0 z-50 flex items-center gap-1 p-1 rounded-md bg-black text-white text-xs ">
+          <svg
+            className="w-4 h-4"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 100 6 3 3 0 000-6z" />
+          </svg>
+          <span className="font-semibold flex items-center justify-center">
+            {viewCount} {/* Show the view count here */}
+          </span>
+        </div>
         {mediaType === 'video' ? (
           <div
             onClick={() => setIsPlay(false)}
@@ -248,7 +292,7 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
             className="relative min-w-full bg-black sm:min-w-96"
 
           >
-            <video onClick={() => navigate(`/reels/${post?._id}`)} playsInline ref={observerRef} className="w-full max-h-[60vh] objectcovernow" muted={isMute} loop autoPlay={isPlay}>
+            <video src={post?.file?.url} onClick={() => navigate(`/reels/${post?._id}`)} playsInline ref={observerRef} className="w-full max-h-[60vh] objectcovernow" muted={isMute} loop autoPlay={isPlay}>
               <source src={post?.file?.url} type={`video/${post?.file?.fileType}`} />
               Your browser does not support the video tag.
             </video>

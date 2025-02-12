@@ -66,7 +66,9 @@ export default function ProfileHeader(props: any) {
             <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-[25%] overflow-hidden">
               <Image
                 src={user?.profilePicture}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
+
             </div>
           </div>
 

@@ -74,9 +74,9 @@ const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, sa
         setIsOverlay(true);
     };
 
+    const [fileType, setFileType] = useState('')
     const [commentLoder, setCommentLoder] = useState(false)
     const [isShareOpen, setIsShareOpen] = useState(false);
-
 
     const handleDelete = (id: number) => {
         if (!loader.removeLoader) {
@@ -112,8 +112,9 @@ const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, sa
             <div
                 onClick={() => navigate(`/reels/${post?._id}`)}
                 className="relative cursor-pointer">
-                {post.file.fileType.includes("mp4") ? (
+                {true ? (
                     <video
+                        src={post?.file.url}
                         className="w-full max-h-[60vh] object-cover"
                         muted
                         loop

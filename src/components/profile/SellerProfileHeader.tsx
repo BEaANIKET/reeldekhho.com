@@ -111,10 +111,12 @@ export default function SellerProfileHeader() {
           <div className="flex flex-row items-center md:items-start gap-6">
             {/* Profile Picture */}
             <div className="flex-shrink-0">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-blue-500 rounded-[25%] overflow-hidden">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 flex items-center rounded-xl md:w-40 md:h-40 overflow-hidden">
                 <Image
                   src={profile?.profilePicture}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
+
               </div>
 
               <div className="sm:hidden flex items-center justify-start gap-4 ">

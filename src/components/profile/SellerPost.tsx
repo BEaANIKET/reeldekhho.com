@@ -24,6 +24,7 @@ import CommentSection from "../../components/interactions/CommentSection";
 import useHandleComment from "../../hooks/post/useHandleComments";
 import ShareButton from "../../components/ShareBtn";
 import LikeList from "../LikeList";
+import { identifyMediaType } from "../Post";
 
 
 const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }) => {
@@ -76,6 +77,7 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
 
     const [commentLoder, setCommentLoder] = useState(false)
     const [isShareOpen, setIsShareOpen] = useState(false);
+    const mediaType = identifyMediaType(value?.file?.fileType);
 
 
     const handleDelete = (id: number) => {
@@ -112,23 +114,21 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
             <div
                 onClick={() => navigate(`/reels/${post?._id}`)}
                 className="relative cursor-pointer">
-                {post.file.fileType.includes("mp4") ? (
-                    <video
-                        className="w-full max-h-[60vh] object-cover"
-                        muted
-                        loop
-                        autoPlay
-                    >
-                        <source
-                            src={post?.file.url}
-                            type={`video/${post.file.fileType}`}
-                        />
-                    </video>
-                ) : (
+                {mediaType === 'image' ? (
                     <img
-                        src={post?.file.url}
-                        alt="Post Media"
-                        className="w-full object-cover min-h-64 max-h-[500px]"
+                        src={post.file.url}
+                        alt={post.caption || 'Reel Image'}
+                        className=" object-contain object-center"
+                        loading="lazy"
+                    />
+                ) : (
+                    <video
+                        key={post._id}
+                        src={post.file.url}
+                        className=" object-contain "
+                        loop
+                        muted
+                        playsInline
                     />
                 )}
             </div>
@@ -144,12 +144,12 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
                             />
                         </button>
                         <span
-                        onClick={() => {
-                            setLikedPostId(post?._id)
-                            setLikeCard(true);
-                        }} 
-                        style={{ marginLeft: '6px' }} 
-                        className=" dark:text-white text-sm md:text-lg cursor-pointer"
+                            onClick={() => {
+                                setLikedPostId(post?._id)
+                                setLikeCard(true);
+                            }}
+                            style={{ marginLeft: '6px' }}
+                            className=" dark:text-white text-sm md:text-lg cursor-pointer"
                         >
                             {likes} {likes > 1 ? "Likes" : "Like"}
                         </span>
