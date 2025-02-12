@@ -182,7 +182,8 @@ export default function ReelCard({ reel }: ReelCardProps) {
             <span className="font-semibold flex items-center justify-center">
               {viewCount} {/* Show the view count here */}
             </span>
-          </div></div>
+          </div>
+        </div>
 
         {reel.file.url.includes('image/') ? (
           <img
