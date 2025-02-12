@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api/axiosConfig";
+import { identifyMediaType } from "./Post";
 
 // interface PostProps {
 //     post: {
@@ -36,6 +37,8 @@ const Reelcard = ({ value, observerRef, isPlay }) => {
 
     const navigate = useNavigate()
     const [viewCount, setViewCount] = useState(0);
+    const mediaType = identifyMediaType(value?.file?.fileType);
+
 
     useEffect(() => {
         const fetchViewCount = async () => {
@@ -57,25 +60,25 @@ const Reelcard = ({ value, observerRef, isPlay }) => {
     return (
         <>
             <div onClick={() => navigate(`/reels/${value._id}`)} key={value._id} className=" shadow-md overflow-hidden rounded-lg mb-2 relative h-fit cursor-pointer">
-                {value.file.fileType === 'mp4' ? (
-                    <video
-                        ref={observerRef}
-                        muted
-                        autoPlay={isPlay}
-                        loop
-                        className="w-full h-auto object-cover"
-                    >
-                        <source src={value.file.url} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                ) : (
+                {mediaType === 'image' ? (
                     <img
                         src={value.file.url}
                         alt=""
                         className="w-full h-auto object-cover"
                     />
+                ) : (
+                    <video
+                        ref={observerRef}
+                        muted
+                        autoPlay={isPlay}
+                        loop
+                        src={value.file.url}
+                        className="w-full h-auto object-cover"
+                    >
+                        <source src={value.file.url} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
                 )}
-
 
                 <div className=" bg-white flex justify-between text-black  p-1 text-xs sm:text-sm  ">
                     {/* <p className=" text-nowrap font-semibold "> Seller: {value?.user?.fullName}</p> */}

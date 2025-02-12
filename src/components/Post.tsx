@@ -248,7 +248,7 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
             className="relative min-w-full bg-black sm:min-w-96"
 
           >
-            <video onClick={() => navigate(`/reels/${post?._id}`)} playsInline ref={observerRef} className="w-full max-h-[60vh] objectcovernow" muted={isMute} loop autoPlay={isPlay}>
+            <video src={post?.file?.url} onClick={() => navigate(`/reels/${post?._id}`)} playsInline ref={observerRef} className="w-full max-h-[60vh] objectcovernow" muted={isMute} loop autoPlay={isPlay}>
               <source src={post?.file?.url} type={`video/${post?.file?.fileType}`} />
               Your browser does not support the video tag.
             </video>

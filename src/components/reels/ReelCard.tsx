@@ -136,13 +136,53 @@ export default function ReelCard({ reel }: ReelCardProps) {
     setView();
   }, [])
 
+  const [viewCount, setViewCount] = useState(0);
+
+  useEffect(() => {
+    const fetchViewCount = async () => {
+      try {
+        const response = await api.get(`/post/getview?postId=${reel._id}`);
+        setViewCount(response.data.viewCount);
+      } catch (error) {
+        console.error('Error fetching view count:', error.messages);
+      }
+    };
+
+    if (reel && reel._id) {
+      fetchViewCount();
+    }
+
+  }, [reel, reel?._id]);
+
+
   return (
     <div
       onClick={handleReelsClick}
       className="reel relative z-10 h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
     >
       <div className=' relative flex items-center justify-center h-full w-full'>
-        <div className=' absolute top-4 left-2 text-white '>   {reel.user?.longitude && reel.user?.lattitude ? <GetLocation link={reel.user?.googleMapLink} createdDate={reel.createdAt} longitude={reel.user.longitude} lattitude={reel.user.lattitude} /> : null}</div>
+
+
+
+
+        <div className=' absolute flex w-full justify-between  top-4  left-0 right-0  '>
+          <div className=' bg-black p-2 rounded-md text-white'>
+            {reel.user?.longitude && reel.user?.lattitude ? <GetLocation link={reel.user?.googleMapLink} createdDate={reel.createdAt} longitude={reel.user.longitude} lattitude={reel.user.lattitude} /> : null}
+          </div>
+
+          <div className="flex items-center gap-1 p-2 rounded-md bg-black text-white text-xs ">
+            <svg
+              className="w-4 h-4"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 100 6 3 3 0 000-6z" />
+            </svg>
+            <span className="font-semibold flex items-center justify-center">
+              {viewCount} {/* Show the view count here */}
+            </span>
+          </div></div>
 
         {reel.file.url.includes('image/') ? (
           <img
@@ -167,34 +207,18 @@ export default function ReelCard({ reel }: ReelCardProps) {
       {/* Overlay */}
       <div className="absolute inset-0 bottom-12 top-0">
         {/* Bottom Content */}
-        <div className="absolute bottom-0 left-0 right-12 p-4">
-          {/* User Info */}
+        <div className="absolute bottom-0 left-0  bg-black/5  w-full right-12 p-4">
 
-          {/* <div
-            className="
-    text-black 
-    bg-white/70 
-    backdrop-blur-sm 
-    font-bold 
-    rounded-md 
-    px-2 
-    py-1 
-    w-fit
-    text-sm"
-          >
-            ₹ {reel?.price?.toFixed(2)}
-          </div> */}
-          <Link to={`/seller/${reel.user._id}`} className="flex items-center space-x-2 mb-3">
+          <Link to={`/seller/${reel.user._id}`} className=" flex items-center font-bold  space-x-2 mb-3">
             <img
               src={reel.user.profilePicture || 'https://cdn.pixabay.com/photo/2023/12/04/06/14/ai-generated-8428762_1280.jpg'}
               alt={`${reel.user.fullName}'s avatar`}
               className="w-8 h-8 rounded-full border border-white"
               loading="lazy"
             />
-            {/* <div className=' absolute left-0 bottom-8'> */}
 
             {/* </div> */}
-            <span className="text-white font-medium text-sm">
+            <span className="text-white font-medium  p-2 text-sm">
               {reel.user.fullName || 'Unknown User'}
             </span>
           </Link>
@@ -210,10 +234,10 @@ export default function ReelCard({ reel }: ReelCardProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="absolute bottom-4 right-2 space-y-4">
+        <div className="absolute  bottom-4 right-2 space-y-4">
           <button
-            onClick={() => iconClicked(`https://wa.me/${reel.user.phone}`)}
-            className="flex flex-col items-center"
+            onClick={() => iconClicked(`https://wa.me/${reel?.user?.phone}`)}
+            className="flex  bg-black/10 rounded-full p-2 flex-col items-center"
           >
             <BsWhatsapp
               className={`w-6 h-6 transition-colors text-white`}
@@ -223,7 +247,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
             <>
               <button
                 onClick={handleLike}
-                className="flex flex-col items-center"
+                className="flex flex-col  bg-black/10 rounded-full p-2 items-center"
                 aria-label={isLiked ? 'Unlike' : 'Like'}
               >
                 <Heart
@@ -235,7 +259,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
               <button
                 onClick={handleCommentClick}
-                className="flex flex-col items-center"
+                className="flex flex-col  bg-black/10 rounded-full p-2 items-center"
                 aria-label="Comment"
               >
                 <MessageCircle className="w-6 h-6 text-white" />
@@ -244,14 +268,14 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
               <button
                 onClick={() => setIsShareOpen(true)}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center bg-black/10 rounded-full p-2 "
               >
                 <Send className="w-6 h-6 text-white" />
               </button>
 
               <button
                 onClick={handleSave}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center  bg-black/10 rounded-full p-2"
                 aria-label={isSaved ? 'Unsave' : 'Save'}
               >
                 <Bookmark
@@ -266,7 +290,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
             <>
               <button
                 onClick={() => navigate('/signup')}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center  bg-black/10 rounded-full p-2 "
                 aria-label={isLiked ? 'Unlike' : 'Like'}
               >
                 <Heart
@@ -278,7 +302,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
               <button
                 onClick={() => navigate('/signup')}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center  bg-black/10 rounded-full p-2"
                 aria-label="Comment"
               >
                 <MessageCircle className="w-6 h-6 text-white" />
@@ -287,14 +311,14 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
               <button
                 onClick={() => setIsShareOpen(true)}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center  bg-black/10 rounded-full p-2"
               >
                 <Send className="w-6 h-6 text-white" />
               </button>
 
               <button
                 onClick={() => navigate('/signup')}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center  bg-black/10 rounded-full p-2"
                 aria-label={isSaved ? 'Unsave' : 'Save'}
               >
                 <Bookmark

@@ -20,7 +20,7 @@ export default function SearchPage() {
     try {
       const city = (localStorage.getItem('city') || "").trim();
       const res = await api.get(`/post/getsearchresult`, {
-        params: { search, city },
+        params: { search, selectedCity },
       });
       setInfo(res.data);
     } catch (error) {
