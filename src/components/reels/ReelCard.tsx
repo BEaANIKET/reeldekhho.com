@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Heart, MessageCircle, Send, Bookmark, Music2 } from 'lucide-react';
+import { Heart, MessageCircle, Send, Bookmark, Music2, User } from 'lucide-react';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 import useHandleReelsLikes from '../../hooks/reels/useHandleLikes';
 import useAuth from '../../hooks/useAuth';
@@ -154,23 +154,24 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
   }, [reel, reel?._id]);
 
+  console.log(reel?.user);
+
 
   return (
     <div
       onClick={handleReelsClick}
-      className="reel relative z-10 h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
+      style={{
+        textShadow: '3px 2px 2px black'
+      }}
+      className="reel relative z-10 text-[#f2f2f2] font-extrabold h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
     >
       <div className=' relative flex items-center justify-center h-full w-full'>
-
-
-
-
-        <div className=' absolute flex w-full justify-between  top-4  left-0 right-0  '>
-          <div className=' bg-black p-2 rounded-md text-white'>
+        <div className=' absolute bg-black  flex w-full justify-between  top-4  left-0 right-0  '>
+          <div className=' cursor-pointer z-50 bg-black p-2 rounded-md '>
             {reel.user?.longitude && reel.user?.lattitude ? <GetLocation link={reel.user?.googleMapLink} createdDate={reel.createdAt} longitude={reel.user.longitude} lattitude={reel.user.lattitude} /> : null}
           </div>
 
-          <div className="flex items-center gap-1 p-2 rounded-md bg-black text-white text-xs ">
+          <div className="flex items-center gap-1 p-2 rounded-md  text-xs ">
             <svg
               className="w-4 h-4"
               fill="currentColor"
@@ -208,9 +209,9 @@ export default function ReelCard({ reel }: ReelCardProps) {
       {/* Overlay */}
       <div className="absolute inset-0 bottom-12 top-0">
         {/* Bottom Content */}
-        <div className="absolute bottom-0 left-0  bg-black/5  w-full right-12 p-4">
+        <div className="absolute bottom-0 left-0   w-full right-12 p-4">
 
-          <Link to={`/seller/${reel.user._id}`} className=" flex items-center font-bold  space-x-2 mb-3">
+          <Link to={`/seller/${reel.user._id}`} className=" flex items-center  space-x-2 mb-3">
             <img
               src={reel.user.profilePicture || 'https://cdn.pixabay.com/photo/2023/12/04/06/14/ai-generated-8428762_1280.jpg'}
               alt={`${reel.user.fullName}'s avatar`}
@@ -219,16 +220,16 @@ export default function ReelCard({ reel }: ReelCardProps) {
             />
 
             {/* </div> */}
-            <span className="text-white font-medium  p-2 text-sm">
+            <span className=" p-2 text-md ">
               {reel.user.fullName || 'Unknown User'}
             </span>
           </Link>
 
           {/* Caption */}
-          <p className="text-white text-sm mb-2 line-clamp-2">{reel.caption}</p>
+          <p className=" text-sm font-normal mb-2 line-clamp-2">{reel.caption}</p>
 
           {/* Music */}
-          <div className="flex items-center space-x-2 text-white">
+          <div className="flex text-sm font-normal items-center space-x-2 ">
             <Music2 className="w-3 h-3" />
             <span className="text-xs">{reel.category}</span>
           </div>
@@ -238,49 +239,49 @@ export default function ReelCard({ reel }: ReelCardProps) {
         <div className="absolute  bottom-4 right-2 space-y-4">
           <button
             onClick={() => iconClicked(`https://wa.me/${reel?.user?.phone}`)}
-            className="flex  bg-black/10 rounded-full p-2 flex-col items-center"
+            className="flex  rounded-full p-2 flex-col items-center"
           >
             <BsWhatsapp
-              className={`w-6 h-6 transition-colors text-white`}
+              className={`w-6 h-6 transition-colors `}
             />
           </button>
           {isLoggedIn ? (
             <>
               <button
                 onClick={handleLike}
-                className="flex flex-col  bg-black/10 rounded-full p-2 items-center"
+                className="flex flex-col rounded-full p-2 items-center"
                 aria-label={isLiked ? 'Unlike' : 'Like'}
               >
                 <Heart
-                  className={`w-6 h-6 transition-colors ${isLiked ? 'text-red-500 fill-current' : 'text-white'
+                  className={`w-6 h-6 transition-colors ${isLiked ? 'text-red-500 fill-current' : ''
                     }`}
                 />
-                <span className="text-white text-xs mt-1">{likeCount.toLocaleString()}</span>
+                <span className=" text-xs mt-1">{likeCount.toLocaleString()}</span>
               </button>
 
               <button
                 onClick={handleCommentClick}
-                className="flex flex-col  bg-black/10 rounded-full p-2 items-center"
+                className="flex flex-col  rounded-full p-2 items-center"
                 aria-label="Comment"
               >
-                <MessageCircle className="w-6 h-6 text-white" />
-                <span className="text-white text-xs mt-1"> {comments.length || 0} </span>
+                <MessageCircle className="w-6 h-6 " />
+                <span className=" text-xs mt-1"> {comments.length || 0} </span>
               </button>
 
               <button
                 onClick={() => setIsShareOpen(true)}
-                className="flex flex-col items-center bg-black/10 rounded-full p-2 "
+                className="flex flex-col items-center rounded-full p-2 "
               >
-                <Send className="w-6 h-6 text-white" />
+                <Send className="w-6 h-6 " />
               </button>
 
               <button
                 onClick={handleSave}
-                className="flex flex-col items-center  bg-black/10 rounded-full p-2"
+                className="flex flex-col items-center  rounded-full p-2"
                 aria-label={isSaved ? 'Unsave' : 'Save'}
               >
                 <Bookmark
-                  className={`w-6 h-6 transition-colors ${isSaved ? 'text-white fill-current' : 'text-white'
+                  className={`w-6 h-6 transition-colors ${isSaved ? ' fill-current' : ''
                     }`}
                 />
               </button>
@@ -291,39 +292,39 @@ export default function ReelCard({ reel }: ReelCardProps) {
             <>
               <button
                 onClick={() => navigate('/signup')}
-                className="flex flex-col items-center  bg-black/10 rounded-full p-2 "
+                className="flex flex-col items-center  rounded-full p-2 "
                 aria-label={isLiked ? 'Unlike' : 'Like'}
               >
                 <Heart
-                  className={`w-6 h-6 transition-colors ${isLiked ? 'text-red-500 fill-current' : 'text-white'
+                  className={`w-6 h-6 transition-colors ${isLiked ? 'text-red-500 fill-current' : ''
                     }`}
                 />
-                <span className="text-white text-xs mt-1">{likeCount.toLocaleString()}</span>
+                <span className=" text-xs mt-1">{likeCount.toLocaleString()}</span>
               </button>
 
               <button
                 onClick={() => navigate('/signup')}
-                className="flex flex-col items-center  bg-black/10 rounded-full p-2"
+                className="flex flex-col items-center  rounded-full p-2"
                 aria-label="Comment"
               >
-                <MessageCircle className="w-6 h-6 text-white" />
-                <span className="text-white text-xs mt-1"> {comments?.length || 0} </span>
+                <MessageCircle className="w-6 h-6 " />
+                <span className=" text-xs mt-1"> {comments?.length || 0} </span>
               </button>
 
               <button
                 onClick={() => setIsShareOpen(true)}
-                className="flex flex-col items-center  bg-black/10 rounded-full p-2"
+                className="flex flex-col items-center  rounded-full p-2"
               >
-                <Send className="w-6 h-6 text-white" />
+                <Send className="w-6 h-6 " />
               </button>
 
               <button
                 onClick={() => navigate('/signup')}
-                className="flex flex-col items-center  bg-black/10 rounded-full p-2"
+                className="flex flex-col items-center  rounded-full p-2"
                 aria-label={isSaved ? 'Unsave' : 'Save'}
               >
                 <Bookmark
-                  className={`w-6 h-6 transition-colors ${isSaved ? 'text-white fill-current' : 'text-white'
+                  className={`w-6 h-6 transition-colors ${isSaved ? ' fill-current' : ''
                     }`}
                 />
               </button>
@@ -339,7 +340,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
       {isCommentOpen ? (
         <div
-          className={`absolute z-50  overflow-y-scroll bottom-0 left-0 right-0 bg-gray-900 text-white p-4 rounded-t-lg transform transition-transform duration-300 ${isCommentOpen ? 'translate-y-0' : 'translate-y-full'
+          className={`absolute z-50  overflow-y-scroll bottom-0 left-0 right-0 bg-gray-900  p-4 rounded-t-lg transform transition-transform duration-300 ${isCommentOpen ? 'translate-y-0' : 'translate-y-full'
             }`}
           style={{ height: '50%' }}
         >
@@ -347,7 +348,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
             <h2 className="text-lg font-medium">Comments</h2>
             <button
               onClick={closeCommentPopup}
-              className="text-white hover:text-gray-400"
+              className=" hover:text-gray-400"
             >
               Close
             </button>
@@ -363,19 +364,19 @@ export default function ReelCard({ reel }: ReelCardProps) {
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <div className="flex-grow h-full items-start flex flex-col">
-                    <p className="font-semibold dark:text-white">{comment.user.fullName}</p>
-                    <p className="dark:text-white">{comment.text}</p>
+                    <p className="font-semibold dark:">{comment.user.fullName}</p>
+                    <p className="dark:">{comment.text}</p>
                   </div>
 
                   <div className="relative">
                     <BiDotsVertical
-                      className="dark:text-white text-black text-lg cursor-pointer"
+                      className="dark: text-black text-lg cursor-pointer"
                       onClick={() => setShowPopup((prev) => (prev === comment._id ? false : comment._id))}
                     />
                     {showPopup === comment._id && (
                       <div className="absolute top-full right-[21px] mt-[-24px] rounded-sm">
                         <p
-                          className=" text-white font-semibold rounded-sm cursor-pointer text-sm p-2 bg-red-500  hover:underline"
+                          className="  font-semibold rounded-sm cursor-pointer text-sm p-2 bg-red-500  hover:underline"
                           onClick={() => handleDelete(comment._id)}
                         >
                           {loader.removeLoader ? 'loading...' : 'Delete'}

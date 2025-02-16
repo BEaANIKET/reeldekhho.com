@@ -150,11 +150,11 @@ const GetLocation: React.FC<GetLocationProps> = ({ link, lattitude, longitude })
     //   </span>
     // </div>
 
-    <div className="flex justify-between  items-center">
+    <div onClick={navigate} className="flex justify-between  items-center">
 
       {/* Right side: Icon with Distance */}
       <span className="flex items-center text-xs">
-        <LuMapPin onClick={navigate} className="mr-1" style={{ height: '22px', width: '22px' }} />
+        <LuMapPin className="mr-1" style={{ height: '22px', width: '22px' }} />
         <span style={{ fontSize: '15px' }}>{location ? calculateDistance() : null}</span>
       </span>
     </div>
