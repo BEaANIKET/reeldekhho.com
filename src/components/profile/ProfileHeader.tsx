@@ -1,4 +1,4 @@
-import { MapPin, FilePlus } from "lucide-react";
+import { MapPin, FilePlus, Star } from "lucide-react";
 import { useSelector } from "react-redux";
 import useGetProfile from "../../hooks/profile/useGetProfile";
 import { BsChat } from "react-icons/bs";
@@ -51,6 +51,7 @@ export default function ProfileHeader(props: any) {
     );
   }
 
+  console.log(user);
 
   const iconClick = async (e: any) => {
     Navigate(e);
@@ -168,6 +169,35 @@ export default function ProfileHeader(props: any) {
         onClose={() => setIsShareOpen(false)}
         profileId={user?._id}
       />
+      {
+        user?.role === 'seller' && (
+          <div className="w-full bg-white p-6 rounded-lg shadow-md mt-3">
+            <div className="flex items-center gap-4">
+              <div className="text-4xl font-bold text-gray-900">{user?.totalReviews == 0 ? 0 : (user?.totalStars / user?.totalReviews).toFixed(1)}</div>
+              <div>
+                <div className="flex gap-1 mb-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-5 h-5 ${user?.totalReviews === 0
+                        ? 'text-gray-300'
+                        : star <= user?.totalStars / user?.totalReviews
+                          ? 'text-yellow-500 fill-yellow-500'
+                          : star - user?.totalStars / user?.totalReviews <= 0.5
+                            ? 'text-yellow-500 fill-yellow-500'
+                            : 'text-gray-300'
+                        }`}
+                    />
+                  ))}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {user?.totalReviews} reviews
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      }
 
       {/* Video Card Section */}
 
