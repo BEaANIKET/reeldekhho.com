@@ -13,6 +13,7 @@ interface ProfileRatingProps {
 export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setProfile }: ProfileRatingProps) {
   const [rating, setRating] = useState<number>(0);
   const [loading, setLoading] = useState(false);
+  const [reviewMessage, setReviewMessage]= useState('');
 
   const handleRating = (value: number) => {
     setRating(value);
@@ -23,12 +24,13 @@ export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setP
   const handleClick = async () => {
     try {
       setLoading(true)
-      const response = await api.post(`/user/review?id=${sellerId}`, { star: rating })
-      //(response.data.reviwedId.reviewedId ,response.data.reviwedId.totalStars )
+      const response = await api.post(`/user/review?id=${sellerId}`, { star: rating, message: reviewMessage })
+      console.log(response.data )
       setProfile(response.data.user)
 
       dispatch(updateReviews({
         reviewedId: response.data.reviwedId.reviewedId,
+        reviewMessage: response.data.reviwedId.reviewMessage,
         totalStars: response.data.reviwedId.totalStars
       }));
       alert(`Thank you for rating us ${rating} stars!`);
@@ -70,6 +72,19 @@ export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setP
               You selected {rating} star{rating > 1 ? "s" : ""}!
             </p>
           )}
+
+          <textarea 
+          value={reviewMessage}
+          onChange={(e) => {
+            const { value }= e.currentTarget;
+            setReviewMessage(value)
+          }}
+          placeholder="Give Us Your Feedback"
+          rows={2} 
+          className=" w-full shadow-md bg-[#00000028] outline-none p-1 mb-2"
+          >
+            
+          </textarea>
 
           {/* Buttons */}
           <button

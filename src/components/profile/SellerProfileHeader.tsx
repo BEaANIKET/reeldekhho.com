@@ -11,6 +11,7 @@ import api from "../../services/api/axiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setSellerData } from "../../store/slices/sellerSlice";
 import { Image, Modal } from "antd";
+import ReviewPopupCard from "./ReviewPopup";
 
 export default function SellerProfileHeader() {
   // const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -33,7 +34,8 @@ export default function SellerProfileHeader() {
   const [reviewId, setReviewId] = useState(undefined);
 
   const reviewedId = useSelector((state: any) => state.reviews.reviewedUser);
-  const [popup, setPopup] = useState(false)
+  console.log(reviewedId);
+  const [ReviewPopup, setReviewPopup] = useState(false)
 
   useEffect(() => {
     const reviwedSeller = reviewedId.find((user: any) => user.reviewedId === id);
@@ -97,6 +99,10 @@ export default function SellerProfileHeader() {
 
   const handleWhatsapp = () => {
     window.open(`https://wa.me/${profile?.phone}`);
+  }
+
+  const PopupReview = () => {
+    setReviewPopup(true);
   }
 
   if (pageLoading) {
@@ -220,6 +226,7 @@ export default function SellerProfileHeader() {
           {
             reviewId?.reviewedId === id ?
               <div
+                // onClick={}
                 className="flex-1 flex justify-center items-center gap-2 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 dark:bg-gray-800 "
               > Rated {reviewId?.totalStars} <Star className="text-[#FFAA00] fill-[#FFAA00] w-5 h-5" /> </div>
               :
@@ -237,7 +244,12 @@ export default function SellerProfileHeader() {
         {/* rating display */}
         <div className="w-full bg-white p-6 rounded-lg shadow-md mt-3">
           <div className="flex items-center gap-4">
-            <div className="text-4xl font-bold text-gray-900">{profile?.totalReviews == 0 ? 0 : (profile?.totalStars / profile?.totalReviews).toFixed(1)}</div>
+            <div
+              onClick={() => setReviewPopup(true)}
+              className="text-4xl font-bold text-gray-900 cursor-pointer"
+            >
+              {profile?.totalReviews == 0 ? 0 : (profile?.totalStars / profile?.totalReviews).toFixed(1)}
+            </div>
             <div>
               <div className="flex gap-1 mb-1">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -260,6 +272,22 @@ export default function SellerProfileHeader() {
             </div>
           </div>
         </div>
+
+        {/* Review Popup */}
+        {
+          ReviewPopup && (
+            <ReviewPopupCard id={id}/>
+          )
+        }
+
+        {
+          ReviewPopup && (
+            <div
+              onClick={() => setReviewPopup(false)}
+              className='fixed w-screen h-screen bg-[#0000005b] top-0 left-0 z-40'>
+            </div>
+          )
+        }
 
         {isBottomSheetOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
