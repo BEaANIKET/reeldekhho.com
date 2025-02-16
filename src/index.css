@@ -76,3 +76,25 @@
     object-fit: cover;
   }
 }
+
+/* Improved scrollbar hiding */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile scroll behavior */
+@media (pointer: coarse) {
+  .snap-y {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Prevent unwanted focus outlines */
+.scrollbar-hide:focus {
+  outline: none;
+}

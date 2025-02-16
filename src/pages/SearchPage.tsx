@@ -46,18 +46,14 @@ export default function SearchPage() {
       }
 
       const newPostIds = res.data.map(post => post._id);
-      setExclude(prevExclude => [...prevExclude, ...newPostIds]); // Append new post IDs to exclude
-
-      setInfo(prevInfo => [...prevInfo, ...res.data]); // Append new posts to the list
-
+      setExclude(prevExclude => [...prevExclude, ...newPostIds]);
+      setInfo(prevInfo => [...prevInfo, ...res.data]);
     } catch (error) {
       console.error("Error fetching more posts:", error);
     } finally {
       setSearchLoading(false);
     }
   };
-
-
 
   const fetchUsers = async () => {
     setLoading(true);
