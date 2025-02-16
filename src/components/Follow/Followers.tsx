@@ -1,5 +1,5 @@
-import { User, Check, UserPlus, Frown, Lock, Loader2Icon } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { User, Check, UserPlus, Frown, Lock, Loader2Icon, ArrowLeft } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useFollow from "../../hooks/useFollow";
 import FollowSkeleton from "./FollowSkeleton";
 import { useSelector } from "react-redux";
@@ -11,6 +11,8 @@ const Followers = () => {
     const { followers, followLoading, getFollowData } = useFollow({ id });
     const user = useSelector((state) => state?.auth.user)
     const [loading, setLoading] = useState<any>({});
+    const navigate = useNavigate()
+
     //(user);
     //(followers);
 
@@ -42,11 +44,20 @@ const Followers = () => {
         // setTimeout(() => setLoading((prev:any) => ({ ...prev, [followId]:false })), 2000)
     }
 
+
     return (
         <div className="min-h-screen bg-gray-50 p-4">
+
             <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-sm">
                 {/* Header */}
-                <div className="p-4 border-b">
+                <div className="p-4 border-b flex justify-between items-center">
+                    <header className="flex items-center gap-4 ">
+                        <ArrowLeft
+                            className="w-6 h-6 cursor-pointer"
+                            onClick={() => navigate(-1)}
+                        />
+                        {/* <h1 className="text-2xl font-bold">Posts</h1> */}
+                    </header>
                     <h1 className="text-xl font-semibold flex items-center gap-2">
                         <User className="w-5 h-5" /> Followers
                     </h1>

@@ -1,4 +1,4 @@
-import { LocateFixed, Search } from 'lucide-react';
+import { Loader, LocateFixed, Search } from 'lucide-react';
 import SearchPost from '../components/SearchPost';
 import { useEffect, useState } from 'react';
 import HeaderStatic from '../components/HeaderStatic';
@@ -14,14 +14,18 @@ export default function SearchPage() {
   const [selectedCity, setSelectedCity] = useState('');
   const [isPostView, setIsPostView] = useState(true);
   const navigate = useNavigate();
+  const [exclude, setExclude] = useState([])
+  const [searchLoading, setSearchLoading] = useState(false)
 
   const fetchPosts = async () => {
     setLoading(true);
     try {
       const city = (localStorage.getItem('city') || "").trim();
       const res = await api.get(`/post/getsearchresult`, {
-        params: { search, selectedCity },
+        params: { search, city: selectedCity, limit: 50 },
       });
+      const serchedPost = res.data?.map(post => post._id).join(',');
+      setExclude(serchedPost);
       setInfo(res.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -29,6 +33,31 @@ export default function SearchPage() {
       setLoading(false);
     }
   };
+
+  const loadmore = async () => {
+    try {
+      setSearchLoading(true);
+      const res = await api.get(`/post/getsearchresult`, {
+        params: { search, city: selectedCity, excludeIds: exclude, limit: 12 },
+      });
+
+      if (!res.data || !Array.isArray(res.data)) {
+        throw new Error("Invalid response data");
+      }
+
+      const newPostIds = res.data.map(post => post._id);
+      setExclude(prevExclude => [...prevExclude, ...newPostIds]); // Append new post IDs to exclude
+
+      setInfo(prevInfo => [...prevInfo, ...res.data]); // Append new posts to the list
+
+    } catch (error) {
+      console.error("Error fetching more posts:", error);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -45,8 +74,6 @@ export default function SearchPage() {
   const fetchCities = async () => {
     try {
       const res = await api.get(`/post/getcitylist`);
-      //(res);
-
       res.data.value.sort((a, b) => a.city.localeCompare(b.city));
       setCityList(res.data.value || []);
     } catch (error) {
@@ -81,6 +108,7 @@ export default function SearchPage() {
 
     if (e?.target?.value === 'All State') {
       localStorage.removeItem('city')
+      setSelectedCity('')
       return
     }
     localStorage.setItem('city', e?.target?.value)
@@ -188,7 +216,15 @@ export default function SearchPage() {
               <div className="columns-2 sm:columns-3 gap-1">
                 <SearchPost info={info} />
               </div>
-              {/* <div className=' mt-3 w-full flex justify-end font-semibold opacity-85 '>  <p className=' cursor-pointer'> Load more ..</p></div> */}
+              {
+                searchLoading && (
+                  <div className=' flex mt-8 justify-center items-center w-full '>
+                    <Loader className=' animate-spin text-2xl text-black' />
+                  </div>
+                )
+              }
+
+              <div onClick={loadmore} className=' mt-3 w-full flex justify-end font-semibold opacity-85 '>  <p className=' cursor-pointer'> Load more ..</p></div>
             </div>
 
           ) : (
@@ -219,6 +255,7 @@ export default function SearchPage() {
                   </p>
                 </div>
               </div>
+
             ))}
           </div>
         ) : (

@@ -74,7 +74,7 @@ export default function Feed({ homeClick }) {
 
   useEffect(() => {
     fetchPosts();
-    console.log("hello I am runing ");
+    // //("hello I am runing ");
 
   }, [homeClick]);
 
@@ -151,8 +151,12 @@ export default function Feed({ homeClick }) {
         {
           (reportBottomSheet || likeCard) && (
             <div
-              onClick={() => setReportBottomSheet(false)}
-              className='fixed w-screen h-screen bg-[#0000005b] top-0 z-40'>
+              onClick={() => {
+                setReportBottomSheet(false)
+                setLikeCard(false)
+              }
+              }
+              className='fixed w-screen h-screen left-0 bg-[#0000005b] top-0 z-40'>
             </div>
           )
         }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api/axiosConfig";
 import ReelCard from "./reels/ReelCard";
+import { ArrowLeft } from "lucide-react";
 
 const SearchReels = () => {
     const { id } = useParams();
@@ -12,8 +13,10 @@ const SearchReels = () => {
     const [page, setPage] = useState(1);
     const [startLoading, setStartLoading] = useState(true); // For initial load
     const [currentReelIndex, setCurrentReelIndex] = useState(0); // Track current reel index
-
+    const navigate = useNavigate()
     const reelContainerRef = useRef<HTMLDivElement>(null);
+
+
 
     // Fetch a specific reel by ID
     const fetchReels = useCallback(async (reelId: string) => {
@@ -86,6 +89,14 @@ const SearchReels = () => {
 
     return (
         <div className="h-[100dvh] w-full max-w-md m-auto bg-black overflow-hidden">
+
+            <header className="sm:flex hidden absolute left-2 text-black   top-3 items-center gap-4 mb-6">
+                <ArrowLeft
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={() => navigate(-1)}
+                />
+                <h1 className="text-2xl font-bold">Posts</h1>
+            </header>
             {startLoading ? (
                 <div className="flex justify-center items-center h-full w-full text-white">
                     <p>Loading reels...</p>

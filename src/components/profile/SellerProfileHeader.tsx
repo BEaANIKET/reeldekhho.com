@@ -111,13 +111,19 @@ export default function SellerProfileHeader() {
           <div className="flex flex-row items-center md:items-start gap-6">
             {/* Profile Picture */}
             <div className="flex-shrink-0">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 flex items-center rounded-xl md:w-40 md:h-40 overflow-hidden">
-                <Image
+              <div onClick={() => setPopup(true)} className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-lg overflow-hidden flex items-center justify-center">
+                {/* <Image
                   src={profile?.profilePicture}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-
+                  alt="Profile Picture"
+                  // layout="fill"
+                  // objectFit="cover"
+                  // objectPosition="top"
+                  className=" h-full object-cover "
+                /> */}
+                <img src={profile?.profilePicture} className="w-full h-full object-cover " alt="" />
               </div>
+
+
 
               <div className="sm:hidden flex items-center justify-start gap-4 ">
                 <h1 className="text font-semibold text-gray-800 dark:text-gray-200">
@@ -321,6 +327,31 @@ export default function SellerProfileHeader() {
             </div>
           )
         }
+        {
+          popup && (
+            <div
+              onClick={() => setPopup(false)}
+              className='fixed w-screen h-screen inset-0 bg-[#0000005b] top-0 z-40'>
+            </div>
+          )
+        }
+
+        {
+          popup && (
+            <div
+              className={`fixed w-[75vw] max-w-md max-h-[80vh] transition-all duration-300 ease-in-out rounded-lg z-50 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 shadow-lg
+      ${popup ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}
+      `}
+            >
+              {/* Close Button */}
+              <img src={profile?.profilePicture} className="w-full object-cover h-full rounded-lg" alt="" />
+            </div>
+          )
+        }
+
+
+
+
 
       </div>
       {Seller ? <SellerPostGrid posts={Seller} /> : null}

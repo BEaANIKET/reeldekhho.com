@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { ArrowLeft, Heart } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useSavedPost from "../hooks/post/useSavedpost";
@@ -14,7 +14,6 @@ const SavedPage = () => {
 
     if (savedLoading) {
         return <div className="max-w-6xl mx-auto px-4 py-8">
-            <h1 className="text-2xl font-bold mb-6">Saved Posts</h1>
             <div className="grid grid-cols-3 gap-4">
                 {[...Array(6)].map((_, index) => (
                     <div
@@ -30,7 +29,16 @@ const SavedPage = () => {
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
-            <h1 className="text-2xl font-bold mb-6">Saved Posts</h1>
+            <div className=" flex justify-between items-center ">
+                <header className="flex  items-center gap-4 ">
+                    <ArrowLeft
+                        className="w-6 h-6 cursor-pointer"
+                        onClick={() => navigate(-1)}
+                    />
+                    <h1 className="text-2xl font-bold">Saved Posts</h1>
+                </header>
+
+            </div>
             <div className={`${savedPosts.length ? "grid grid-cols-3 gap-4" : " text-lg font-bold text-center"}`}>
                 {
                     savedPosts && savedPosts.length ? (savedPosts.map((posts) => {
@@ -79,7 +87,7 @@ const SavedPage = () => {
                             </div>
                         )
                     })) : (
-                        <div>
+                        <div className=" opacity-60 mt-6">
                             No saved Post Found
                         </div>
                     )
