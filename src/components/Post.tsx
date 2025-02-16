@@ -207,7 +207,7 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
   }, [post, post?._id]);
 
   useEffect(() => {
-    console.log(viewCount);
+    //(viewCount);
 
   }, [viewCount])
 
@@ -272,7 +272,7 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
       </p>
       <div className="relative">
 
-        <div className=" absolute top-0 left-0 z-50 flex items-center gap-1 p-1 rounded-md bg-black text-white text-xs ">
+        <div className=" absolute top-0 left-0 z-10 flex items-center gap-1 p-1 rounded-md bg-black text-white text-xs ">
           <svg
             className="w-4 h-4"
             fill="currentColor"

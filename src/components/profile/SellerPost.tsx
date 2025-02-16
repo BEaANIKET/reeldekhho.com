@@ -77,7 +77,7 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
 
     const [commentLoder, setCommentLoder] = useState(false)
     const [isShareOpen, setIsShareOpen] = useState(false);
-    const mediaType = identifyMediaType(value?.file?.fileType);
+    const mediaType = identifyMediaType(post?.file?.fileType);
 
 
     const handleDelete = (id: number) => {
@@ -113,7 +113,7 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
             <p className="dark:text-white px-3 pb-2">{post.caption}</p>
             <div
                 onClick={() => navigate(`/reels/${post?._id}`)}
-                className="relative cursor-pointer">
+                className="relative cursor-pointer ">
                 {mediaType === 'image' ? (
                     <img
                         src={post.file.url}
@@ -316,7 +316,7 @@ const SellerPost = () => {
             <header className="flex items-center gap-4 mb-6">
                 <ArrowLeft
                     className="w-6 h-6 cursor-pointer"
-                    onClick={() => navigate(`/seller/${seller._id}`)}
+                    onClick={() => navigate(-1)}
                 />
                 <h1 className="text-2xl font-bold">Posts</h1>
             </header>
@@ -331,7 +331,8 @@ const SellerPost = () => {
             {
                 (likeCard) && (
                     <div
-                        className='fixed w-screen h-screen bg-[#0000005b] top-0 z-40'>
+                        onClick={() => setLikeCard(false)}
+                        className='fixed w-screen h-screen inset-0 bg-[#0000005b] top-0 z-40'>
                     </div>
                 )
             }

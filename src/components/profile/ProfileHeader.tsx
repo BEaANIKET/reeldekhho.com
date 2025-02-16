@@ -63,13 +63,20 @@ export default function ProfileHeader(props: any) {
         <div className="flex flex-row items-center md:items-start gap-6">
           {/* Profile Picture */}
           <div className="flex-shrink-0">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-[25%] overflow-hidden">
+            <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full overflow-hidden">
               <Image
                 src={user?.profilePicture}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  borderRadius: "50%",
+                }}
+                alt="Profile Picture"
               />
-
             </div>
+
           </div>
 
           {/* User Info Section */}

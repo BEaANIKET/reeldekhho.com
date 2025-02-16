@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import ReelCard from "./ReelCard";
 import useLoadReels from "../../hooks/reels/useLoadReels";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
+import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const PAGE_SIZE = 5;
 
@@ -11,7 +13,7 @@ export default function ReelsContainer() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const reelRefs = useRef<(HTMLDivElement | null)[]>([]);
-
+  const navigate = useNavigate()
   // Callback for observing scroll position and updating the current index
   const handleScroll = useCallback(() => {
     if (!containerRef.current) return;
@@ -52,6 +54,7 @@ export default function ReelsContainer() {
 
   return (
     <div className="h-[100dvh] w-full max-w-md m-auto bg-black overflow-hidden">
+
       {loader && reels.length === 0 ? (
         <div className="flex justify-center items-center h-full text-white">
           <p>Loading...</p>
