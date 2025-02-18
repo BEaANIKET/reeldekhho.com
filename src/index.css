@@ -15,7 +15,6 @@
   /* Firefox */
 }
 
-/* Prevent text selection */
 .no-select {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -25,12 +24,10 @@
 
 .scroll-container {
   scroll-snap-type: y mandatory;
-  /* Vertical snapping enabled */
 }
 
 .reel {
   scroll-snap-align: start;
-  /* Align each reel at the start of the viewport */
 }
 
 .maincontainer {
@@ -75,26 +72,4 @@
   .objectcovernow {
     object-fit: cover;
   }
-}
-
-/* Improved scrollbar hiding */
-.scrollbar-hide {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Mobile scroll behavior */
-@media (pointer: coarse) {
-  .snap-y {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Prevent unwanted focus outlines */
-.scrollbar-hide:focus {
-  outline: none;
 }

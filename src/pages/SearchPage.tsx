@@ -20,15 +20,16 @@ export default function SearchPage() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const city = (localStorage.getItem('city') || "").trim();
+      const city = selectedCity === 'AllState' ? '' : selectedCity
       const res = await api.get(`/post/getsearchresult`, {
-        params: { search, city: selectedCity, limit: 50 },
+        params: { search, city, limit: 50 },
       });
       const serchedPost = res.data?.map(post => post._id).join(',');
       setExclude(serchedPost);
       setInfo(res.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
+      setInfo([])
     } finally {
       setLoading(false);
     }
@@ -104,7 +105,7 @@ export default function SearchPage() {
 
     if (e?.target?.value === 'All State') {
       localStorage.removeItem('city')
-      setSelectedCity('')
+      // setSelectedCity('')
       return
     }
     localStorage.setItem('city', e?.target?.value)
@@ -156,7 +157,7 @@ export default function SearchPage() {
               className="w-32 p-2 bg-inherit dark:text-white text-sm focus:outline-none"
             >
               <option value="">Select City</option>
-              <option value={'All State'} >
+              <option value={'AllState'} >
                 All State
               </option>
               {cityList.map((item) => (

@@ -13,7 +13,7 @@ interface ProfileRatingProps {
 export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setProfile }: ProfileRatingProps) {
   const [rating, setRating] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-  const [reviewMessage, setReviewMessage]= useState('');
+  const [reviewMessage, setReviewMessage] = useState('');
 
   const handleRating = (value: number) => {
     setRating(value);
@@ -25,7 +25,7 @@ export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setP
     try {
       setLoading(true)
       const response = await api.post(`/user/review?id=${sellerId}`, { star: rating, message: reviewMessage })
-      console.log(response.data )
+      //(response.data )
       setProfile(response.data.user)
 
       dispatch(updateReviews({
@@ -73,17 +73,17 @@ export default function ProfileRating({ setIsRateBottomSheetOpen, sellerId, setP
             </p>
           )}
 
-          <textarea 
-          value={reviewMessage}
-          onChange={(e) => {
-            const { value }= e.currentTarget;
-            setReviewMessage(value)
-          }}
-          placeholder="Give Us Your Feedback"
-          rows={2} 
-          className=" w-full shadow-md bg-[#00000028] outline-none p-1 mb-2"
+          <textarea
+            value={reviewMessage}
+            onChange={(e) => {
+              const { value } = e.currentTarget;
+              setReviewMessage(value)
+            }}
+            placeholder="Give Us Your Feedback"
+            rows={2}
+            className=" w-full shadow-md bg-[#00000028] outline-none p-1 mb-2"
           >
-            
+
           </textarea>
 
           {/* Buttons */}
