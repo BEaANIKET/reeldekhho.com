@@ -64,6 +64,8 @@ const SearchReels = () => {
     // Handle scroll event to update the current reel index
     const handleScroll = useCallback(() => {
         const container = reelContainerRef.current;
+        console.log('sadadas');
+
         if (!container) return;
 
         const reels = container.querySelectorAll<HTMLDivElement>(".reel-card");
@@ -106,9 +108,18 @@ const SearchReels = () => {
                     ref={reelContainerRef}
                     onScroll={handleScroll}
                     className="h-[100dvh] scrollbar-hide overflow-y-scroll snap-start snap-mandatory snap-y"
+                    style={{
+                        scrollSnapType: "y mandatory",
+                        overscrollBehavior: "contain",
+                        WebkitOverflowScrolling: "touch",
+                    }}
                 >
                     {posts.map((reel, index) => (
-                        <div key={index} className="snap-start w-full h-full reel-card">
+                        <div key={index} style={{
+                            scrollSnapAlign: "start",
+                            scrollSnapStop: "always",
+                        }}
+                            className="h-[100dvh] reel-card scrollbar-hide overflow-y-scroll snap-start snap-mandatory snap-y">
                             <ReelCard reel={reel} />
                         </div>
                     ))}

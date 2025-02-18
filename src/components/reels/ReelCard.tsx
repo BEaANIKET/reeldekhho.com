@@ -154,7 +154,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
   }, [reel, reel?._id]);
 
-  console.log(reel?.user);
+  //(reel?.user);
 
 
   return (

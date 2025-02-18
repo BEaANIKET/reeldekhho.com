@@ -32,9 +32,9 @@ export default function SellerProfileHeader() {
   const user = useSelector((state: any) => state.auth.user);
 
   const [reviewId, setReviewId] = useState(undefined);
-
+  const [popup, setPopup] = useState(false)
   const reviewedId = useSelector((state: any) => state.reviews.reviewedUser);
-  console.log(reviewedId);
+  //(reviewedId);
   const [ReviewPopup, setReviewPopup] = useState(false)
 
   useEffect(() => {
@@ -282,7 +282,7 @@ export default function SellerProfileHeader() {
         {/* Review Popup */}
         {
           ReviewPopup && (
-            <ReviewPopupCard id={id}/>
+            <ReviewPopupCard id={id} />
           )
         }
 

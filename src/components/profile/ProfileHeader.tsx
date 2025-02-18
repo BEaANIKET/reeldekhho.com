@@ -51,7 +51,7 @@ export default function ProfileHeader(props: any) {
     );
   }
 
-  console.log(user);
+  //(user);
 
   const iconClick = async (e: any) => {
     Navigate(e);
