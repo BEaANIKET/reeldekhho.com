@@ -24,6 +24,7 @@ import CommentSection from "../components/interactions/CommentSection";
 import useHandleComment from "../hooks/post/useHandleComments";
 import ShareButton from "../components/ShareBtn";
 import LikeList from "../components/LikeList";
+import { identifyMediaType } from "../components/Post";
 
 const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, savedPost, setLikeCard, setLikedPostId }) => {
 
@@ -112,7 +113,7 @@ const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, sa
             <div
                 onClick={() => navigate(`/reels/${post?._id}`)}
                 className="relative cursor-pointer">
-                {true ? (
+                {identifyMediaType(post?.file?.fileType) === 'video' ? (
                     <video
                         src={post?.file.url}
                         className="w-full max-h-[60vh] object-cover"
