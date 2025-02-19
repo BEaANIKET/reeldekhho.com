@@ -64,18 +64,8 @@ export default function ProfileHeader(props: any) {
         <div className="flex flex-row items-center md:items-start gap-6">
           {/* Profile Picture */}
           <div className="flex-shrink-0">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full overflow-hidden">
-              <Image
-                src={user?.profilePicture}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  borderRadius: "50%",
-                }}
-                alt="Profile Picture"
-              />
+            <div onClick={() => setPopup(true)} className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-lg overflow-hidden flex items-center justify-center">
+              <img src={user?.profilePicture} className="w-full h-full object-cover " alt={'loading'} />
             </div>
 
           </div>
@@ -213,6 +203,28 @@ export default function ProfileHeader(props: any) {
                 />
               </div>
             </div>
+          </div>
+        )
+      }
+
+      {
+        popup && (
+          <div
+            onClick={() => setPopup(false)}
+            className='fixed w-screen h-screen inset-0 bg-[#0000007a] top-0 z-40'>
+          </div>
+        )
+      }
+
+      {
+        popup && (
+          <div
+            className={`fixed w-[75vw] max-w-md max-h-[80vh] transition-all duration-300 ease-in-out rounded-lg z-50 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 shadow-lg
+      ${popup ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}
+      `}
+          >
+            {/* Close Button */}
+            <img src={user?.profilePicture} className="w-full object-cover h-full rounded-lg" alt="" />
           </div>
         )
       }

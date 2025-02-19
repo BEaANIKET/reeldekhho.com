@@ -118,14 +118,6 @@ export default function SellerProfileHeader() {
             {/* Profile Picture */}
             <div className="flex-shrink-0">
               <div onClick={() => setPopup(true)} className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-lg overflow-hidden flex items-center justify-center">
-                {/* <Image
-                  src={profile?.profilePicture}
-                  alt="Profile Picture"
-                  // layout="fill"
-                  // objectFit="cover"
-                  // objectPosition="top"
-                  className=" h-full object-cover "
-                /> */}
                 <img src={profile?.profilePicture} className="w-full h-full object-cover " alt="" />
               </div>
 
@@ -376,10 +368,6 @@ export default function SellerProfileHeader() {
             </div>
           )
         }
-
-
-
-
 
       </div>
       {Seller ? <SellerPostGrid posts={Seller} /> : null}
