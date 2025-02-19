@@ -7,6 +7,9 @@ import { ProfileSkeloton } from "./ProfileSkeloton";
 import { useEffect, useState } from "react";
 import ShareFeature from "./ShareFeature";
 import { Button, Modal, Image } from 'antd';
+import Followers from "../Follow/Followers";
+import Following from "../Follow/Followings";
+import { id } from "date-fns/locale";
 
 export default function ProfileHeader(props: any) {
   const totalposts = props.value;
@@ -40,6 +43,9 @@ export default function ProfileHeader(props: any) {
   // if (true) {
   //   return < ProfileSkeloton />
   // }
+
+  const [followPopup, setFollowPopup] = useState(false);
+  const [followingPopup, setFollowingPopup] = useState(false)
 
   if (error) {
     return (
@@ -102,7 +108,8 @@ export default function ProfileHeader(props: any) {
                     posts
                   </span>
                 </div>
-                <div className="cursor-pointer" onClick={() => navigate(`/followers/${user._id}`)}>
+                {/* navigate(`/followers/${user._id}`) */}
+                <div className="cursor-pointer" onClick={() => setFollowPopup(true)}>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
                     {userFollow?.follower.length || 0}
                   </span>
@@ -110,7 +117,7 @@ export default function ProfileHeader(props: any) {
                     followers
                   </span>
                 </div>
-                <div className=" cursor-pointer" onClick={() => navigate(`/following/${user._id}`)}>
+                <div className="cursor-pointer" onClick={() => setFollowingPopup(true)}>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
                     {userFollow?.following.length || 0}
                   </span>
@@ -208,9 +215,21 @@ export default function ProfileHeader(props: any) {
       }
 
       {
-        popup && (
+        followPopup && <Followers id={user?._id}/>
+      }
+
+      {
+        followingPopup && <Following id={user?._id}/>
+      }
+
+      {
+        (popup || followPopup || followingPopup) && (
           <div
-            onClick={() => setPopup(false)}
+            onClick={() => {
+              setPopup(false);
+              setFollowPopup(false)
+              setFollowingPopup(false)
+            }}
             className='fixed w-screen h-screen inset-0 bg-[#0000007a] top-0 z-40'>
           </div>
         )

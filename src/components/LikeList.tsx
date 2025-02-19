@@ -51,7 +51,7 @@ const LikeList = ({ setLikeCard, likedPostId }: { setLikeCard: (value: boolean) 
             <ul className="space-y-3 overflow-y-auto max-h-[60vh]">
                 {likedUser.map((user) => (
                     user?.userId.length ? (
-                        <li key={user?._id} className="flex items-center p-1 space-x-3 rounded-md hover:bg-gray-100">
+                        <li key={user?._id} className="flex items-center p-1 space-x-3 rounded-md hover:bg-gray-100" style={{ textShadow: '0 0 0'}}>
                             <img src={user?.userId[0]?.profilePicture} alt={user.userId[0]?.fullName} className="w-6 h-6 rounded-full border" />
                             <span className="text-gray-700 font-medium">{user.userId[0]?.fullName}</span>
                         </li>
