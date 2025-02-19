@@ -7,6 +7,8 @@ import api from "../../services/api/axiosConfig";
 import defaultImage from "/assets/image.png";
 import { addCharts, addMessage, setMessages, setSelectedChat, setUnseenCount } from "../../store/slices/chatSlice";
 import toast from "react-hot-toast";
+import { id } from "date-fns/locale";
+import { updateUserProfile } from "../../store/slices/authSlice";
 
 interface ChatWindowProps {
     chatId: string;
@@ -146,7 +148,64 @@ export default function ChatWindow({ chatId, users }: ChatWindowProps) {
     const removeFilePreview = () => {
         setUploadError(false);
     };
+    // block feature
 
+    const crntUser = useSelector((state) => state?.auth?.user);
+    console.log(crntUser);
+
+    const [blockLoading, setBlockLoading] = useState<boolean>(false);
+    const [Block, setBlock] = useState({
+        blockedBy: null,
+        blockedMe: null,
+    });
+
+    useEffect(() => {
+        const blockedMe = crntUser?.blockedBy?.find((id) => id === chat?._id);
+        if (blockedMe) {
+            setBlock((prev) => ({ ...prev, blockedMe: blockedMe }));
+            return;
+        }else{
+            setBlock((prev) => ({ ...prev, blockedMe: null }));
+        }
+        const blockedId = crntUser?.block?.find((id) => id === chat?._id);
+        if (blockedId) {
+            setBlock((prev) => ({ ...prev, blockedBy: blockedId }));
+            return;
+        }else{
+            setBlock((prev) => ({ ...prev, blockedBy: null }));
+        }
+
+    }, [chat,crntUser])
+
+    const handleBlock = async () => {
+        setBlockLoading(true);
+        console.log(chat?._id);
+        try {
+            await api.post('/user/blockUser', { id: chat?._id });
+            // setIsBlocked(chat?._id);
+            const newArray = { ...crntUser, block: [...crntUser.block, chat?._id] };
+            dispatch(updateUserProfile(newArray));
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || "something went wrong!");
+        } finally {
+            setBlockLoading(false)
+        }
+    }
+    
+    const handleUnblock = async () => {
+        setBlockLoading(true);
+        try {
+            const response= await api.delete(`/user/unblockUser?id=${chat?._id}`);
+            console.log(response.data);
+            dispatch(updateUserProfile(response.data.user));
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || "something went wrong!");
+        } finally {
+            setBlockLoading(false)
+        }
+    }
 
     return (
         <div className="h-full w-full flex flex-col dark:bg-gray-900">
@@ -165,9 +224,35 @@ export default function ChatWindow({ chatId, users }: ChatWindowProps) {
                                 <span className="font-medium dark:text-white">{chat.fullName}</span>
                             </div>
                             <div className="flex items-center space-x-4">
-                                <button className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                                    <Info className="w-5 h-5" />
-                                </button>
+                                {
+                                    Block.blockedBy ?
+                                        <button
+                                            disabled={blockLoading}
+                                            onClick={handleUnblock}
+                                            className="flex justify-center items-center text-red-500 w-[80px] h-[40px] font-medium border px-3 py-1.5 border-gray-300 rounded-lg"
+                                        >
+                                            {
+                                                blockLoading ?
+                                                    <Loader2Icon className="animate-spin text-blue-500 w-6 h-6" /> :
+                                                    'Unblock'
+                                            }
+
+                                        </button>
+                                        :
+                                        <button
+                                            onClick={handleBlock}
+                                            disabled={blockLoading}
+                                            className="flex justify-center items-center text-red-500 w-[66px] h-[38px] font-medium border px-3 py-1.5 border-gray-300 rounded-lg"
+                                        >
+                                            {
+                                                blockLoading ?
+                                                    <Loader2Icon className="animate-spin text-blue-500 w-6 h-6" /> :
+                                                    'Block'
+                                            }
+
+                                        </button>
+
+                                }
                             </div>
                         </div>
 
@@ -240,36 +325,56 @@ export default function ChatWindow({ chatId, users }: ChatWindowProps) {
                         </div>
 
                         {/* Message Input */}
-                        <div className="p-4 border-t w-full dark:border-gray-700 bg-white dark:bg-gray-900">
-                            <form onSubmit={handleSend}>
+
+
+                        <div className="relative p-4 border-t w-full dark:border-gray-700 bg-white dark:bg-gray-900">
+                            {
+                                Block.blockedBy ?
+                                    <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 bg-opacity-70 flex items-center justify-center text-gray-600 dark:text-gray-400 font-semibold text-sm rounded-md">
+                                        You have blocked this user.
+                                    </div> :
+                                    Block.blockedMe && (
+                                        <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 bg-opacity-70 flex items-center justify-center text-gray-600 dark:text-gray-400 font-semibold text-sm rounded-md">
+                                            You are blocked and cannot send messages.
+                                        </div>
+                                    )
+                            }
+
+                            <form onSubmit={handleSend} className={`${Block.blockedBy || Block.blockedMe ? "opacity-50 pointer-events-none" : ""}`}>
                                 <div className="flex items-center gap-2">
                                     {/* File Input Icon */}
-                                    <label className="cursor-pointer p-2 text-gray-500 hover:text-blue-500">
-                                        <input
-                                            type="file"
-                                            onChange={handleFileInput}
-                                            className="hidden"
-                                        />
-                                        <Paperclip className="w-5 h-5" />
-                                    </label>
+
+                                    {
+                                        !(Block.blockedBy || Block.blockedMe) && (
+                                            <label className={`cursor-pointer p-2 text-gray-500 hover:text-blue-500 ${Block.blockedBy || Block.blockedMe ? "cursor-not-allowed text-gray-400 hover:text-gray-400" : ""}`}>
+                                                <input type="file" onChange={handleFileInput} className="hidden" />
+                                                <Paperclip className="w-5 h-5" />
+                                            </label>
+                                        )
+                                    }
+
                                     <input
                                         type="text"
                                         value={newMessage}
                                         onChange={(e) => setNewMessage(e.target.value)}
                                         placeholder="Type a message..."
-                                        className="flex-1 p-2 bg-gray-100 dark:bg-gray-800 rounded-full focus:outline-none dark:text-white"
-                                        disabled={sendLoading}
+                                        className={`flex-1 p-2 bg-gray-100 dark:bg-gray-800 rounded-full focus:outline-none dark:text-white ${Block.blockedBy || Block.blockedMe ? "cursor-not-allowed opacity-50" : ""}`}
+                                        disabled={sendLoading || Block.blockedBy || Block.blockedMe}
                                     />
+
                                     <button
                                         type="submit"
-                                        disabled={!newMessage.trim() || sendLoading}
-                                        className="p-2 text-blue-500 disabled:opacity-50"
+                                        disabled={!newMessage.trim() || sendLoading || Block.blockedBy || Block.blockedMe}
+                                        className={`p-2 text-blue-500 disabled:opacity-50`}
                                     >
                                         {sendLoading ? <Loader2Icon className="animate-spin" /> : <Send className="w-5 h-5" />}
                                     </button>
                                 </div>
                             </form>
                         </div>
+
+
+
                     </div>
                 </>
             ) : (
@@ -280,3 +385,44 @@ export default function ChatWindow({ chatId, users }: ChatWindowProps) {
         </div>
     );
 }
+
+
+
+
+{/* <div className="p-4 border-t w-full dark:border-gray-700 bg-white dark:bg-gray-900">
+
+{isBlocked && (
+    <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 bg-opacity-70 flex items-center justify-center text-gray-600 dark:text-gray-400 font-semibold text-sm rounded-md">
+        User is blocked, unblock to send message.
+    </div>
+)}
+
+<form onSubmit={handleSend}>
+    <div className="flex items-center gap-2">
+        <label className="cursor-pointer p-2 text-gray-500 hover:text-blue-500">
+            <input
+                type="file"
+                onChange={handleFileInput}
+                className="hidden"
+                disabled={isBlocked}
+            />
+            <Paperclip className="w-5 h-5" />
+        </label>
+        <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type a message..."
+            className={`flex-1 p-2 bg-gray-100 dark:bg-gray-800 rounded-full focus:outline-none dark:text-white`}
+            disabled={sendLoading || isBlocked}
+        />
+        <button
+            type="submit"
+            disabled={!newMessage.trim() || sendLoading || isBlocked}
+            className="p-2 text-blue-500 disabled:opacity-50"
+        >
+            {sendLoading ? <Loader2Icon className="animate-spin" /> : <Send className="w-5 h-5" />}
+        </button>
+    </div>
+</form>
+</div> */}
