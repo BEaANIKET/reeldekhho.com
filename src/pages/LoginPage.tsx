@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../public/file_svg.png';
+import logo from '/assets/vite.svg';
 import useAuth from '../hooks/useAuth';
 import leftarrow from '/assets/arrow.svg'
 
@@ -13,7 +13,6 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    //(email, password);
     setLoading(true);
     const success = await login(email, password)
     setLoading(false);
@@ -104,6 +103,10 @@ export default function LoginPage() {
             <p className="text-sm text-center mt-2">
               Do not have an account?
               <Link to={'/signup'} className="text-blue-600 cursor-pointer font-semibold"> Signup</Link>
+            </p>
+            <p className="text-sm text-center mt-2">
+
+              <Link to={'/forget'} className="text-blue-600 cursor-pointer font-semibold"> forget password</Link>
             </p>
           </div>
 

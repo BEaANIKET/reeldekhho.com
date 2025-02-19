@@ -9,6 +9,7 @@ import { BsChat } from "react-icons/bs";
 import NotificationSidebar from "./notifications";
 import useNotifications from "../hooks/useNotifications";
 import { setSetting, setValue } from "../store/slices/headersSlice";
+import useGetPosts from "../hooks/post/useGetPost";
 
 const Header = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -23,6 +24,8 @@ const Header = () => {
   const { value = [], settin = [] } = useSelector(state => state?.header)
   const dispatch = useDispatch()
 
+  const { fetchPosts } = useGetPosts()
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -31,8 +34,6 @@ const Header = () => {
     const res = await axios.get(`${backendUrl}/post/fetchheader`)
     dispatch(setSetting(res.data.settin));
     dispatch(setValue(res.data.value));
-    // setValue(res.data.value)
-    // setSettin(res.data.settin)
   }
   useEffect(() => {
     if (!value || !value.length) {

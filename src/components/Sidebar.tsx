@@ -4,15 +4,20 @@ import ThemeToggle from './layout/ThemeToggle';
 import applogo from '/assets/applogo.png'
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import useGetPosts from '../hooks/post/useGetPost';
 // import useGetPosts from '../hooks/post/useGetPost';
 
 export default function Sidebar({ setHomeClick }) {
   const location = useLocation();
   const user = useSelector(state => state.auth?.user);
-  // const { fetchPosts } = useGetPosts()
+  const { fetchPosts } = useGetPosts()
+  const { pathname = '/' } = useLocation()
 
   const handleHomeClick = () => {
-    setHomeClick(prev => !prev)
+    if (pathname === '/') {
+      console.log("I am rununto ");
+      fetchPosts()
+    }
   }
   const navigate = useNavigate();
 

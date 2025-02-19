@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Heart, MessageCircle, Send, Bookmark, Music2, User } from 'lucide-react';
+import { Heart, MessageCircle, Send, Bookmark, Music2, User, ArrowLeft } from 'lucide-react';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 import useHandleReelsLikes from '../../hooks/reels/useHandleLikes';
 import useAuth from '../../hooks/useAuth';
@@ -166,7 +166,13 @@ export default function ReelCard({ reel }: ReelCardProps) {
       className="reel relative z-10 text-[#f2f2f2] font-extrabold h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
     >
       <div className=' relative flex items-center justify-center h-full w-full'>
-        <div className=' absolute bg-black  flex w-full justify-between  top-4  left-0 right-0  '>
+        <div className=' absolute bg-black  flex w-full justify-between  top-0 pt-4  left-0 right-0  '>
+
+          <ArrowLeft
+            className="w-6 relative z-50 h-6 sm:hidden cursor-pointer"
+            onClick={() => navigate(-1)}
+          />
+
           <div className=' cursor-pointer z-50 bg-black p-2 rounded-md '>
             {reel.user?.longitude && reel.user?.lattitude ? <GetLocation link={reel.user?.googleMapLink} createdDate={reel.createdAt} longitude={reel.user.longitude} lattitude={reel.user.lattitude} /> : null}
           </div>
