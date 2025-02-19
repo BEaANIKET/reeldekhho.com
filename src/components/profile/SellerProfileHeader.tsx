@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSellerData } from "../../store/slices/sellerSlice";
 import { Image, Modal } from "antd";
 import ReviewPopupCard from "./ReviewPopup";
+import Followers from "../Follow/Followers";
+import Following from "../Follow/Followings";
 
 export default function SellerProfileHeader() {
   // const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -20,6 +22,7 @@ export default function SellerProfileHeader() {
   const [profile, setProfile] = useState(true);
   const [Seller, setSeller] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [unfollowLoading, setUnfollowLoading]= useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const [checkFollowed, setCheckFollowed] = useState(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
@@ -88,12 +91,16 @@ export default function SellerProfileHeader() {
   }, [followers]);
 
   const handleClick = async () => {
+    setLoading(true);
     await createFollower(id);
+    setLoading(false)
   };
 
   const handleUnfollow = async () => {
+    setUnfollowLoading(true);
     await removeFollower(id);
     setIsBottomSheetOpen(false);
+    setUnfollowLoading(false);
     setCheckFollowed(null);
   }
 
@@ -101,9 +108,12 @@ export default function SellerProfileHeader() {
     window.open(`https://wa.me/${profile?.phone}`);
   }
 
-  const PopupReview = () => {
-    setReviewPopup(true);
-  }
+  // const PopupReview = () => {
+  //   setReviewPopup(true);
+  // }
+
+  const [followPopup, setFollowPopup] = useState(false);
+  const [followingPopup, setFollowingPopup] = useState(false)
 
   if (pageLoading) {
     return <ProfileSkeloton />;
@@ -158,25 +168,21 @@ export default function SellerProfileHeader() {
                       posts
                     </span>
                   </div>
-                  <div>
-                    <Link to={`/followers/${id}`}>
-                      <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                        {followers?.length || '0'}
-                      </span>
-                      <span className="text-xs sm:text-sm text-gray-500 font-medium">
-                        followers
-                      </span>
-                    </Link>
+                  <div className="cursor-pointer" onClick={() => setFollowPopup(true)}>
+                    <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
+                      {followers?.length || '0'}
+                    </span>
+                    <span className="text-xs sm:text-sm text-gray-500 font-medium">
+                      followers
+                    </span>
                   </div>
-                  <div>
-                    <Link to={`/following/${id}`}>
-                      <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                        {following?.length || '0'}
-                      </span>
-                      <span className="text-xs sm:text-sm text-gray-500 font-medium">
-                        following
-                      </span>
-                    </Link>
+                  <div className="cursor-pointer" onClick={() => setFollowingPopup(true)}>
+                    <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
+                      {following?.length || '0'}
+                    </span>
+                    <span className="text-xs sm:text-sm text-gray-500 font-medium">
+                      following
+                    </span>
                   </div>
                 </div>
               </div>
@@ -215,6 +221,7 @@ export default function SellerProfileHeader() {
           ) : (
             <button
               onClick={handleClick}
+              disabled={loading}
               className=" flex-1 flex justify-center items-center px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 active:scale-95"
             >
               {loading ? <Loader2Icon className="animate-spin" /> : "Follow"}
@@ -307,6 +314,7 @@ export default function SellerProfileHeader() {
               </button>
               <button
                 onClick={handleUnfollow}
+                disabled={unfollowLoading}
                 className="block w-full text-left px-4 py-2 text-red-600 font-semibold hover:bg-gray-100"
               >
                 Unfollow
@@ -347,10 +355,23 @@ export default function SellerProfileHeader() {
             </div>
           )
         }
+
         {
-          popup && (
+          followPopup && <Followers id={id} />
+        }
+
+        {
+          followingPopup && <Following id={id} />
+        }
+
+        {
+          (popup || followPopup || followingPopup) && (
             <div
-              onClick={() => setPopup(false)}
+              onClick={() => {
+                setPopup(false);
+                setFollowPopup(false)
+                setFollowingPopup(false)
+              }}
               className='fixed w-screen h-screen inset-0 bg-[#0000005b] top-0 z-40'>
             </div>
           )

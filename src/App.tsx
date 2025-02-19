@@ -155,8 +155,8 @@ function AppContent() {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/explore" element={<ExplorePage />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/followers/:id" element={<Followers />} />
-              <Route path="/following/:id" element={<Following />} />
+              {/* <Route path="/followers/:id" element={<Followers />} />
+              <Route path="/following/:id" element={<Following />} /> */}
               <Route path="/editProfile" element={<Editprofile />} />
               <Route path="/seller/:id" element={<SellerProfile />} />
               <Route path='/sellerPost' element={<SellerPost />} />
