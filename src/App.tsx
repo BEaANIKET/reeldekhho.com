@@ -24,6 +24,7 @@ import Following from './components/Follow/Followings';
 import { setReviews } from './store/slices/reviewSlice';
 import ChangePassword from './pages/Changepassword';
 import SellerPost from './components/profile/SellerPost';
+import PasswordReset from './pages/resetPassword';
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -147,6 +148,7 @@ function AppContent() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/stories/:username" element={<StoryViewer />} />
+            <Route path='/forget' element={<PasswordReset />} />
             <Route path="/" element={<Layout setHomeClick={setHomeClick} />}>
               <Route index element={<Feed homeClick={homeClick} />} />
               <Route path="/reels" element={<ReelsPage />} />
@@ -166,7 +168,6 @@ function AppContent() {
               <Route path='/reels/:id' element={<SearchReels />} />
               <Route path='/saved' element={<SavedPage />} />
               <Route path='/posts' element={<UserPosts />} />
-              <Route path='/forget' element={<ChangePassword />} />
             </Route>
           </Routes>
         </Suspense>

@@ -10,7 +10,6 @@ export default function ReelsContainer() {
 
   const handleScroll = useCallback(() => {
     const container = containerRef.current;
-    console.log('sadadas');
 
     if (!container) return;
 

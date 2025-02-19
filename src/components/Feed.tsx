@@ -7,6 +7,7 @@ import HeaderStatic from './HeaderStatic';
 import toast from 'react-hot-toast';
 import api from '../services/api/axiosConfig';
 import LikeList from './LikeList';
+import { useLocation } from 'react-router-dom';
 // import { User } from 'lucide-react';
 const Post = lazy(() => import('./Post'));
 
@@ -59,6 +60,7 @@ export default function Feed({ homeClick }) {
   const [curntPostId, setCurntPostId] = useState(null);
   const [likedPostId, setLikedPostId] = useState('');
 
+  const { pathname = '/' } = useLocation()
   const [reportBottomSheet, setReportBottomSheet] = useState(false);
   const [likeCard, setLikeCard] = useState(false)
 
@@ -71,12 +73,13 @@ export default function Feed({ homeClick }) {
     { threshold: 0.3 }
   );
 
-
   useEffect(() => {
-    fetchPosts();
-    // //("hello I am runing ");
+    if (!posts?.length) {
+      fetchPosts();
+    }
+  }, [])
 
-  }, [homeClick]);
+
 
   const handleSubmitReport = async (event: HTMLParagraphElement) => {
     const reportMessage = event?.currentTarget.id;
@@ -120,7 +123,9 @@ export default function Feed({ homeClick }) {
                         setLikedPostId={setLikedPostId}
                       />)
                   ) : (
-                    <div className="text-center text-gray-500">No posts available</div>
+                    <div className=' w-full flex justify-center' >
+                      <LoaderSkeloton />
+                    </div>
                   )}
                 </div>
               </Suspense>

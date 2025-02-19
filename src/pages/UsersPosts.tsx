@@ -559,7 +559,6 @@ const UserPosts = () => {
                         razorpay_signature: response.razorpay_signature,
                         postId: postId
                     })
-                    // //(verifyPayment.data.post);
                     const index = userPost.findIndex((post: any) => post?._id === verifyPayment.data.post._id);
                     //(index);
 
@@ -574,7 +573,7 @@ const UserPosts = () => {
                     updateState();
                 },
                 prefill: {
-                    name: 'User Name', // You can get this from your user context
+                    name: 'User Name',
                     email: 'user@example.com',
                     contact: '9999999999'
                 },

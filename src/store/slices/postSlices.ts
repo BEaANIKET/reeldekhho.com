@@ -12,10 +12,13 @@ const postSlices = createSlice({
     reducers: {
         setPost(state, action) {
             const { type, payload } = action.payload;
-            if (type === 'ADD_POST') {
+            if (type === 'SET_POST') {
+                state.posts = payload;
+            } else if (type === 'ADD_POST') {
                 state.posts = [...state.posts, ...payload];
                 state.page = state.page + 1;
-            } else if (type === 'SET_LIKE') {
+            }
+            else if (type === 'SET_LIKE') {
                 const existingLike = state.likes.find((like) => like.id === payload.id);
 
                 if (existingLike) {
@@ -31,3 +34,4 @@ const postSlices = createSlice({
 
 export const { setPost } = postSlices.actions;
 export default postSlices.reducer;
+
