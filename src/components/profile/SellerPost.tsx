@@ -100,7 +100,7 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
                     <img
                         src={seller?.profilePicture}
                         alt={seller?.fullName}
-                        className="w-8 h-8 rounded-full object-cover"
+                        className="w-8 h-8 rounded-full overflow-hidden object-cover"
                     />
                     <span className="font-semibold dark:text-white">
                         {seller?.fullName}
@@ -118,7 +118,7 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
                     <img
                         src={post.file.url}
                         alt={post.caption || 'Reel Image'}
-                        className=" object-contain object-center"
+                        className=" object-contain overflow-hidden object-center"
                         loading="lazy"
                     />
                 ) : (
@@ -217,7 +217,7 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
                                 <img
                                     src={comment?.user?.profilePicture}
                                     alt={comment?.user?.fullName}
-                                    className="w-8 h-8 rounded-full object-cover"
+                                    className="w-8 h-8 rounded-full overflow-hidden object-cover"
                                 />
                                 <div className="flex-grow h-full items-start flex flex-col">
                                     <p className="font-semibold dark:text-white">{comment?.user?.fullName}</p>

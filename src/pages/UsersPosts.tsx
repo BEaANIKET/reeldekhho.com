@@ -99,7 +99,7 @@ const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, sa
                     <img
                         src={user?.profilePicture}
                         alt={user?.fullName}
-                        className="w-8 h-8 rounded-full object-cover"
+                        className="w-8 h-8 rounded-full overflow-hidden object-cover"
                     />
                     <span className="font-semibold dark:text-white">
                         {user?.fullName}
@@ -130,7 +130,7 @@ const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, sa
                     <img
                         src={post?.file.url}
                         alt="Post Media"
-                        className="w-full object-cover min-h-64 max-h-[500px]"
+                        className="w-full overflow-hidden object-cover min-h-64 max-h-[500px]"
                     />
                 )}
             </div>
@@ -251,7 +251,7 @@ const PostComponents = ({ post, handleBoostClick, setAmount, user, isLoading, sa
                                 <img
                                     src={comment?.user?.profilePicture}
                                     alt={comment?.user?.fullName}
-                                    className="w-8 h-8 rounded-full object-cover"
+                                    className="w-8 h-8 overflow-hidden rounded-full object-cover"
                                 />
                                 <div className="flex-grow h-full items-start flex flex-col">
                                     <p className="font-semibold dark:text-white">{comment?.user?.fullName}</p>

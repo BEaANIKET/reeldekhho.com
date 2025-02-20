@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import api from "../../services/api/axiosConfig";
 
-const Following = ({id}) => {
+const Following = ({ id }) => {
     // const { id } = useParams();
     const { following, followLoading, getFollowData } = useFollow({ id });
     // //('following- ', following);
@@ -41,7 +41,7 @@ const Following = ({id}) => {
     return (
         // <div className="min-h-screen bg-gray-50 p-4">
         <div className="fixed w-[85vw] sm:w-[50vw] bg-white rounded-lg z-50 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 shadow-lg">
-{/* max-w-2xl */}
+            {/* max-w-2xl */}
             <div className=" mx-auto bg-white rounded-lg shadow-sm">
                 {/* Header */}
                 <div className="p-4 border-b flex justify-center items-center">
@@ -68,7 +68,7 @@ const Following = ({id}) => {
                                             <div className="w-9 h-9 sm:w-12 sm:h-12 bg-gray-200 rounded-full flex items-center justify-center">
                                                 <img
                                                     src={folloin?.followedDetails.profilePicture}
-                                                    className="w-full h-full object-cover rounded-full"
+                                                    className="w-full overflow-hidden h-full object-cover rounded-full"
                                                     alt=""
                                                 />
                                             </div>

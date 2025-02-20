@@ -183,7 +183,7 @@ export default function SellerPostGrid(props: any) {
               <img
                 src={post?.file.url}
                 alt={post?.caption || "Post Image"}
-                className="w-full h-full object-cover"
+                className="w-full h-full overflow-hidden object-cover"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">

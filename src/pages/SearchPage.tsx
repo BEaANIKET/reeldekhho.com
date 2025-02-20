@@ -239,7 +239,7 @@ export default function SearchPage() {
                   <img
                     src={user.profilePicture}
                     alt="Profile"
-                    className="w-full h-full rounded-full object-cover"
+                    className="w-full h-full overflow-hidden rounded-full object-cover"
                   />
                 </div>
 

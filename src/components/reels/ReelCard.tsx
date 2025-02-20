@@ -159,7 +159,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
   //(reel?.user);
 
-  const [likeCard, setLikeCard]= useState(false);
+  const [likeCard, setLikeCard] = useState(false);
   const [likedPostId, setLikedPostId] = useState('');
 
 
@@ -227,7 +227,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
             <img
               src={reel.user.profilePicture || 'https://cdn.pixabay.com/photo/2023/12/04/06/14/ai-generated-8428762_1280.jpg'}
               alt={`${reel.user.fullName}'s avatar`}
-              className="w-8 h-8 rounded-full border border-white"
+              className="w-8 h-8 rounded-full overflow-hidden border border-white"
               loading="lazy"
             />
 
@@ -379,7 +379,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
                   <img
                     src={comment.user.profilePicture}
                     alt={comment.user.fullName}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-8 h-8 rounded-full overflow-hidden object-cover"
                   />
                   <div className="flex-grow h-full items-start flex flex-col">
                     <p className="font-semibold dark:">{comment.user.fullName}</p>

@@ -77,7 +77,7 @@ const ChangePassword: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
             {/* Logo */}
-            <img src="/logo.png" alt="Logo" className="w-16 h-16 mb-4" />
+            <img src="/logo.png" alt="Logo" className="w-16 overflow-hidden h-16 mb-4" />
 
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-sm">
                 <h2 className="text-xl font-semibold text-center mb-4">

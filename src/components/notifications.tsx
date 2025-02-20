@@ -69,7 +69,7 @@ const NotificationSidebar = ({ isOpen, setIsOpen }) => {
                                     onClick={() => navigate('/seller/' + notif.user._id)}
                                     src={notif?.user?.profilePicture}
                                     alt={notif?.user?.fullName || "User"}
-                                    className="w-10 h-10 rounded-full object-cover"
+                                    className="w-10 h-10 overflow-hidden rounded-full object-cover"
                                 />
 
                                 {/* Notification Details */}

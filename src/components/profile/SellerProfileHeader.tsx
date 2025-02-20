@@ -22,7 +22,7 @@ export default function SellerProfileHeader() {
   const [profile, setProfile] = useState(true);
   const [Seller, setSeller] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [unfollowLoading, setUnfollowLoading]= useState(false);
+  const [unfollowLoading, setUnfollowLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const [checkFollowed, setCheckFollowed] = useState(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
@@ -128,7 +128,7 @@ export default function SellerProfileHeader() {
             {/* Profile Picture */}
             <div className="flex-shrink-0">
               <div onClick={() => setPopup(true)} className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-lg overflow-hidden flex items-center justify-center">
-                <img src={profile?.profilePicture} className="w-full h-full object-cover " alt="" />
+                <img src={profile?.profilePicture} className="w-full overflow-hidden h-full object-cover " alt="" />
               </div>
 
 
@@ -385,7 +385,7 @@ export default function SellerProfileHeader() {
       `}
             >
               {/* Close Button */}
-              <img src={profile?.profilePicture} className="w-full object-cover h-full rounded-lg" alt="" />
+              <img src={profile?.profilePicture} className="w-full overflow-hidden object-cover h-full rounded-lg" alt="" />
             </div>
           )
         }

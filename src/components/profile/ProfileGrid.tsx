@@ -258,7 +258,7 @@ export default function PostGrid(props) {
                       <img
                         src={post?.file.url}
                         alt={post?.caption || "Post Image"}
-                        className="w-full h-full object-cover"
+                        className="w-full overflow-hidden h-full object-cover"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">

@@ -210,7 +210,7 @@ const AddProduct: React.FC = () => {
                 <img
                   src={filePreview}
                   alt="Uploaded Preview"
-                  className="max-w-full max-h-[400px] object-contain rounded-lg"
+                  className="max-w-full max-h-[400px] overflow-hidden object-contain rounded-lg"
                 />
               ) : (
                 <video

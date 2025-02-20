@@ -83,7 +83,7 @@ const EditProfile: React.FC = () => {
             <img
               src={profilePreview || "https://via.placeholder.com/100"}
               alt="Profile"
-              className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
+              className="w-24 h-24 overflow-hidden rounded-full object-cover border-2 border-gray-300"
             />
           </label>
           <input type="file" id="profilePic" accept="image/*" className="hidden" onChange={handleProfilePicChange} />

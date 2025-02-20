@@ -78,11 +78,11 @@ export default function PasswordReset() {
 
             <div onClick={() => navigate(-1)} className=' absolute flex flex-col  items-center gap-1 underline text-blue-600 top-2 left-3  dark:text-white '>
                 {/* <Link className=' ml-5 mb-[-50px] ' to={'/'}> Home </Link> */}
-                <img className=' h-10 w-20 ' src={leftarrow} alt="" />
+                <img className=' h-10 w-20 overflow-hidden ' src={leftarrow} alt="" />
             </div>
             <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
                 <div className=" flex w-full justify-center">
-                    <img src={logo} alt='logo' className='h-20 w-20 object-cover' />
+                    <img src={logo} alt='logo' className='h-20 overflow-hidden overflow-hidden w-20 object-cover' />
                 </div>
 
                 <h2 className="text-2xl font-bold text-center mb-4">Reset Password</h2>
