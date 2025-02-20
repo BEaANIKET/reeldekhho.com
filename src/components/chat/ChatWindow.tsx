@@ -151,7 +151,7 @@ export default function ChatWindow({ chatId, users }: ChatWindowProps) {
     // block feature
 
     const crntUser = useSelector((state) => state?.auth?.user);
-    console.log(crntUser);
+    //(crntUser);
 
     const [blockLoading, setBlockLoading] = useState<boolean>(false);
     const [Block, setBlock] = useState({
@@ -164,43 +164,43 @@ export default function ChatWindow({ chatId, users }: ChatWindowProps) {
         if (blockedMe) {
             setBlock((prev) => ({ ...prev, blockedMe: blockedMe }));
             return;
-        }else{
+        } else {
             setBlock((prev) => ({ ...prev, blockedMe: null }));
         }
         const blockedId = crntUser?.block?.find((id) => id === chat?._id);
         if (blockedId) {
             setBlock((prev) => ({ ...prev, blockedBy: blockedId }));
             return;
-        }else{
+        } else {
             setBlock((prev) => ({ ...prev, blockedBy: null }));
         }
 
-    }, [chat,crntUser])
+    }, [chat, crntUser])
 
     const handleBlock = async () => {
         setBlockLoading(true);
-        console.log(chat?._id);
+        //(chat?._id);
         try {
             await api.post('/user/blockUser', { id: chat?._id });
             // setIsBlocked(chat?._id);
             const newArray = { ...crntUser, block: [...crntUser.block, chat?._id] };
             dispatch(updateUserProfile(newArray));
         } catch (error) {
-            console.log(error);
+            //(error);
             toast.error(error?.response?.data?.message || "something went wrong!");
         } finally {
             setBlockLoading(false)
         }
     }
-    
+
     const handleUnblock = async () => {
         setBlockLoading(true);
         try {
-            const response= await api.delete(`/user/unblockUser?id=${chat?._id}`);
-            console.log(response.data);
+            const response = await api.delete(`/user/unblockUser?id=${chat?._id}`);
+            //(response.data);
             dispatch(updateUserProfile(response.data.user));
         } catch (error) {
-            console.log(error);
+            //(error);
             toast.error(error?.response?.data?.message || "something went wrong!");
         } finally {
             setBlockLoading(false)

@@ -69,10 +69,10 @@ export default function ShareButton({ isOpen, onClose, reelId }: SharePopupProps
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
                 ref={popupRef}
-                className="bg-white dark:bg-gray-800 rounded-xl w-full max-w-sm overflow-hidden"
+                className="bg-white relative z-50 dark:bg-gray-800 text-black text-sm shadow-sm rounded-xl w-full max-w-sm overflow-hidden"
             >
                 <div className="relative border-b dark:border-gray-700">
                     <h3 className="text-center py-4 font-semibold dark:text-white">

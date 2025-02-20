@@ -12,6 +12,7 @@ import CommentSection from '../interactions/CommentSection';
 import ShareButton from '../ShareBtn';
 import GetLocation from '../interactions/GetLocation';
 import api from '../../services/api/axiosConfig';
+import { useSelector } from 'react-redux';
 import LikeList from '../LikeList';
 
 interface ReelCardProps {
@@ -52,6 +53,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
     removeLoader: false,
   })
   const [showPopup, setShowPopup] = useState(false);
+  const user = useSelector(state => state?.auth?.user)
 
   const videoRef = useIntersectionObserver(
     () => setIsVideoPlay(true),
@@ -170,7 +172,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
       className="reel relative z-10 text-[#f2f2f2] font-extrabold h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
     >
       <div className=' relative flex items-center justify-center h-full w-full'>
-        <div className=' absolute bg-black  flex w-full justify-between  top-0 pt-4  left-0 right-0  '>
+        <div className=' absolute bg-black  flex w-full justify-between items-center  top-0 pt-4  left-0 right-0  '>
 
           <ArrowLeft
             className="w-6 relative z-50 h-6 sm:hidden cursor-pointer"
@@ -356,11 +358,11 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
       {isCommentOpen ? (
         <div
-          className={`absolute z-50  overflow-y-scroll bottom-0 left-0 right-0 bg-gray-900  p-4 rounded-t-lg transform transition-transform duration-300 ${isCommentOpen ? 'translate-y-0' : 'translate-y-full'
+          className={`absolute z-50  overflow-y-scroll bottom-0 left-0 right-0 bg-gray-900 pl-4 pr-4 rounded-t-lg transform transition-transform duration-300 ${isCommentOpen ? 'translate-y-0' : 'translate-y-full'
             }`}
           style={{ height: '50%' }}
         >
-          <div className="flex sticky top-0 bg-inherit z-40  justify-between items-center mb-4">
+          <div className="flex sticky z-50 top-0 bg-inherit font-normal text-sm pt-4  justify-between items-center mb-4">
             <h2 className="text-lg font-medium">Comments</h2>
             <button
               onClick={closeCommentPopup}
@@ -370,7 +372,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
             </button>
           </div>
 
-          <div className="space-y-4 comment-popup w-full h-full">
+          <div className="space-y-4 comment-popup z-50 text-sm font-normal w-full h-full">
             {comments && comments.length ?
               (comments.map((comment) => (
                 <div key={comment._id} className="flex items-start space-x-4 mb-2">
@@ -383,23 +385,27 @@ export default function ReelCard({ reel }: ReelCardProps) {
                     <p className="font-semibold dark:">{comment.user.fullName}</p>
                     <p className="dark:">{comment.text}</p>
                   </div>
-
-                  <div className="relative">
-                    <BiDotsVertical
-                      className="dark: text-black text-lg cursor-pointer"
-                      onClick={() => setShowPopup((prev) => (prev === comment._id ? false : comment._id))}
-                    />
-                    {showPopup === comment._id && (
-                      <div className="absolute top-full right-[21px] mt-[-24px] rounded-sm">
-                        <p
-                          className="  font-semibold rounded-sm cursor-pointer text-sm p-2 bg-red-500  hover:underline"
-                          onClick={() => handleDelete(comment._id)}
-                        >
-                          {loader.removeLoader ? 'loading...' : 'Delete'}
-                        </p>
+                  {
+                    user._id === comment?.user?._id && (
+                      <div className="relative text-white">
+                        <BiDotsVertical
+                          className="dark: text-white text-lg cursor-pointer"
+                          onClick={() => setShowPopup((prev) => (prev === comment._id ? false : comment._id))}
+                        />
+                        {showPopup === comment._id && (
+                          <div className="absolute top-full right-[21px] mt-[-24px] rounded-sm">
+                            <p
+                              className="  font-semibold rounded-sm cursor-pointer text-sm p-2 bg-red-500  hover:underline"
+                              onClick={() => handleDelete(comment._id)}
+                            >
+                              {loader.removeLoader ? 'loading...' : 'Delete'}
+                            </p>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
+                    )
+                  }
+
 
                 </div>
               ))) : (
@@ -410,8 +416,8 @@ export default function ReelCard({ reel }: ReelCardProps) {
             }
           </div>
 
-          <div className=' sticky bottom-14 bg-inherit z-40 top-0 w-full '>
-            < CommentSection postId={reel._id} createComment={createComment} loader={loader} setLoader={setLoader} />
+          <div className=' sticky text-sm font-normal bottom-14 bg-inherit z-40 top-0 w-full '>
+            <CommentSection postId={reel._id} createComment={createComment} loader={loader} setLoader={setLoader} />
           </div>
 
         </div>

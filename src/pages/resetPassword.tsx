@@ -15,6 +15,7 @@ export default function PasswordReset() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [loading2, setLoading2] = useState(false);
     const [message, setMessage] = useState("");
 
     // Function to send OTP
@@ -35,7 +36,7 @@ export default function PasswordReset() {
 
     // Function to verify OTP
     const handleVerifyOtp = async () => {
-        setLoading(true);
+        setLoading2(true);
         setMessage("");
 
         try {
@@ -46,7 +47,7 @@ export default function PasswordReset() {
         } catch (error: any) {
             setMessage(error.response?.data?.message || "OTP verification failed");
         } finally {
-            setLoading(false);
+            setLoading2(false);
         }
     };
 
@@ -63,7 +64,7 @@ export default function PasswordReset() {
         try {
             await api.post("/auth/resetPassword", { email, resetToken, password });
             setMessage("Password reset successfully. You can now log in.");
-            setStep(1);
+            setStep(4);
         } catch (error: any) {
             setMessage(error.response?.data?.message || "Password reset failed");
         } finally {
@@ -75,7 +76,7 @@ export default function PasswordReset() {
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
 
-            <div onClick={() => navigate('/')} className=' absolute flex flex-col  items-center gap-1 underline text-blue-600 top-2 left-3  dark:text-white '>
+            <div onClick={() => navigate(-1)} className=' absolute flex flex-col  items-center gap-1 underline text-blue-600 top-2 left-3  dark:text-white '>
                 {/* <Link className=' ml-5 mb-[-50px] ' to={'/'}> Home </Link> */}
                 <img className=' h-10 w-20 ' src={leftarrow} alt="" />
             </div>
@@ -121,9 +122,9 @@ export default function PasswordReset() {
                         <button
                             className="w-full bg-green-600 text-white py-2 mt-4 rounded hover:bg-green-700"
                             onClick={handleVerifyOtp}
-                            disabled={loading}
+                            disabled={loading2}
                         >
-                            {loading ? "Verifying OTP..." : "Verify OTP"}
+                            {loading2 ? "Verifying OTP..." : "Verify OTP"}
                         </button>
                         <button
                             className="w-full bg-green-600 text-white py-2 mt-4 rounded hover:bg-green-700"
@@ -162,6 +163,30 @@ export default function PasswordReset() {
                         </button>
                     </div>
                 )}
+
+                {step === 4 && (
+                    <div className="text-center">
+                        <h2 className="text-lg font-semibold text-green-600">Password Reset Successful!</h2>
+                        <p className="text-sm text-gray-600 mt-2">You can now login with your new password.</p>
+                        <div className="mt-4 flex justify-center gap-4">
+                            <a onClick={() => navigate('/login')} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                Go to Login
+                            </a>
+                            <a onClick={(() => navigate('/login'))} className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+                                Go to Home
+                            </a>
+                        </div>
+                    </div>
+                )}
+                {
+                    step !== 4 && (
+                        <div className=" mt-3 text-end w-full ">
+                            <a onClick={(() => navigate('/login'))} className=" w-full text-center text-blue-900 px-4 py-2 underline rounded ">
+                                login
+                            </a>
+                        </div>
+                    )
+                }
             </div>
         </div>
     );

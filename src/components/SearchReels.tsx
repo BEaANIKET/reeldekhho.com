@@ -64,7 +64,7 @@ const SearchReels = () => {
     // Handle scroll event to update the current reel index
     const handleScroll = useCallback(() => {
         const container = reelContainerRef.current;
-        console.log('sadadas');
+        //('sadadas');
 
         if (!container) return;
 

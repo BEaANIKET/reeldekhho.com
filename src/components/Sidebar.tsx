@@ -15,7 +15,7 @@ export default function Sidebar({ setHomeClick }) {
 
   const handleHomeClick = () => {
     if (pathname === '/') {
-      console.log("I am rununto ");
+      //("I am rununto ");
       fetchPosts()
     }
   }

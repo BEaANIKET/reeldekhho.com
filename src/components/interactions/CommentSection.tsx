@@ -25,7 +25,7 @@ export default function CommentSection({ postId, createComment, loader, setLoade
           placeholder="Add a comment..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="flex-1 bg-transparent border-none focus:ring-0 dark:text-white placeholder-gray-500"
+          className="flex-1 p-2 rounded-md bg-transparent border-none focus:ring-0 dark:text-white placeholder-gray-500"
         />
         <button
           disable={loader.addLoader}
