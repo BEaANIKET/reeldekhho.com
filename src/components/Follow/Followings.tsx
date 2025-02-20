@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import api from "../../services/api/axiosConfig";
 
-const Following = () => {
-    const { id } = useParams();
+const Following = ({id}) => {
+    // const { id } = useParams();
     const { following, followLoading, getFollowData } = useFollow({ id });
     // //('following- ', following);
     const user = useSelector((state) => state?.auth.user)
@@ -39,18 +39,18 @@ const Following = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4">
-
-            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-sm">
+        // <div className="min-h-screen bg-gray-50 p-4">
+        <div className="fixed w-[85vw] sm:w-[50vw] bg-white rounded-lg z-50 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 shadow-lg">
+{/* max-w-2xl */}
+            <div className=" mx-auto bg-white rounded-lg shadow-sm">
                 {/* Header */}
-                <div className="p-4 border-b flex justify-between items-center">
-                    <header className="flex items-center gap-4 ">
+                <div className="p-4 border-b flex justify-center items-center">
+                    {/* <header className="flex items-center gap-4 ">
                         <ArrowLeft
                             className="w-6 h-6 cursor-pointer"
                             onClick={() => navigate(-1)}
                         />
-                        {/* <h1 className="text-2xl font-bold">Posts</h1> */}
-                    </header>
+                    </header> */}
 
                     <h1 className="text-xl font-semibold flex items-center gap-2">
                         <User className="w-5 h-5" /> Following
@@ -75,7 +75,7 @@ const Following = () => {
                                             <div>
                                                 <div className="flex items-center gap-2">
                                                     <Link to={`/seller/${folloin?.followedDetails._id}`}>
-                                                        <p className="font-medium">{folloin?.followedDetails.fullName}</p>
+                                                        <p className="text-sm">{folloin?.followedDetails.fullName}</p>
                                                     </Link>
                                                     {folloin.isFollowingMe && (
                                                         <span className="text-[10px] hidden sm:block text-sm text-gray-500 bg-gray-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">

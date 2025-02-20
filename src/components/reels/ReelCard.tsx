@@ -13,6 +13,7 @@ import ShareButton from '../ShareBtn';
 import GetLocation from '../interactions/GetLocation';
 import api from '../../services/api/axiosConfig';
 import { useSelector } from 'react-redux';
+import LikeList from '../LikeList';
 
 interface ReelCardProps {
   reel: {
@@ -158,6 +159,9 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
   //(reel?.user);
 
+  const [likeCard, setLikeCard]= useState(false);
+  const [likedPostId, setLikedPostId] = useState('');
+
 
   return (
     <div
@@ -264,7 +268,13 @@ export default function ReelCard({ reel }: ReelCardProps) {
                   className={`w-6 h-6 transition-colors ${isLiked ? 'text-red-500 fill-current' : ''
                     }`}
                 />
-                <span className=" text-xs mt-1">{likeCount.toLocaleString()}</span>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLikedPostId(reel._id);
+                    setLikeCard(true)
+                  }}
+                  className=" text-xs mt-1">{likeCount.toLocaleString()}</span>
               </button>
 
               <button
@@ -416,6 +426,26 @@ export default function ReelCard({ reel }: ReelCardProps) {
           No any comment yet
         </div>
       )
+      }
+
+
+      {
+        likeCard && (
+          <LikeList setLikeCard={setLikeCard} likedPostId={likedPostId} />
+        )
+      }
+
+
+      {
+        likeCard && (
+          <div
+            onClick={() => {
+              setLikeCard(false)
+            }
+            }
+            className='fixed w-screen h-screen left-0 bg-[#0000005b] top-0 z-40'>
+          </div>
+        )
       }
 
 
