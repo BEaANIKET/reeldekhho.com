@@ -220,7 +220,7 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
           <img
             src={post?.user?.profilePicture}
             alt={post?.user?.fullName}
-            className="w-8 h-8 rounded-full object-cover"
+            className="w-8 h-8 overflow-hidden rounded-full object-cover"
           />
           <span className="font-semibold dark:text-white">{post?.user?.fullName}</span>
         </Link>
@@ -313,7 +313,7 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
             onDoubleClick={handleLike}
             src={post?.file?.url}
             alt="Post Media"
-            className="w-full object-cover min-h-64 max-h-[500px]"
+            className="w-full overflow-hidden object-cover min-h-64 max-h-[500px]"
           />
         )}
       </div>
@@ -408,7 +408,7 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
                 <img
                   src={comment?.user?.profilePicture}
                   alt={comment?.user?.fullName}
-                  className="w-8 h-8 rounded-full object-cover"
+                  className="w-8 h-8 rounded-full overflow-hidden object-cover"
                 />
                 <div className="flex-grow h-full items-start flex flex-col">
                   <p className="font-semibold dark:text-white">{comment?.user?.fullName}</p>

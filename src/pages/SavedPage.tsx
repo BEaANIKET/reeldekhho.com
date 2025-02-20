@@ -60,7 +60,7 @@ const SavedPage = () => {
                                         <img
                                             src={posts.postId.file?.url}
                                             alt={posts?.postId.caption || "Post Image"}
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full overflow-hidden object-cover"
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">

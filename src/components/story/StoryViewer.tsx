@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 // import { stories } from '../../data/dummyData';
-import StoryProgress from './StoryProgress'; 
+import StoryProgress from './StoryProgress';
 
 export default function StoryViewer() {
   const { username } = useParams();
@@ -52,7 +52,7 @@ export default function StoryViewer() {
         </div>
 
         {/* Close Button */}
-        <button 
+        <button
           onClick={() => navigate('/')}
           className="absolute top-4 right-4 z-10 text-white"
         >
@@ -61,10 +61,10 @@ export default function StoryViewer() {
 
         {/* Story Content */}
         <div className="h-full flex items-center justify-center">
-          <img 
-            src={currentStory.avatar} 
+          <img
+            src={currentStory.avatar}
             alt={currentStory.username}
-            className="max-h-[90vh] object-contain"
+            className="max-h-[90vh] overflow-hidden object-contain"
           />
         </div>
 
@@ -91,7 +91,7 @@ export default function StoryViewer() {
           <img
             src={currentStory.avatar}
             alt={currentStory.username}
-            className="w-8 h-8 rounded-full"
+            className="w-8 h-8 rounded-full overflow-hidden "
           />
           <span className="font-semibold">{currentStory.username}</span>
         </div>

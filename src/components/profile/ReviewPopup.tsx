@@ -60,7 +60,7 @@ const ReviewPopupCard = ({ id }) => {
                             <img
                                 src={review?.reviewerId?.profilePicture}
                                 alt={review?.reviewerId?.fullName}
-                                className="sm:w-12 sm:h-12 h-8 w-8 rounded-full object-cover bg-green-300"
+                                className="sm:w-12 sm:h-12 h-8 w-8 overflow-hidden rounded-full object-cover bg-green-300"
                             />
                             <div className="flex-1">
                                 <h3 className="font-medium text-gray-900">{review?.reviewerId?.fullName}</h3>

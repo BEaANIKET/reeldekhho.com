@@ -28,7 +28,7 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
         <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'} my-2`}>
             {message?.file && message.file !== '' ? (
                 <div className="max-w-44  overflow-hidden ">
-                    <img className=" object-cover h-full w-full " src={message?.file} alt="" />
+                    <img className=" overflow-hidden object-cover h-full w-full " src={message?.file} alt="" />
                 </div>
             ) : (
                 <div

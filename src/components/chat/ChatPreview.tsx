@@ -18,7 +18,7 @@ export function ChatPreview({ chat, onClick, unSeenCount }: { chat: Chat; onClic
             <img
                 src={chat.profilePicture || image}
                 alt={'Load..'}
-                className="w-12 h-12 rounded-full object-cover"
+                className="w-12 h-12 overflow-hidden rounded-full object-cover"
             />
 
             <div className="flex-1 text-left">

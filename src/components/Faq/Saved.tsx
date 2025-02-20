@@ -44,7 +44,7 @@ const Saved = () => {
                   <img
                     src={item.postId?.file?.url || "placeholder-image-url"}
                     alt={item.postId?.caption || "Saved Post"}
-                    className="w-full h-[250px] object-cover group-hover:scale-110 transition-transform duration-300 rounded-lg"
+                    className="w-full overflow-hidden h-[250px] object-cover group-hover:scale-110 transition-transform duration-300 rounded-lg"
                   />
                 )}
 

@@ -43,7 +43,7 @@ export default function LoginPage() {
       <div className="max-w-md w-full space-y-8">
 
         <div className="flex flex-col items-center">
-          <img src={logo} alt='logo' className='h-20 w-20 object-cover' />
+          <img src={logo} alt='logo' className='h-20 overflow-hidden overflow-hidden w-20 object-cover' />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
             Sign in to your account
           </h2>

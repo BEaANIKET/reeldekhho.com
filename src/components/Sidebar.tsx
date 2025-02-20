@@ -27,7 +27,7 @@ export default function Sidebar({ setHomeClick }) {
       <div className="fixed bottom-0 z-20 left-0 w-full bg-inherit border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r ">
         <div className="flex justify-around md:flex-col  h-full md:justify-start md:items-center lg:items-start md:p-4 md:space-y-6">
           <div onClick={() => navigate('/')} className="hidden lg:block p-4">
-            <img className=' w-20 scale-110 ' src={applogo} alt="" />
+            <img className=' overflow-hidden w-20 scale-110 ' src={applogo} alt="" />
           </div>
 
           <div className=' w-full' onClick={handleHomeClick}>
