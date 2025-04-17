@@ -354,6 +354,10 @@ export default function Post({ post, setReportBottomSheet, setCurntPostId, setLi
                 </button>
                 <span
                   className="cursor-pointer font-semibold dark:text-white"
+                  onClick={() => {
+                    setLikedPostId(post?._id)
+                    setLikeCard(true)
+                  }}
                 >
                   {likes} {likes > 1 ? "Likes" : "Like"}
                 </span>

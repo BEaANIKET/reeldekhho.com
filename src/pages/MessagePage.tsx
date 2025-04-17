@@ -20,12 +20,19 @@ export default function MessagesPage() {
 
 
     return (
-        <div className="h-[calc(100vh-4rem)] w-full flex bg-white dark:bg-gray-900 overflow-hidden">
+        <div className="h-[calc(100dvh-4rem)] w-full flex bg-white dark:bg-gray-900 overflow-hidden">
             {/* Chat List Section */}
             <div
                 className={`${id ? 'hidden md:block' : 'block'} 
                     w-full md:w-96 border-r dark:border-gray-700 overflow-y-auto`}
             >
+                <button
+                    onClick={() => navigate(-1)}
+                    className="md:hidden p-4 flex items-center text-gray-600 dark:text-gray-300"
+                >
+                    <ArrowLeft className="w-6 h-6 mr-2" />
+                    Back
+                </button>
                 <ChatList
                     onSelectChat={(chatId) => navigate(`/messages/${chatId}`)}
                 />

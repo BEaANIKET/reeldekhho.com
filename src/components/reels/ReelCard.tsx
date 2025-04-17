@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Heart, MessageCircle, Send, Bookmark, Music2, User, ArrowLeft } from 'lucide-react';
+import { Heart, MessageCircle, Send, Bookmark, Music2, User, ArrowLeft, X } from 'lucide-react';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 import useHandleReelsLikes from '../../hooks/reels/useHandleLikes';
 import useAuth from '../../hooks/useAuth';
@@ -165,13 +165,13 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
   return (
     <div
-      onClick={handleReelsClick}
-      style={{
-        textShadow: '3px 2px 2px black'
-      }}
-      className="reel relative z-10 text-[#f2f2f2] font-extrabold h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
+
+      className="reel relative z-20 text-[#f2f2f2] font-extrabold h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
     >
-      <div className=' relative flex items-center justify-center h-full w-full'>
+      <div
+        onClick={handleReelsClick}
+
+        className=' relative z-20 flex items-center justify-center h-full w-full'>
         <div className=' absolute bg-black  flex w-full justify-between items-center  top-0 pt-4  left-0 right-0  '>
 
           <ArrowLeft
@@ -219,9 +219,11 @@ export default function ReelCard({ reel }: ReelCardProps) {
 
 
       {/* Overlay */}
-      <div className="absolute inset-0 bottom-12 top-0">
+      <div style={{
+        textShadow: '3px 2px 2px black'
+      }} className="absolute  inset-0 bottom-12 top-0">
         {/* Bottom Content */}
-        <div className="absolute bottom-0 left-0   w-full right-12 p-4">
+        <div className="absolute z-30 bottom-0 left-0   w-full right-12 p-4">
 
           <Link to={`/seller/${reel.user._id}`} className=" flex items-center  space-x-2 mb-3">
             <img
@@ -248,7 +250,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="absolute  bottom-4 right-2 space-y-4">
+        <div className="absolute z-30 bottom-4 right-2 space-y-4">
           <button
             onClick={() => iconClicked(`https://wa.me/${reel?.user?.phone}`)}
             className="flex  rounded-full p-2 flex-col items-center"
@@ -349,16 +351,25 @@ export default function ReelCard({ reel }: ReelCardProps) {
             </>
           )}
         </div>
-        <ShareButton
-          isOpen={isShareOpen}
-          onClose={() => setIsShareOpen(false)}
-          reelId={reel._id}
-        />
       </div>
 
+
+      {
+        isShareOpen && (
+          <div className=' fixed w-screen top-0 left-0 h-screen bg-black opacity-30'>
+
+          </div>
+        )
+      }
+
+      <ShareButton
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        reelId={reel._id}
+      />
       {isCommentOpen ? (
         <div
-          className={`absolute z-50  overflow-y-scroll bottom-0 left-0 right-0 bg-gray-900 pl-4 pr-4 rounded-t-lg transform transition-transform duration-300 ${isCommentOpen ? 'translate-y-0' : 'translate-y-full'
+          className={`absolute z-50  comment-popup  overflow-y-scroll bottom-0 left-0 right-0 bg-gray-900 pl-4 pr-4 rounded-t-lg transform transition-transform duration-300 ${isCommentOpen ? 'translate-y-0' : 'translate-y-full'
             }`}
           style={{ height: '50%' }}
         >
@@ -368,11 +379,11 @@ export default function ReelCard({ reel }: ReelCardProps) {
               onClick={closeCommentPopup}
               className=" hover:text-gray-400"
             >
-              Close
+              <X />
             </button>
           </div>
 
-          <div className="space-y-4 comment-popup z-50 text-sm font-normal w-full h-full">
+          <div className="space-y-4  z-50 text-sm font-normal w-full h-full">
             {comments && comments.length ?
               (comments.map((comment) => (
                 <div key={comment._id} className="flex items-start space-x-4 mb-2">
@@ -447,7 +458,6 @@ export default function ReelCard({ reel }: ReelCardProps) {
           </div>
         )
       }
-
 
     </div>
   );

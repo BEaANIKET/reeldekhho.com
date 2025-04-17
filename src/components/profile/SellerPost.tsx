@@ -112,7 +112,7 @@ const PostComponents = ({ post, seller, savedPost, setLikeCard, setLikedPostId }
             </div>
             <p className="dark:text-white px-3 pb-2">{post.caption}</p>
             <div
-                onClick={() => navigate(`/reels/${post?._id}`)}
+                onClick={() => navigate(`/reels/${post?._id}?u=${post?.userId}`)}
                 className="relative cursor-pointer ">
                 {mediaType === 'image' ? (
                     <img
@@ -276,7 +276,7 @@ const SellerPost = () => {
     const navigate = useNavigate();
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const paramValue = searchParams.get("id"); // Get the post ID from the URL
+    const paramValue = searchParams.get("id");
     const postIndex = sellerPost?.findIndex((p) => p._id === paramValue);
 
     const [displayedPosts, setDisplayedPosts] = useState([]);
@@ -306,7 +306,7 @@ const SellerPost = () => {
             if (currentPostElement) {
                 const targetPosition =
                     currentPostElement.getBoundingClientRect().top + window.scrollY;
-                window.scrollTo({ top: targetPosition, behavior: "auto" }); // Instant move without animation
+                window.scrollTo({ top: targetPosition, behavior: "auto" });
             }
         }, 15);
     }, [])

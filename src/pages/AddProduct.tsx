@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { FileIcon, Loader2, UploadIcon, XIcon } from 'lucide-react';
+import { FileIcon, Loader2, Loader2Icon, UploadIcon, XIcon } from 'lucide-react';
 import useUploadFile from '../hooks/addPost/useUploadFile';
 import useAddPost from '../hooks/addPost/useAddPost';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMyPosts } from '../store/slices/authSlice';
 import axios from 'axios';
+import toast from 'react-hot-toast';
+import { Spin } from 'antd';
 
 interface ProductForm {
   title: string;
@@ -78,36 +80,26 @@ const AddProduct: React.FC = () => {
       publicId: '',
     }
   });
-  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  // const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [filePreview, setFilePreview] = useState<string | undefined>(undefined);
-  const { loading, error, uploadFile } = useUploadFile()
+  const { uploadFile, uploadProgress } = useUploadFile()
   const { loading: addProductLoading, error: addProducterror, addPost } = useAddPost()
   const [fileinp, setFileinp] = useState<File | null>(null);
   const [fileUploadLoder, setFileUploadLoder] = useState(false)
 
-  const simulateUpload = () => {
-    setUploadProgress(0);
-    const interval = setInterval(() => {
-      setUploadProgress((prevProgress) => {
-        if (prevProgress >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prevProgress + 10;
-      });
-    }, 300);
-  };
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
-    // //('Selected file:', selectedFile);
     if (selectedFile) {
       if (!selectedFile.type.startsWith('image/') && !selectedFile.type.startsWith('video/')) {
         alert('Please upload a valid image or video file.');
         return;
       }
       setFileUploadLoder(true)
+      console.log("start ");
+      
       const success = await uploadFile(selectedFile);
+      console.log("end");
+      
       setFileUploadLoder(false)
       if (success) {
         setFormData({
@@ -120,13 +112,11 @@ const AddProduct: React.FC = () => {
         });
       }
       if (!success) {
-        setUploadProgress(0);
-        alert('Failed to upload the file. Please try again.');
+        toast.error('Failed to upload the file. Please try again.');
         return;
       }
       setFile(selectedFile);
       setFilePreview(URL.createObjectURL(selectedFile));
-      simulateUpload();
     }
   };
 
@@ -141,7 +131,6 @@ const AddProduct: React.FC = () => {
         publicId: '',
       }
     });
-    setUploadProgress(0);
   };
 
   const handleInputChange = (
@@ -166,7 +155,7 @@ const AddProduct: React.FC = () => {
 
     // //("add product success: ", success);
     if (success) {
-      alert('Product added successfully');
+      toast.success('Product added successfully');
       setFormData({
         title: '',
         description: '',
@@ -197,6 +186,7 @@ const AddProduct: React.FC = () => {
   useEffect(() => {
     fetchcategory()
   }, [])
+
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4">
       <div className="w-full md:w-1/2 border rounded-md p-6 flex flex-col justify-center items-center relative min-h-[500px]">
@@ -234,7 +224,8 @@ const AddProduct: React.FC = () => {
               {
                 fileUploadLoder ? (
                   <div className="flex items-center justify-center h-full w-full bg-gray-100 rounded-md text-gray-500 text-center">
-                    <Loader2 className="animate-spin w-6 h-6 text-gray-400" />
+                    <Loader2Icon className=' animate-spin' />
+                     <UploadProgress progress={uploadProgress} />
                   </div>
                 ) : (
                   <>
@@ -256,7 +247,6 @@ const AddProduct: React.FC = () => {
           className="hidden"
           onChange={handleFileChange}
         />
-        <UploadProgress progress={uploadProgress} />
       </div>
 
       <div className="w-full md:w-1/2 border rounded-md p-4">

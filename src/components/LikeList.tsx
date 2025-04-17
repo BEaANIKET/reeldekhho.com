@@ -45,7 +45,7 @@ const LikeList = ({ setLikeCard, likedPostId }: { setLikeCard: (value: boolean) 
             </button>
 
             {/* Title */}
-            <h1 className="text-center text-lg font-bold mb-4">Likes</h1>
+            <h1 className="text-center text-black text-lg font-bold mb-4">Likes</h1>
 
             {/* Users List */}
             <ul className="space-y-3 overflow-y-auto max-h-[60vh]">

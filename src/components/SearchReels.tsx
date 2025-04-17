@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import api from "../services/api/axiosConfig";
 import ReelCard from "./reels/ReelCard";
 import { ArrowLeft } from "lucide-react";
@@ -15,8 +15,8 @@ const SearchReels = () => {
     const [currentReelIndex, setCurrentReelIndex] = useState(0); // Track current reel index
     const navigate = useNavigate()
     const reelContainerRef = useRef<HTMLDivElement>(null);
-
-
+    const [searchParams] = useSearchParams();
+    const userId = searchParams.get('u');
 
     // Fetch a specific reel by ID
     const fetchReels = useCallback(async (reelId: string) => {
@@ -36,11 +36,12 @@ const SearchReels = () => {
 
     // Fetch more reels for infinite scrolling
     const fetchMoreReels = useCallback(async () => {
+
         if (loading || !hasMore) return;
 
         setLoading(true);
         try {
-            const response = await api.get(`/post/get?page=${page}&excludeIds=${fetchedReelIds.join(",")}`);
+            const response = await api.get(`/post/get?page=${page}&excludeIds=${fetchedReelIds.join(",")}&userId=${userId}`);
             const newPosts = response.data.posts || [];
             if (newPosts.length > 0) {
                 setPosts((prev) => [...prev, ...newPosts]);
@@ -50,15 +51,19 @@ const SearchReels = () => {
                 setHasMore(false);
             }
         } catch (error) {
-            console.error("Error fetching more reels:", error.message);
+            setHasMore(false);
         } finally {
-            setLoading(false); // Ensure loading is updated for infinite scroll
+            setLoading(false);
         }
     }, [loading, hasMore, page, fetchedReelIds]);
 
     // Fetch initial reel based on the `id` parameter
     useEffect(() => {
-        if (id) fetchReels(id);
+
+        if (id) {
+            setFetchedReelIds([id])
+            fetchReels(id)
+        };
     }, [id, fetchReels]);
 
     // Handle scroll event to update the current reel index

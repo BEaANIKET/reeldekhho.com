@@ -1,5 +1,6 @@
 import { useState } from "react"
 import api from "../../services/api/axiosConfig";
+import toast from "react-hot-toast";
 
 
 const useAddPost = () => {
@@ -15,6 +16,7 @@ const useAddPost = () => {
         } catch (error) {
             console.error('Error adding post:', error);
             setError(error?.response?.data?.message || 'Something went wrong');
+            toast.error(error?.response?.data?.message || 'Something went wrong')
             return null;
         } finally {
             setLoading(false);

@@ -18,8 +18,8 @@ export default function CommentSection({ postId, createComment, loader, setLoade
   };
 
   return (
-    <div className="mt-4 border-t dark:border-gray-700 pt-4">
-      <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+    <div className=" border-t dark:border-gray-700 pt-4">
+      <form onSubmit={handleSubmit} className="flex pb-4 items-center space-x-2">
         <input
           type="text"
           placeholder="Add a comment..."

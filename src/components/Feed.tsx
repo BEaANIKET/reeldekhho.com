@@ -168,7 +168,7 @@ export default function Feed({ homeClick }) {
 
         {
           reportBottomSheet && (
-            <div ref={reportRef} className='fixed bottom-0 bg-[#dfdddd] w-full px-4 py-8 z-50 flex flex-col gap-2 rounded-t-3xl'>
+            <div ref={reportRef} className='fixed bottom-0 left-0 bg-[#dfdddd] w-full px-4 py-8 z-50 flex flex-col gap-2 rounded-t-3xl'>
               <div className='w-8 h-1.5 rounded-md bg-[#00000081] self-center'></div>
               <h1 className='font-bold text-lg text-center'>Report</h1>
               <h2 className='font-bold text-center'>Why are you Reporting this post?</h2>
